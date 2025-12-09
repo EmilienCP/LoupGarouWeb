@@ -1,0 +1,10 @@
+<div *ngIf = "!isInfoAppareil" class = "lgAbsolu" style = "top: 20%; width: 100%; overflow-y: auto;height: 40%; font-size: 120%;">
+    <p class = "lgTexte">{{texte}}</p>
+</div>
+<p *ngIf = "!isInfoAppareil" class = "lgTexte lgAbsolu" style = "left: 5%; width: 90%;top: 40%; font-size: 100%;">En attente de:</p>
+<div *ngIf = "!isInfoAppareil" class = "lgAbsolu" style = "top: 50%; width: 100%; height: 40%; overflow-y: auto;">
+    <p *ngFor = "let nom of nomsEnAttente" class = "lgTexte" style = " font-size: 90%;">{{nom}}</p>
+</div>
+<button *ngIf = "!isInfoAppareil && communicationService.isMeneurDeJeu" class = "lgBouton lgAbsolu" style = "width: 10%; left: 3%; top: 92%; height: 5%;font-size: 30%;" (click) = "switchInfoAppareil()">info Appareil</button>
+<div *ngIf = "!isInfoAppareil && communicationService.isMeneurDeJeu" class = "lgAbsolu lgTexte" style = "left: 80%; top:5%;">{{communicationService.jour?'Jour':'Nuit'}} {{communicationService.numeroJour}}</div>
+<app-creation-appareils *ngIf = "isInfoAppareil" (retourAppareil) = "switchInfoAppareil();"></app-creation-appareils>

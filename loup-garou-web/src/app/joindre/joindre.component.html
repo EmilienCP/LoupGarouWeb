@@ -1,0 +1,9 @@
+<button class = "lgBouton" style = "top: 2%;left: 2%;width:20%;position: absolute;font-size: 50%;" (click) = "retour()">Retour</button>
+<div style = "top: 15%;left: 5%;width:90%; height: 70%;position: absolute;overflow-y: auto;">
+    <button *ngFor = "let info of listeParties; let i = index" class = "lgTexte lgBouton" [style] = "((info.etat !== 'Termine')?'':'background-color: grey;')+'margin-left: 20%; width: 60%; margin-bottom: 30px; font-size: 100%;'" (click) = "joindre(info.id, i)">
+        <p class = "lgBlanc" style = "font-size: 60%;"> Numéro de partie: {{info.id}}</p>
+        <div class = "lgBlanc" style = "font-size: 45%;"> État : {{info.etat}}</div>
+        <div class = "lgBlanc" style = "font-size: 45%;"> Nombre d'appareils connectés: {{info.nombreAppareilConnectes}}</div>
+        <div class = "lgBlanc" style = "font-size: 45%;"> Nombre de joueurs: {{info.nombreDeJoueurs}}</div>
+    </button>
+</div>

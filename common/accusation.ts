@@ -1,0 +1,12 @@
+export enum RaisonAccusation{
+    AUCUN,
+    PAS_RAISON_PRECISE,
+    STEAK,
+    LOUCHE,
+    AGRESSIF,
+    VOYANTE,
+    MONTREUR_OURS,
+    JOUEUR_DE_FLUTE,
+    CONTRE_ACCUSATION,
+    RENARD
+}

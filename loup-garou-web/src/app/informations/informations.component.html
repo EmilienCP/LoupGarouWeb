@@ -1,0 +1,27 @@
+<button *ngIf = "!isInfoAppareil && communicationService.isMeneurDeJeu" class = "lgBouton lgAbsolu" style = "width: 10%; left: 3%; top: 92%; height: 5%;font-size: 30%;" (click) = "switchInfoAppareil()">info Appareil</button>
+<div #scrollMe *ngIf = "!isInfoAppareil" class = "lgAbsolu" style = "font-size:110%;top: 15%; width: 70%; left:15%; overflow-y: auto; height: 50%; scrollbar-width: none;" [scrollTop]="histo.offsetHeight">
+    <div #histo>
+        <div *ngFor = "let hist of historiqueEvenements" class = "lgTexte" style = "margin-bottom: 10%;">
+            <div *ngFor = "let h of hist" class = "lgTexte">{{h}}</div>
+        </div>
+    </div>
+    <div style = " width: 100%;height: 5px;">
+            <div [@progressBar] = "{value: isTimer, params : {time: valeurTimer}}" style = "background-color: red; margin: auto; text-align: center;height: 100%; border-radius: 5px;"></div>
+    </div>
+    <div #test style = "height: 100%;">
+        <div style = "display: flex;justify-content: center;align-items: center;height: 60%;">
+            <div style = "margin: auto;">
+                <div *ngFor = "let t of textePrincipal" class = "lgTexte">{{t}}</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div *ngIf = "!isInfoAppareil && communicationService.isMeneurDeJeu" class = "lgAbsolu lgTexte" style = "left: 80%; top:5%;">{{communicationService.jour?'Jour':'Nuit'}} {{communicationService.numeroJour}}</div>
+
+<button *ngIf = "!isInfoAppareil && !communicationService.isMeneurDeJeu && !this.infoAccuser" class= "lgTexte boutonRole lgAbsolu" [style] = "'font-size: 130%; background-color: transparent; border: none; overflow-y: hidden;overflow-x:hidden;width: 20%; left: 40%; top: 70%; height:40%;  max-height:'+imagee.offsetWidth+'px'" (click) = "ok()">
+    <div #imagee class="lgAbsolu" [style] ="'background-repeat: unset;background-size: cover; background-image: url(./../../assets/wolf-print2.png); width: 100%;rotate: -40deg; height: 100%;left: 0%; top: 0%;'"></div>
+    <div class="lgTexte lgAbsolu lgBlanc" style = "width: 100%; left: 0%; top: 40%; height:40%; font-family: texteBouton;">Ok</div>
+</button>
+<button *ngIf = "!isInfoAppareil && infoEvenement!.peutPasser && !infoEvenement!.passer && !communicationService.isMeneurDeJeu" class = "lgBouton lgAbsolu" style = "width: 20%; left: 78%; top: 90%; height: 5%;font-size: 60%;" (click) = "passer()">Passer =></button>
+<app-creation-appareils *ngIf = "isInfoAppareil" (retourAppareil) = "switchInfoAppareil();"></app-creation-appareils>

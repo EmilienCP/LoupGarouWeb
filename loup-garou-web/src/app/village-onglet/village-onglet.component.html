@@ -1,0 +1,32 @@
+<div *ngIf = "roleChoisi == undefined" style = "width: 100%; height: 100%; overflow-y: auto;">
+    <div class="lgTexte" style = "margin-top: 5%; font-size: 130%;">{{communicationService.jour?'Jour':'Nuit'}} {{communicationService.numeroJour}}</div>
+    <div style = "height: 100%; width: 100%; position: relative; overflow-x: hidden;">
+        <app-selecteur-village></app-selecteur-village>
+    </div>
+    <div class= "lgTexte" style = "text-align: center; width: 100%; height: 100%;">
+        <p style = "width: 100%; font-size: 70%;">Informations du village</p>
+        <div style = "display: grid; grid-template-columns: 50% 50%;">
+            <div style = "width: 100%;">
+                <p style = "width: 100%; font-size: 70%;">Personnages Restants</p>
+                <div style = "height: 100%; width:100%; overflow-y: auto;">
+                    <div class = "boutonhover" *ngFor = "let role of rolesVivants; let i= index;" style = "border: none; margin: 0; padding: 0; width: auto; display: flex; margin-top: 2%;justify-content: center; align-items: center;" (click) = "voirRoleVivant(i)">
+                        <div #imagee style = "margin-right: 5%; font-size: 90%; " >{{role}}</div>
+                        <img [src] =  "'../../assets/'+imageRole(rolesVivantsEnum[i])" [style.height] = "imagee.offsetHeight+'px'">
+                    </div>
+                </div>
+            </div>
+            <div style = "width: 100%;">
+                <p style = "width: 100%; font-size: 70%;">Personnages Éliminés</p>
+                <div style = "height: 100%; width:100%; overflow-y: auto;">
+                    <div class = "boutonhover" *ngFor = "let role of rolesMorts; let i= index;" style = "border: none; margin: 0; padding: 0; width: auto; display: flex; margin-top: 2%;justify-content: center; align-items: center;" (click) = "voirRoleVivant(i)">
+                        <div #imagee style = "margin-right: 5%; font-size: 90%; " >{{role}}</div>
+                        <img [src] =  "'../../assets/'+imageRole(rolesMortsEnum[i])" [style.height] = "imagee.offsetHeight+'px'">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<app-description-role *ngIf = "roleChoisi != undefined" (fermer) = "fermerDescriptionRole()" [role] = "roleChoisi"></app-description-role>
+
+

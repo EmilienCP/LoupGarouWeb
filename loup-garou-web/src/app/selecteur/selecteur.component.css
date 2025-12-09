@@ -1,0 +1,29 @@
+.peutChoisir{
+    background-color: red;
+}
+
+.peutChoisir:hover{
+    background-color: #AA0000;
+}
+
+.peutPasChoisir{
+    background-color: gray;
+}
+
+
+.hoverCapitaine{
+    position: absolute;
+    visibility: hidden;
+    background-color: black;
+    color: white;
+    margin-left: -15%;
+    border-radius: 5px;
+}
+
+.iconCapitaine:hover .hoverCapitaine{
+    visibility: visible;
+}
+
+img{
+    width: 30px;
+}

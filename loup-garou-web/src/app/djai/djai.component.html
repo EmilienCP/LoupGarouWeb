@@ -1,0 +1,142 @@
+<!-- <div *ngIf  = "!ajoutToune" style = "height: 90%; overflow-y: auto; font-size: 60%;">
+    <button style = "width: 100%; height: 20%; margin-top: 10%; border: none; background: none;" (click) = "jouer()">
+        <mat-icon [style] = "'background-color: black; color: '+(pret||!entrainDeLoad?'#00DD00':'gray')+'; width: 50%; height: 100%; font-size: 1000%;'">{{!entrainDeJouer?(pret||entrainDeLoad?'play_circle':'upload'):'pause_circle'}}</mat-icon>
+    </button>
+    <p *ngIf = "audioService.touneCourante !== undefined">Musique Courante: {{audioService.touneCourante!.titre}}</p>
+    
+    <ng-container *ngFor = "let filtre of filtreCache">
+        <p *ngIf = "audioService.touneCourante !== undefined">{{filtre.nom}}: {{audioService.getCaract(audioService.touneCourante!, filtre.nom)}}</p>
+    </ng-container>
+    <p *ngIf = "audioService.touneCourante !== undefined">Tempo: {{audioService.touneCourante!.tempo}}</p>
+    <p *ngIf = "audioService.touneCourante !== undefined">Au Complet: {{audioService.touneCourante!.auComplet}}</p>
+    <p *ngIf = "audioService.prochaineToune !== undefined">ProchaineMusique: {{audioService.prochaineToune!.titre}}</p>
+    <p style = "text-align: center;">Filtres</p>
+    <select (change)="setFiltrePersonnalise($event)" [value]>
+        <option *ngFor = "let filtrePersonnalise of filtresPersonnalises; let i = index" [value] = "i">{{filtrePersonnalise.nom}}</option>
+    </select>
+    <div style = "display: grid; grid-template-columns: auto 10% auto 10% auto;">
+        <div></div>
+        <div></div>
+        <p>Valeur</p>
+        <div></div>
+        <p>Importance</p>
+        <ng-container *ngFor = "let filtre of filtreCache">
+            <p>{{filtre.nom}}</p>
+            <p>{{filtre.valeur}}</p>
+            <input type="range" [min]="filtre.min" [max]="filtre.max" [step] = "filtre.pas" style = "width: 50%;" [(ngModel)] = "filtre.valeur">
+            <p>{{filtre.importance}}</p>
+            <input type="range" min="0" max="1" step = "0.01" style = "width: 50%;" [(ngModel)] = "filtre.importance">
+        </ng-container>
+    </div>
+    <button class = "lgBouton" style = "margin-left: 30%; margin-right: 30%; width: 40%;" (click) = "appliquerFiltres()">Appliquer</button>
+
+
+    <button (click) = "ajouterToune()">+</button>
+    <button (click) = "modifierToune()">=</button>
+    <p class = "lgTexte" *ngFor = "let log of audioService.logs">{{log}}</p>
+</div>
+
+<div *ngIf = "ajoutToune" style = "z-index: 2; font-size: 50%; height: 80%; overflow-y: auto;">
+    <p>Ajout d'une toune</p>
+    <div *ngIf = "!nouvelleToune && !isModifierToune">
+        <input #lienYoutube>
+        <button (click) = "loadToune(lienYoutube.value)">load</button>
+    </div>
+    <div *ngIf = "!nouvelleToune && isModifierToune">
+        <button *ngFor = "let toune of audioService.toutesLesTounes" (click) = "choisirToune(toune)">{{toune.titre}}</button>
+    </div>
+
+    <p *ngIf = "nouvelleToune">Titre</p>
+    <input *ngIf = "nouvelleToune" [(ngModel)] = "nouvelleToune.titre">
+    <p *ngIf = "nouvelleToune">auComplet</p>
+    <input *ngIf = "nouvelleToune" type = "checkbox" [(ngModel)] = "nouvelleToune.auComplet">
+    <div *ngIf = "nouvelleToune">
+        <ng-container *ngFor = "let filtre of filtreCache">
+            <p>{{filtre.nom}}</p>
+            <p>{{filtre.valeur}}</p>
+            <input type="range" [min]="filtre.min" [max]="filtre.max" [step] = "filtre.pas" style = "width: 50%;" [(ngModel)] = "filtre.valeur">
+        </ng-container>
+    </div>
+
+
+    <p *ngIf = "nouvelleToune">Pitch</p>
+    <p *ngIf = "nouvelleToune">{{nouvelleToune.pitch}}</p>
+    
+    
+    <input *ngIf = "nouvelleToune" type="range" [min]="0" [max]="12" style = "width: 50%;" [(ngModel)] = "nouvelleToune.pitch">
+    <p *ngIf = "nouvelleToune">loopChordsDebut</p>
+    <div *ngIf = "nouvelleToune">
+        <ng-container *ngFor = "let chord of nouvelleToune.loopChordsDebut; let i = index">
+            <p>Accord {{chord[0]}}</p>
+            <input type="range" [min]="0" [max]="7" [step] = "1" style = "width: 50%;" [(ngModel)] = "nouvelleToune.loopChordsDebut[i][0]">
+            <p>Duree {{chord[1]}}</p>
+            <input type="number" style = "width: 50%;" [(ngModel)] = "nouvelleToune.loopChordsDebut[i][1]">
+            <button (click) = "retirerLoopChord(0,i)">Retirer</button>
+        </ng-container>
+        <button (click) = "ajouterLoopChord(0)">ajouter</button>
+    </div>
+    <p *ngIf = "nouvelleToune">loopChordsFin</p>
+    <div *ngIf = "nouvelleToune">
+        <ng-container *ngFor = "let chord of nouvelleToune.loopChordsFin; let i = index">
+            <p>Accord {{chord[0]}}</p>
+            <input type="range" [min]="0" [max]="7" [step] = "1" style = "width: 50%;" [(ngModel)] = "nouvelleToune.loopChordsFin[i][0]">
+            <p>Duree {{chord[1]}}</p>
+            <input type="number" style = "width: 50%;" [(ngModel)] = "nouvelleToune.loopChordsFin[i][1]">
+            <button (click) = "retirerLoopChord(1,i)">Retirer</button>
+        </ng-container>
+        <button (click) = "ajouterLoopChord(1)">ajouter</button>
+    </div>
+    
+    <p *ngIf = "nouvelleToune">Tempo</p>
+    <button *ngIf = "nouvelleToune" (click) = "zoom()">Zoom</button>
+    <button *ngIf = "nouvelleToune" (click) = "dezoom()">DeZoom</button>
+    <p *ngIf = "nouvelleToune">{{nouvelleToune.tempo}}</p>
+    <input *ngIf = "nouvelleToune" type="range" [min]="zoomPlage[0]" [max]="zoomPlage[1]" [step] = "zoomStep" style = "width: 50%;" [(ngModel)] = "nouvelleToune.tempo">
+    <button *ngIf = "nouvelleToune" style = "width: 100%; background: none; border: none;" (click) = "jouerNouvelleToune()">
+        <mat-icon style = "background-color: black; color: #00DD00; font-size: 500%;">{{!entrainDeJouer?'play_circle':'pause_circle'}}</mat-icon>
+    </button>
+
+    
+
+    
+    <p *ngIf = "nouvelleToune">Gestion temps</p>
+    <p *ngIf = "nouvelleToune">{{nouvelleToune.tempsi}}</p>
+
+    <p *ngIf = "nouvelleToune">{{audioNouvelleToune.currentTime}}</p>
+    <input *ngIf = "nouvelleToune" type="number" style = "width: 50%;" [value]= "audioNouvelleToune.currentTime" (blur) = "changerCurrentTime($event, true)">
+    <p *ngIf = "nouvelleToune">{{indexcurrentTime}}</p>
+    <input *ngIf = "nouvelleToune" type="range" [min]="0" [max]="nouvelleToune.tempsi.length" [step] = "1" style = "width: 50%;" [(ngModel)] = "indexcurrentTime" (input) = "changerCurrentTime($event, false)">
+
+    <p *ngIf = "nouvelleToune">temps0</p>
+    <input *ngIf = "nouvelleToune" type="number" style = "width: 50%;" [(ngModel)] = "nouvelleToune.temps0">
+    <button *ngIf = "nouvelleToune" (click) = "remplirTemps()">Remplir Temps</button>
+
+    <p *ngIf = "nouvelleToune">temps clés</p>
+    
+    
+    <div *ngIf = "nouvelleToune">
+        <ng-container *ngFor = "let tempsCle of nouvelleToune!.tempsCles; let i = index">
+            <input type="number" style = "width: 50%;" (blur) = "mettreAJourTempsCles($event, i)" [value] = "nouvelleToune!.tempsCles[i]">
+            <button (click) = "retirerTempsCle(i)">Retirer Temps Cle</button>
+        </ng-container>
+        <button (click) = "ajouterTempsCle()">Ajouter Temps Cle</button>
+        <ng-container *ngFor = "let temps of nouvelleToune.temps; let i = index">
+            <p>temps {{i}}</p>
+            <button (click) = "jouerRepere(i)">Jouer {{i}}</button>
+            <button (click) = "set(i)">Set {{i}}</button>
+            <input *ngIf = "nouvelleToune" type = "number" min = "0" max = "nouvelleToune.duration" step = "0.01" (blur) = "mettreAJourTemps($event, i)" [value] = "this.nouvelleToune!.temps[i]">
+        </ng-container>
+        <ng-container *ngFor = "let temps of nouvelleToune.tempsLoopDebut; let i = index">
+            <p>temps loop Debut{{i}}</p>
+            <input *ngIf = "nouvelleToune" type = "number" min = "0" max = "nouvelleToune.duration" step = "0.01" (blur) = "mettreAJourTempsLoop($event, true, i)" [value] = "this.nouvelleToune!.tempsLoopDebut![i]">
+        </ng-container>
+        <button (click) = "jouerLoop(true)">Jouer Loop Debut</button>
+        <ng-container *ngFor = "let temps of nouvelleToune.tempsLoopFin; let i = index">
+            <p>temps loop Fin{{i}}</p>
+            <input *ngIf = "nouvelleToune" type = "number" min = "0" max = "nouvelleToune.duration" step = "0.01" (blur) = "mettreAJourTempsLoop($event, false, i)" [value] = "this.nouvelleToune!.tempsLoopFin![i]">
+        </ng-container>
+        <button (click) = "jouerLoop(false)">Jouer Loop Fin</button>
+        <button class = "lgBouton" (click) = "enregistrer()">Enregistrer</button>
+    </div>
+
+</div> -->

@@ -1,0 +1,9 @@
+<div #container [style] = "'height:100%;width:100%;position:absolute;background-size: cover;background-repeat: unset; '+proprieteFondEcran+'max-width:'+innerHeight/1.12+'px; margin-left:'+getMarginLeft()+'px;margin-Top:'+getMarginTop()+'px;max-height:'+getMaxHeight()+'px;font-size:'+getFont()+'px; overflow-y: hidden;color:white;  text-shadow:-1px -1px 0 black,1px -1px 0 black,-1px  1px 0 black,1px  1px 0 black;'">
+    <router-outlet (activate) = "onActivate($event)"></router-outlet>
+</div>
+
+<!--div id="container" [style] = "'height:'+innerHeight+'px;width:'+innerWidth+'px;'">
+    <div id="content" >
+        <p>content</p>
+    </div>
+</div-->

@@ -1,0 +1,9 @@
+.element{
+    border: solid;
+    border-radius: 4px;
+}
+
+.rien{
+    border: none;
+    border-radius: 0px;
+}

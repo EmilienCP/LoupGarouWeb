@@ -1,0 +1,43 @@
+<button *ngIf = "!isInfoAppareil && communicationService.isMeneurDeJeu" class = "lgBouton lgAbsolu" style = "width: 10%; left: 3%; top: 92%; height: 5%;font-size: 30%;" (click) = "switchInfoAppareil()">info Appareil</button>
+<div *ngIf = "!isInfoAppareil" class="lgTexte lgAbsolu" [style] = "(menu?'':'top: 5%;')+'font-size: 150%; text-align: center; width: 100%'" >Pointage</div>
+
+
+<div *ngIf = "!isInfoAppareil" class= "lgAbsolu" style = "left: 10%; width: 80%; height: 80%;top:15%;">
+    <div style = "display:grid; grid-template-columns: 20% 30% 25% 25%; height: 15%;">
+        <p class="lgTexte" style = "font-size: 80%;">Rang</p>
+        <p class="lgTexte" style = "font-size: 80%;">Nom</p>
+        <p class="lgTexte" style = "font-size: 80%;">Points Totaux</p>
+        <p class="lgTexte" style = "font-size: 80%;">Points Gagnés</p>
+    </div>
+    <div style="height: 88%;overflow-y: auto;margin-top: 2%;">
+        <div *ngFor = "let info of infos; let i = index" style = "display:grid; grid-template-columns: 20% 30% 25% 25%; margin-top: 2%; height: 35px;">
+            <div *ngIf = "i==0 || (info.points==infos[0].points)" style = "display: flex; align-items: center; justify-content: center;">
+                <div #imagee class="lgTexte" [style.width] = "imagee.offsetHeight+'px'" style = "background-image: url(./../../assets/gold_medal.png); background-size: cover; background-repeat: unset; height: 75%;" >
+                    <div>1</div>
+                </div>
+            </div>
+            <div *ngIf = "!(i==0 || (info.points==infos[0].points))" style = "display: flex; justify-content: center; align-items: center;">
+                <div  class = "lgTexte" style = "width: 100%; height: 100%; font-size: 80%;">{{i+1}}</div>
+            </div>
+            <div style = "display: flex; justify-content: center; align-items: center;">
+                <div class="lgTexte" style = "font-size: 80%;">{{info.nom}}</div>
+            </div>
+            <div *ngIf = "idAppareil != 0"  style = "display: flex; justify-content: center; align-items: center;">
+                <div class="lgTexte" style = "font-size: 80%;">{{info.points}}</div>
+            </div>
+            <label *ngIf = "idAppareil == 0" class = "lgBlanc lgTexte" style = "font-size: 100%; height: 100%;">
+                <input style = "background-color: transparent; border:none; color: white; width:100%; text-align: center;height: 100%;font-size: 80%;height: 75%;" type = "number" [value] = "info.points" (blur) = "setNbPoints($event, i)">
+            </label>
+            <div style = "display: flex; justify-content: center; align-items: center;">
+                <div class="lgTexte" style = "font-size: 80%;">+{{info.pointsGagnes}}</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<button *ngIf = "!isInfoAppareil && !menu && !communicationService.isMeneurDeJeu" class= "lgTexte boutonRole lgAbsolu" [style] = "'font-size: 130%; background-color: transparent; border: none; height: 100%; overflow-y: hidden;overflow-x:hidden;width: 20%; left: 40%; top: 80%; height:20%; max-height:'+imagee.offsetWidth+'px'" (click) = "ok()">
+    <div #imagee class="lgAbsolu" [style] ="'background-repeat: unset;background-size: cover; background-image: url(./../../assets/wolf-print2.png); width: 100%;rotate: -40deg; height: 100%;left: 0%; top: 0%; max-height:'+imagee.offsetWidth+'px'"></div>
+    <div class="lgTexte lgAbsolu lgBlanc" style = "width: 100%; left: 0%; top: 38%; height:20%; font-family: texteBouton;">Ok</div>
+</button>
+
+<app-creation-appareils *ngIf = "isInfoAppareil" (retourAppareil) = "switchInfoAppareil();"></app-creation-appareils>

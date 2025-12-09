@@ -1,0 +1,20 @@
+# Create image based on the official Node 6 image from the dockerhub
+FROM node:14.15
+USER node
+ENV NPM_CONFIG_PREFIX=/home/node/.npm-global
+ENV PATH=$PATH:/home/node/.npm-global/bin
+
+# Change directory so that our commands run inside this new directory
+WORKDIR /home/node
+# Copy dependency definitions
+COPY --chown=node:node . .
+
+# Install dependecies
+WORKDIR /home/node/backend
+RUN npm install
+
+# Expose the port the app runs in
+EXPOSE 5030
+
+# Serve the app
+CMD ["npm", "run", "development_container"]

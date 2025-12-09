@@ -1,0 +1,16 @@
+<button *ngIf = "roleChoisi == undefined" class = "lgBouton lgAbsolu" style = "left: 2%; top: 2%" (click) = retour()>Retour</button>
+
+<div *ngIf = "roleChoisi == undefined" class = "lgAbsolu" style = "width: 100%;top: 7%; height: 90%; overflow-y: auto; overflow-x: hidden;">
+    <div *ngIf = "roleChoisi == undefined" class = "lgTexte" style ="text-align: center; width: 100%;">Roles Possibles</div>
+    <button *ngFor = "let role of nomsRoles; let i = index" style = "font-size: 50%; margin: 2% 2% 2% 2%; width: 80px; height: 100px; background-color: transparent; border: none;" (click) = "descriptionRole(i, false);">
+        <div class= "lgTexte">{{role}}</div>
+        <div [style] ="'background-size: cover; background-image: url(./../../assets/'+images[i]+'); width: 100%; height:69%;'"></div>
+    </button>
+    <div *ngIf = "roleChoisi == undefined" class = "lgTexte" style ="text-align: center; width: 100%;">Roles Publics</div>
+    <button *ngFor = "let role of nomsRolesPublics; let i = index" style = "font-size: 50%; margin: 2% 2% 2% 2%; width: 80px; height: 100px; background-color: transparent; border: none;" (click) = "descriptionRole(i, true);">
+        <div class= "lgTexte">{{role}}</div>
+        <div [style] ="'background-size: cover; background-image: url(./../../assets/'+imagesRolesPublics[i]+'); width: 100%; height:69%;'"></div>
+    </button>
+</div>
+
+<app-description-role *ngIf = "roleChoisi != undefined" (fermer) = "fermerDescriptionRole()" [role] = "roleChoisi" [rolePublic] = "rolePublic"></app-description-role>

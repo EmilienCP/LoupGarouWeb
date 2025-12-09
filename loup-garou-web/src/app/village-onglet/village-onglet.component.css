@@ -1,0 +1,8 @@
+::-webkit-scrollbar { width: 15px; }
+
+.boutonhover{
+    background-color: transparent;
+}
+.boutonhover:hover{
+    background-color: #880000;
+}

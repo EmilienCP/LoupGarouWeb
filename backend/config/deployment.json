@@ -1,0 +1,15 @@
+{
+    "app": {
+        "port": 3306,
+        "ip":"44.193.4.132",
+        "production": false,
+        "client_host": "loupgarouweb.com",
+        "client_port": "",
+        "COOKIE_HTTP_ONLY": false,
+        "COOKIE_HTTPS_ONLY": false,
+        "COOKIE_DOMAIN": "",
+        "COOKIE_PATH": "",
+        "COOKIE_SECRET": "375423d6086dd0028fc8388",
+        "COOKIE_NAME": "PolyChemin"
+    }
+}

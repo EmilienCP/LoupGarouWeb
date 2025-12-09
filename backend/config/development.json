@@ -1,0 +1,9 @@
+{
+    "app": {
+        "port": 3306,
+        "ip":"localhost",
+        "production": false,
+        "client_host": "localhost",
+        "client_port": "4200"
+    }
+}

@@ -1,0 +1,21 @@
+<div [style] = "proprieteFondEcran +'background-size: cover;background-repeat: unset;width:100%;height:100%'">
+    <div [@.disabled]="communicationService.isMeneurDeJeu && !permetOnglets"  @parent #parent class = "lgAbsolu" [style] = "'width:100%;'+getHeight()+' top:0%; overflow-x: hidden;'" (mousedown)="mouseDown($event)" (touchstart)="mouseDown($event)" (mousemove) = "mouseMove($event)" (touchmove) = "mouseMove($event)" (mouseup) = "mouseUp()" (touchend) = "mouseUp()">
+        <div  [@evenements] = "{value: entrainDeDrag?'deplacement':indexOnglet, params: { marginFinal: marginFinal-indexOnglet*parent.offsetWidth}}" class = "lgAbsolu" style = "width:100%; height: 100%;overflow-y: auto; overflow-x: hidden;">
+            <router-outlet (activate)="onActivate($event)"></router-outlet>
+        </div>
+        
+        <div [@village] = "{value: entrainDeDrag?'deplacement':indexOnglet, params: { marginFinal: marginFinal-(indexOnglet-1)*parent.offsetWidth}}" *ngIf = "!communicationService.isMeneurDeJeu && permetOnglets" class = "lgAbsolu" style = "width:100%; height: 100%;overflow-y: auto; overflow-x: hidden;">
+            <app-village-onglet [rolesVivants] = "rolesVivants" [rolesMorts] = "rolesMorts" [rolesVivantsEnum] = "rolesVivantsEnum" [rolesMortsEnum] = "rolesMortsEnum"></app-village-onglet>
+        </div>
+
+        <div [@historique] = "{value: entrainDeDrag?'deplacement':indexOnglet, params: { marginFinal: marginFinal-(indexOnglet-2)*parent.offsetWidth}}" *ngIf = "!communicationService.isMeneurDeJeu && permetOnglets" class = "lgAbsolu" style = "width:100%; height: 100%;overflow-y: auto; overflow-x: hidden;">
+            <app-historique-evenement [historiqueEvenements] = "historiqueEvenements"></app-historique-evenement>
+        </div>
+    </div>
+    
+    <div *ngIf = "!communicationService.isMeneurDeJeu && permetOnglets" class= "lgAbsolu" style = "display: grid; grid-template-columns: auto auto auto;top:93%;width: 100%;height: 7%">
+        <button [class] = "indexOnglet != 0?'rouge':'noir'" style = "color: white; border: none; font-size: 70%;font-family: textecool;" (click) = "evenementsOnglet()">Evenements</button>
+        <button [class] = "indexOnglet != 1?'rouge':'noir'" style = "color: white; border: none; font-size: 70%;font-family: textecool;" (click) = "villageOnglet()">Village</button>
+        <button [class] = "indexOnglet != 2?'rouge':'noir'" style = "color: white; border: none; font-size: 70%;font-family: textecool;" (click) = "historiqueEvenement()">Historique</button>
+    </div>
+</div>

@@ -1,0 +1,17 @@
+#container {
+    background-color: yellow;
+    height: 50% !important;
+    width: 50% !important;
+    position: relative;
+}
+
+#container::before{
+    opacity: 0.5;
+}
+
+#content {
+    background-color: yellowgreen;
+    top: 80%;
+    height: 20%;
+    position: absolute;
+}

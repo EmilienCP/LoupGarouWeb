@@ -1,0 +1,135 @@
+{
+  "name": "server",
+  "description": "",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "start": "npm i & tsc && cross-env NODE_ENV=development concurrently --kill-others \"tsc -w \" \"nodemon -L out/backend/app/www.js\" ",
+    "deployment": "npm i & tsc && cross-env NODE_ENV=deployment concurrently --kill-others \"tsc -w \" \"nodemon -L out/backend/app/www.js\" ",
+    "common_db_dev": "npm i & tsc && cross-env NODE_ENV=common_db_dev concurrently --kill-others \"tsc -w \" \"nodemon -L out/backend/app/www.js\" ",
+    "development_container": "npm i & tsc && cross-env NODE_ENV=development_container concurrently --kill-others \"tsc -w \" \"nodemon -L out/backend/app/www.js\" ",
+    "devmain_instance": "npm i & tsc && cross-env NODE_ENV=devmain_instance concurrently --kill-others \"tsc -w \" \"nodemon -L out/backend/app/www.js\" ",
+    "main_instance": "npm i & tsc && cross-env NODE_ENV=main_instance concurrently --kill-others \"tsc -w \" \"nodemon -L out/backend/app/www.js\" ",
+    "lint": "npx eslint \"./app/**/*.ts\"",
+    "fix-lint": "npx eslint \"./app/**/*.ts\" --fix",
+    "test": "tsc && node out/backend/app/testServer.js ",
+    "matrix": "tsc && node out/backend/app/matrix.js ",
+    "simulations": "tsc && node out/backend/app/simulations.js ",
+    "refaireErreur": "tsc && node out/backend/app/gestionnaire/gestionBugs/reproducteurErreur.js ",
+    "coverage": "nyc mocha app/**/*.spec.ts --reporter progress",
+    "tsc": "tsc",
+    "tsc:w": "tsc -w",
+    "clean": "rimraf out node_modules .nyc_output coverage",
+    "postinstall": "rimraf false",
+    "deploy": "tsc && py deployer.py"
+  },
+  "eslintIgnore": [
+    "*.spec.ts"
+  ],
+  "nyc": {
+    "check-coverage": true,
+    "per-file": true,
+    "include": [
+      "app/services/**/*.ts"
+    ],
+    "extension": [
+      ".ts"
+    ],
+    "exclude": [
+      "**/*.spec.ts"
+    ],
+    "require": [
+      "ts-node/register"
+    ],
+    "reporter": [
+      "html",
+      "text"
+    ],
+    "all": true,
+    "cache": true,
+    "sourceMap": true,
+    "instrument": true,
+    "branches": 0,
+    "lines": 0,
+    "functions": 0,
+    "statements": 0
+  },
+  "dependencies": {
+    "@types/bcrypt": "^3.0.0",
+    "@types/express-mysql-session": "^2.1.2",
+    "@types/express-session": "^1.17.3",
+    "axios": "^0.21.1",
+    "bcrypt": "^5.0.1",
+    "body-parser": "^1.20.2",
+    "cheerio": "^1.0.0-rc.5",
+    "config": "^3.3.4",
+    "cookie-parser": "latest",
+    "cors": "^2.8.5",
+    "cross-env": "^7.0.3",
+    "custom-env": "^2.0.1",
+    "debug": "latest",
+    "express-mysql-session": "^2.1.5",
+    "express-session": "^1.17.1",
+    "inversify": "latest",
+    "morgan": "latest",
+    "mysql": "^2.18.1",
+    "nodemon": "latest",
+    "npm": "^10.8.1",
+    "nvm": "0.0.4",
+    "openai": "^4.52.2",
+    "reflect-metadata": "latest",
+    "serve-favicon": "latest",
+    "server": "^1.0.27",
+    "socket.io": "^4.4.0",
+    "ts-node": "latest",
+    "util": "^0.12.3"
+  },
+  "___optionalDependencies": {
+    "bcrypt": "latest",
+    "@types/bcrypt": "latest",
+    "cloudinary": "latest"
+  },
+  "devDependencies": {
+    "@types/axios": "^0.14.0",
+    "@types/body-parser": "^1.19.5",
+    "@types/chai": "latest",
+    "@types/cheerio": "^0.22.27",
+    "@types/config": "0.0.38",
+    "@types/cookie-parser": "latest",
+    "@types/cors": "latest",
+    "@types/express": "^4.17.21",
+    "@types/express-serve-static-core": "latest",
+    "@types/mocha": "latest",
+    "@types/morgan": "latest",
+    "@types/mysql": "^2.15.17",
+    "@types/node": "^14.18.63",
+    "@types/node-uuid": "latest",
+    "@types/public-ip": "^3.1.0",
+    "@types/sinon": "latest",
+    "@typescript-eslint/eslint-plugin": "^4.15.1",
+    "@typescript-eslint/parser": "^4.15.1",
+    "chai": "latest",
+    "concurrently": "latest",
+    "dotenv": "^16.4.5",
+    "ejs": "^3.1.8",
+    "eslint": "^7.20.0",
+    "eslint-config-standard": "^16.0.2",
+    "eslint-config-strongloop": "^2.1.0",
+    "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-promise": "^4.3.1",
+    "express": "^4.19.2",
+    "mocha": "latest",
+    "node-fetch": "^2.6.7",
+    "nyc": "latest",
+    "random-seed": "^0.3.0",
+    "rimraf": "latest",
+    "sinon": "latest",
+    "typescript": "latest"
+  },
+  "nodemonConfig": {
+    "ignore": [
+      "*.json"
+    ]
+  }
+}

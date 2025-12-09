@@ -1,0 +1,11 @@
+<p class = "lgTexte lgAbsolu" style = "width: 100%; top: 20%; font-size: 100%;">{{texteQuestion}}</p>
+
+<button class= "lgTexte boutonRole lgAbsolu" [style] = "'font-size: 130%; background-color: transparent; border: none; height: 100%; overflow-y: hidden;overflow-x:hidden;width: 20%; top: 50%; left: 20%; height:20%; max-height:'+imagee.offsetWidth+'px'" (click) = "oui()">
+    <div #imagee class="lgAbsolu" [style] ="'background-repeat: unset;background-size: cover; background-image: url(./../../assets/wolf-print2.png); width: 100%;rotate: -40deg; height: 100%;left: 0%; top: 0%; max-height:'+imagee.offsetWidth+'px'"></div>
+    <div class="lgTexte lgAbsolu lgBlanc" style = "width: 100%; left: 0%; top: 40%; height:20%; font-family: texteBouton;">Oui</div>
+</button>
+
+<button class= "lgTexte boutonRole lgAbsolu" [style] = "'font-size: 130%; background-color: transparent; border: none; height: 100%; overflow-y: hidden;overflow-x:hidden;width: 20%; top: 50%; left: 60%; height:20%; max-height:'+imagee.offsetWidth+'px'" (click) = "non()">
+    <div #imagee class="lgAbsolu" [style] ="'background-repeat: unset;background-size: cover; background-image: url(./../../assets/wolf-print2.png); width: 100%;rotate: -40deg; height: 100%;left: 0%; top: 0%; max-height:'+imagee.offsetWidth+'px'"></div>
+    <div class="lgTexte lgAbsolu lgBlanc" style = "width: 100%; left: 0%; top: 40%; height:20%; font-family: texteBouton;">Non</div>
+</button>

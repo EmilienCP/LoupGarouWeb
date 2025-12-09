@@ -1,0 +1,41 @@
+<div style = "background-color: white;background-image: url('../../assets/moon.gif'); ">
+    <button *ngIf = "!isDescriptionRole"  class = "lgBouton lgAbsolu" style = "top: 2%;left: 2%;width:20%; font-size: 50%;" (click) = "retour()">Retour</button>
+    <p *ngIf = "!isDescriptionRole"  class = "lgTexte lgAbsolu lgBlanc" style = "left: 30%;width:40%; font-size: 60%;" [style.top] = "idAppareil==0?'1%':'5%'">Numero de partie : {{idJeu}}</p>
+    <div *ngIf = "!isDescriptionRole"  #parent @parent class = "lgAbsolu" style = "width:100%; overflow-x: hidden;" [style.top] = "idAppareil==0?'27%':'15%'" [style.height] = "idAppareil==0?'75%':'95%'" (mousedown)="mouseDown($event)" (touchstart)="mouseDown($event)" (mousemove) = "mouseMove($event)" (touchmove) = "mouseMove($event)" (mouseup) = "mouseUp()" (touchend) = "mouseUp()">
+        <div [@appareilsInfo] = "{value: entrainDeDrag?'deplacement':indexOnglet, params: { marginFinal: marginFinal-indexOnglet*parent.offsetWidth}}" class = "lgAbsolu" style = "width:100%; height: 70%;overflow-y: auto; overflow-x: hidden;">
+            <app-creation-appareils [idMeneurDeJeu] = "idMeneurDeJeu" [infoAppareils] = "infoAppareils" [idAppareil] = "idAppareil" (majInfosJeu) = "majInfosJeu()"></app-creation-appareils>
+        </div>
+        
+        <div [@partieInfo] = "{value: entrainDeDrag?'deplacement':indexOnglet, params: { marginFinal: marginFinal-(indexOnglet-1)*parent.offsetWidth}}" class = "lgAbsolu" style = "width:100%; height: 70%;overflow-y: auto; overflow-x: hidden;">
+            <app-creation-info-partie [nomsPersonnages] = "nomsPersonnages" [idAppareil] = "idAppareil" [preferencesPersonnages] = "preferencesPersonnages"
+                 [modeVideo] = "modeVideo" [modePatateChaude] = "modePatateChaude" [modeVillageoisVillageois] = "modeVillageoisVillageois" [backup] = "backup" [histoire] = "histoire" [nbJoueurs] = "nbJoueurs" [nbLoups] = "nbLoups" [nbVillageois] = "nbVillageois" (description) = "descriptionRole($event)"></app-creation-info-partie>
+        </div>
+    
+        <div [@pointageInfo] = "{value: entrainDeDrag?'deplacement':indexOnglet, params: { marginFinal: marginFinal-(indexOnglet-2)*parent.offsetWidth}}" class = "lgAbsolu" style = "width:100%; height: 70%;overflow-y: auto; overflow-x: hidden;">
+            <app-leaderboard [menu] = "true" [infos] = "infosPointsDeVictoire" [idAppareil] = "idAppareil"></app-leaderboard>
+        </div>
+    </div>
+    
+    <div *ngIf = "!isDescriptionRole"  class= "lgAbsolu" style = "display: grid; grid-template-columns: auto auto auto;top:83%;width: 100%;height: 7%;">
+        <button [class] = "(indexOnglet != 0?'rouge':'noir')" style = "color: white; border: none;font-size: 70%;font-family: textecool;" (click) = "menuAppareil()">Appareils</button>
+        <button [class] = "(indexOnglet != 1?'rouge':'noir')" style = "color: white; border: none;font-size: 70%;font-family: textecool;" (click) = "menuInfosPartie()">Infos Partie</button>
+        <button [class] = "(indexOnglet != 2?'rouge':'noir')" style = "color: white; border: none; font-size: 70%;font-family: textecool;" (click) = "menuLeaderBoard()">Pointage</button>
+    </div>
+    <button *ngIf = "!isDescriptionRole" class = "lgBouton lgAbsolu" [style] = "'top: 91%;left: 30%;width:40%;height:6%;font-size:70%;'+(idAppareil == 0?'':'background-color:gray;')" (click) = "commencer()">Commencer</button>
+    <div *ngIf = "decompte" class = "lgAbsolu lgTexte" style = "width: 100%; height: 100%; background-color: black; z-index: 3; opacity: 0.6;"></div>
+    <p *ngIf = "decompte" class = "lgAbsolu lgTexte" style = "top :25%; height: 10%; width: 100%; text-align: center; font-size: 150%; color : #AAFFAA; z-index: 5;">La partie commence</p>
+    <p [@texte] = "compteur" *ngIf = "decompte" class = "lgAbsolu lgTexte" style = "top :40%; height: 10%; width: 100%; text-align: center; font-size: 200%; opacity: 0; color : #AAFFAA; z-index: 5;">{{compteur}}</p>
+    
+    <div *ngIf = "!isDescriptionRole && (communicationService.isMeneurDeJeu || idAppareil==0)" class = "lgAbsolu lgTexte" style = "font-size: 50%; top: 4%; left:20%; text-align: center; width: 20%;">Wifi</div>
+    <div *ngIf = "!isDescriptionRole && (communicationService.isMeneurDeJeu || idAppareil==0)"  class= "lgAbsolu" style = "text-align: center; width: 20%; height: 20%; overflow-y: hidden;top: 8%; left:20%">
+        <div #imagee [style] ="'background-repeat: unset;background-size: cover; background-image: url(./../../assets/wifi.png); width: 100%; height: 100%; max-height:'+imagee.offsetWidth+'px'"></div>
+    </div>
+    
+    <div *ngIf = "!isDescriptionRole && (communicationService.isMeneurDeJeu || idAppareil==0)" class = "lgAbsolu lgTexte" style = "font-size: 50%; top: 4%; left:60%; text-align: center; width: 20%;">Site Web</div>
+    <div *ngIf = "!isDescriptionRole && (communicationService.isMeneurDeJeu || idAppareil==0)"  class= "lgAbsolu" style = "text-align: center; width: 20%; height: 20%; overflow: hidden;top: 8%; left:60%">
+        <div #imagee [style.background-image]="'url('+qrcodeurl+')'" [style] ="'background-repeat: unset;background-size: cover; width: 100%; height: 100%; max-height:'+imagee.offsetWidth+'px'"></div>
+        <!-- <qrcode [qrdata]="'Your data string'" [width]="256" [errorCorrectionLevel]="'M'"></qrcode> -->
+        
+    </div>
+    <app-description-role *ngIf = "isDescriptionRole" (fermer) = "retourDescriptionRole()" [role]="roleChoisiPourDescription" [modeVillageoisVillageois] = "!roleChoisiPourDescription"></app-description-role>
+</div>

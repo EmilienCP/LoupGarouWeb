@@ -1,0 +1,77 @@
+@import "~@angular/material/prebuilt-themes/indigo-pink.css";
+
+/* You can add global styles to this file, and also import other style files */
+html, body{
+    width: 99%;
+    height: 99%;
+    overflow: hidden !important;
+    background-color: black;
+    color: white;
+    font-family: texteCool;
+    overscroll-behavior-x: none !important;
+}
+
+.lgBouton{
+    background-color: red;
+    color: white;
+    border-radius: 30px;
+    font-family: texteBouton;
+}
+
+
+.lgBouton:hover, .lgBouton:active{
+    background-color: #AA0000;
+    color: white;
+    border-radius: 30px;
+    font-family: texteBouton;
+}
+
+.lgTexte{
+    text-align: center;
+}
+
+.lgAbsolu{
+    position: absolute;
+}
+
+.lgBlanc{
+    color: white;
+}
+
+.lgNoir{  
+    color: white;
+}
+
+
+::-webkit-scrollbar {
+    width: 5px;
+}
+
+::-webkit-scrollbar-track {
+    box-shadow: inset 0 10px 10px grey; 
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: red; 
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #b30000; 
+}
+
+@font-face {
+    font-family: attache;
+    src: url('/assets/BrittanicLondon.ttf') format("opentype");
+}
+
+@font-face {
+    font-family: texteCool;
+    src: url('/assets/LTBeverage.otf') format("opentype");
+}
+
+@font-face {
+    font-family: texteBouton;
+    src: url('/assets/Ode-Erik.ttf') format("opentype");
+}

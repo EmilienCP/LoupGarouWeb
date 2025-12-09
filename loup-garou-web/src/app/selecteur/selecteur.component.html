@@ -1,0 +1,6 @@
+<p class= "lgTexte lgAbsolu" style = "width: 100%; top: 10%; font-size: 90%;">{{texte}}</p>
+<p *ngIf = "nbVotes > 0" class= "lgTexte lgAbsolu" style = "width: 100%; top: 20%; font-size: 70%;">Nombre de votes restants: {{nbVotes}}</p>
+<p class= "lgTexte lgAbsolu" style = "width: 100%; top: 33%; font-size: 70%;">{{messageAvertissement}}</p>
+<app-selecteur-village [evenement] = "evenement" [nbVotes] = "nbVotes" [detailsVillage] = "detailsVillage" [messageAvertissement] = "messageAvertissement" [raisonsPasVoter] = "raisonsPasVoter" [infoVillageExtensionLoups] = "infoVillageExtensionLoups"  (selection) = "selectionner($event)" ></app-selecteur-village>
+<button *ngIf = "idJoueurSelectionne !== -1" [class] = "pretAPasser?'lgBouton lgAbsolu peutChoisir':'lgBouton lgAbsolu peutPasChoisir'" style = "width: 20%; left: 40%; top: 87% ;height: 5%; font-size: 60%;" (click) = "choisir()"> Choisir {{tempsAvantDePasser>0?'('+tempsAvantDePasser+')':''}}</button>
+<button *ngIf = "peutPasser" [class] = "pretAPasser?'lgBouton lgAbsolu peutChoisir':'lgBouton lgAbsolu peutPasChoisir'" style = "width: 30%; left: 68%; top: 2%; height: 5%; font-size:55%;" (click) = "passer()">Passer cette action {{tempsAvantDePasser>0?'('+tempsAvantDePasser+')':''}}</button>

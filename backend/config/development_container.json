@@ -1,0 +1,10 @@
+{
+    "app": {
+        "port": 3306,
+        "ip":"database",
+        "production": false,
+        // change the client_host value to the server host's private ip
+        "client_host": "192.168.0.0",
+        "client_port": "8080"
+    }
+}

@@ -1,0 +1,9 @@
+<div *ngIf = "!partie_commencee" style = "height: 100%;">
+    <p class = "lgTexte" [style] = "'font-size:'+getFont()+'px;'">Loups-Garous de Thiercelieux</p>
+    <div [style] = "'margin-left:'+getMarginLeft()+'px;max-width:'+innerHeight/1.12+'px;height:100%'" >
+        <button class = "lgBouton" [style] = "'text-align: center; width: 30%; margin-left:35%; height: 10%; font-size:'+getFont()+'px;border-radius:'+getBorderRadius()+'px;'" (click) = "jouer()">Jouer</button>
+    </div>
+</div>
+<div  style="height: 100%;width: 100%;" *ngIf = "partie_commencee">
+    <app-menu></app-menu>
+</div>

@@ -1,0 +1,46 @@
+<p class = "lgTexte lgBlanc" style = "font-size: 70%;">Informations de la partie:</p>
+<div style = "display: grid; grid-template-columns: 70% 30%; width: 60%; margin-left: 20%;">
+    <div class = "lgBlanc lgTexte" style = "font-size: 45%; margin-top: 3%;">Nombre de Joueurs : </div>
+    <label class = "lgBlanc lgTexte" *ngIf = "idAppareil == 0" style = "border: 0; font-size: 45%; margin-top: 5%; height: 20px;"><input type = "number" [value] = "nbJoueurs" (blur) = "setNbJoueurs($event)"></label>
+    <div class = "lgBlanc lgTexte" *ngIf = "idAppareil != 0" style = "font-size: 45%;  margin-top: 5%;">{{nbJoueurs}}</div>
+    <div class = "lgBlanc lgTexte" style = "font-size: 45%; margin-top: 3%;">Nombre de Loup-garous : </div>
+    <label class = "lgBlanc lgTexte" *ngIf = "idAppareil == 0" style = "border: 0; font-size: 45%; margin-top: 5%; height: 20px;"><input type = "number" [value] = "nbLoups" (blur) = "setNbLoups($event)"></label>
+    <div class = "lgBlanc lgTexte" *ngIf = "idAppareil != 0" style = "font-size: 45%; margin-top: 5%;">{{nbLoups}}</div>
+    <div class = "lgBlanc lgTexte" style = "font-size: 45%; margin-top: 3%;">Nombre de Villageois : </div>
+    <label class = "lgBlanc lgTexte" *ngIf = "idAppareil == 0" style = "border: 0; font-size: 45%; margin-top: 5%; height: 20px;"><input type = "number" [value] = "nbVillageois" (blur) = "setNbVillageois($event)"></label>
+    <div class = "lgBlanc lgTexte" *ngIf = "idAppareil != 0" style = "font-size: 45%; margin-top: 5%;">{{nbVillageois}}</div>
+</div>
+<div style = "width: 60%; margin-left: 20%;">
+    <div style = "display: grid; grid-template-columns: 70% 30%;">
+        <div class = "lgBlanc lgTexte" style = "font-size: 45%; margin-top: 5%;">Mode Vidéo</div>
+        <mat-slide-toggle style = "margin-top: 5%;" (change) = "switchVideo()"  [(ngModel)]="modeVideo" [disabled] = "idAppareil !== 0"></mat-slide-toggle>
+    </div>
+    <div style = "display: grid; grid-template-columns: 70% 30%;">
+        <div class = "lgBlanc lgTexte" style = "font-size: 45%; margin-top: 5%;">Mode Patate Chaude</div>
+        <mat-slide-toggle style = "margin-top: 5%;" (change) = "switchPatateChaude()"  [(ngModel)]="modePatateChaude" [disabled] = "idAppareil !== 0"></mat-slide-toggle>
+    </div>
+    <div style = "display: grid; grid-template-columns: 70% 30%;">
+        <div class = "lgBlanc lgTexte" style = "font-size: 45%; margin-top: 5%;">Mode Extension Village</div>
+        <mat-slide-toggle style = "margin-top: 5%;" (change) = "switchExtensionVillage()"  [(ngModel)]="modeExtensionVillage" [disabled] = "idAppareil !== 0"></mat-slide-toggle>
+    </div>
+    <div style = "display: grid; grid-template-columns: 70% 30%;">
+        <div class = "lgBlanc lgTexte" style = "font-size: 45%; margin-top: 5%;">Backup</div>
+        <mat-slide-toggle style = "margin-top: 5%;" (change) = "switchBackup()"  [(ngModel)]="backup" [disabled] = "idAppareil !== 0"></mat-slide-toggle>
+    </div>
+    <div style = "display: grid; grid-template-columns: 43% 12% 15% 30%; height: 100%; min-height: 50px;">
+        <button class = "lgBlanc lgTexte boutonRole" style = "font-size: 45%; background-color: transparent; border: none;" (click) = "descriptionRole(undefined)">Mode Villageois-Villageois</button>
+        <button class = "boutonRole" style = "background-color: transparent; border: none;" (click) = "descriptionRole(undefined)">
+            <img src =  "'../../assets/villageois.png" style = "width: 120%; margin-top: 30%;">
+        </button>
+        <div></div>
+        <mat-slide-toggle style = "height: 100%;" (change) = "switchVillageoisVillageois()"  [(ngModel)]="modeVillageoisVillageois" [disabled] = "idAppareil !== 0"></mat-slide-toggle>
+    </div>
+    <div *ngFor = "let pref of nomsPersonnages; let i = index" style = "display: grid; grid-template-columns: 43% 12% 15% 30%; height: 100%;min-height: 50px;">
+        <button class = "lgBlanc lgTexte boutonRole" style = "font-size: 45%; margin-top: 5%; background-color: transparent; border: none;" (click) = "descriptionRole(preferenceEnRole(i))">{{getNomRole(i)}}</button>
+        <button class = "boutonRole" style = "background-color: transparent; border: none;" (click) = "descriptionRole(preferenceEnRole(i))">
+            <img [src] =  "'../../assets/'+imageRole(preferenceEnRole(i))" style = "width: 120%; margin-top: 30%;">
+        </button>
+        <div></div>
+        <mat-slide-toggle style = "height: 100%;" (change) = "switchPerso(i)"  [(ngModel)]="preferencesPersonnages[i]" [disabled] = "idAppareil !== 0"></mat-slide-toggle>
+    </div>
+</div>

@@ -1,0 +1,9 @@
+<div @texte *ngIf = "!isInfoAppareil" class = "lgAbsolu lgTexte" style = "height: 100%; width: 100%; visibility: hidden;font-size: 100%;">
+    <div *ngFor = "let listeTexte of matriceTexte; " style = "margin-bottom: 45%;">
+        <p *ngFor = "let texte of listeTexte;let i = index" [style] = "'margin-bottom: 5%;font-size:'+(i==0?'150':'90')+'%;'">{{texte}}</p>
+    </div>
+</div>
+
+<button *ngIf = "!isInfoAppareil && !communicationService.isMeneurDeJeu" class = "lgAbsolu lgBouton" style = "width: 20%; left: 78%; top: 90%; height: 5%;font-size: 60%;" (click) = "passer()" >Passer</button>
+
+<app-creation-appareils *ngIf = "isInfoAppareil" (retourAppareil) = "switchInfoAppareil();"></app-creation-appareils>

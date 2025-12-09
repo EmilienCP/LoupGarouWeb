@@ -1,0 +1,21 @@
+<div *ngIf = "roleChoisi == undefined" class= "lgTexte lgAbsolu" style = "text-align: center; width: 100%; height: 100%;">
+    <p style = "width: 100%; font-size: 70%;">Informations du village</p>
+    <div style = "display: grid; grid-template-columns: 50% 50%;">
+        <div style = "width: 100%;">
+            <p style = "width: 100%; font-size: 70%;">Personnages Restants</p>
+            <div style = "height: 100%; width:100%; overflow-y: auto;">
+                <p class = "boutonhover" *ngFor = "let role of rolesVivants; let i= index;" style = "width: 100%; font-size: 70%; border: none; margin: 0; padding: 0;" (click) = "voirRoleVivant(i)">{{role}}</p>
+            </div>
+        </div>
+        <div style = "width: 100%;">
+            <p style = "width: 100%; font-size: 70%;">Personnages Éliminés</p>
+            <div style = "height: 100%; width: 100%; overflow-y: auto;">
+                <p class = "boutonhover" *ngFor = "let role of rolesMorts;  let i= index;" style = "width: 100%; font-size: 70%; border: none;margin: 0; padding: 0;" (click) = "voirRoleMort(i)">{{role}}</p>
+            </div>
+        </div>
+    </div>
+</div>
+<app-description-role *ngIf = "roleChoisi != undefined" (fermer) = "fermerDescriptionRole()" [role] = "roleChoisi"></app-description-role>
+<button *ngIf = "roleChoisi == undefined" class = "lgAbsolu lgBouton" style = "top: 2%; left: 2%;"(click) = "retour()">Retour</button>
+
+
