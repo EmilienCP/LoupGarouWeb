@@ -1,6 +1,5 @@
 import { injectable } from "inversify";
 import { Toune } from "../../../common/toune";
-import * as config from 'config';
 
 @injectable()
 export class DJAIService {

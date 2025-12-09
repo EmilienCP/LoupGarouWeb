@@ -203,6 +203,9 @@ export class CreationComponent implements OnInit {
   }
 
   commencer(){
+    if(this.backup){
+      this.communicationService.isMeneurDeJeu = true;
+    }
     if(this.idAppareil == 0){
       this.socket.emit("commencerPartie");
     }
