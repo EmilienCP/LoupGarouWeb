@@ -1,7 +1,7 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Socket } from 'socket.io-client';
-import { Equipe, Joueur } from '../../../../common/Joueur';
+import { Equipe, Joueur, Role } from '../../../../common/Joueur';
 import { EvenementDeGroupe, EvenementIndividuel, Victoire } from '../../../../common/evenements';
 import { CommunicationService } from '../services/communication.service';
 import * as utils from '../services/fontionsUtiles';
@@ -264,7 +264,13 @@ export class InformationsComponent implements OnInit {
         break;
       }
       case EvenementIndividuel.INFO_PATATE_CHAUDE:{
-        evenementTexte.push("Vous avez reçu la patate chaude. Votre pouvoir ne fonctionnera pas cette nuit.");
+        this.communicationService.getInfoJoueurPresent().subscribe((joueur: Joueur)=>{
+          if(joueur.role === Role.CORBEAU){
+            evenementTexte.push("Vous avez reçu la patate chaude. Votre pouvoir ne fonctionnera pas cette nuit. Votre cible sera choisie au hasard.");
+          } else {
+            evenementTexte.push("Vous avez reçu la patate chaude. Votre pouvoir ne fonctionnera pas cette nuit.");
+          }
+        });
         break;
       }
       case EvenementIndividuel.INFECT_PERE_RECUPERER_POUVOIR:{
