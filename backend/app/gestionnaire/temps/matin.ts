@@ -33,9 +33,11 @@ export class Matin extends GestionnaireDeTemps{
                 let ours: MontreurOurs = this.partie.getPersonnages(Role.MONTREUR_OURS)[0] as MontreurOurs;
                 if(ours != undefined) {
                       if(ours.oursGrogne()) {
+                        if(this.partie.seed){console.log("lours grogne")}
                         this.partie.historiqueEvenements.push(["L'ours a grogné cette nuit!"]);
                       }
                       else {
+                        if(this.partie.seed){console.log("lours ne grogne pas")}
                         this.partie.historiqueEvenements.push(["L'ours n'a pas grogné cette nuit."]);
                       }
                     this.partie.preparerEvenementDeGroupe(EvenementDeGroupe.OURS_GROGNE, EvenementDeGroupe.OURS_GROGNE);
