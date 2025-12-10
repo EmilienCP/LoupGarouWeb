@@ -570,7 +570,8 @@ export class Partie {
         
         //loups A FAIRE
         if(!matin && this.joueursVivants.length == 2){
-            if(this.joueursVivants.some((j)=>j.role == Role.CHASSEUR)){
+            //le chasseur ne doit pas être infecté
+            if(this.joueursVivants.some((j)=>j.role == Role.CHASSEUR && j.equipeApparente == Equipe.VILLAGEOIS)){
                 if(this.seed){console.log("Personne ne gagne")};
                 this.victoire = Victoire.PERSONNE;
                 return true
