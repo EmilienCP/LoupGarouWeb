@@ -569,6 +569,21 @@ export class Partie {
         }
         
         //loups A FAIRE
+        if(!matin && this.joueursVivants.length == 2){
+            if(this.joueursVivants.some((j)=>j.role == Role.CHASSEUR)){
+                if(this.seed){console.log("Personne ne gagne")};
+                this.victoire = Victoire.PERSONNE;
+                return true
+            }
+            if(this.joueursVivants.some((j)=>j.role == Role.LOUP_BLANC)){
+                if(this.seed){console.log("Le loup garou blanc gagne")};
+                this.victoire = Victoire.LOUP_BLANC;
+                return true
+            }
+            if(this.seed){console.log("Les loups gagnent")};
+            this.victoire = Victoire.LOUP_GAROU;
+            return true;
+        }
 
         return false;
     }

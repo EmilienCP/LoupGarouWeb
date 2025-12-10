@@ -1,4 +1,5 @@
 import { EvenementDeGroupe, EvenementIndividuel } from "../../../../common/evenements";
+import { Equipe } from "../../../../common/Joueur";
 import { Partie } from "../partie";
 import { LoupBlanc } from "../Personnages/loupBlanc";
 import { Villageois } from "../Personnages/villageois";
@@ -19,6 +20,16 @@ export class IALoupBlanc extends IA{
             //doit enlever lamoureux pour le calcul, pcq l'amoureux va aider a tuer les autres
             if(loupsPotentiels.length >= this.partie.joueursVivants.length/3){
                 this.villageois.choisirJoueur(this.getMaxOuMinCote(false, loupsPotentiels), evenement, false)
+            }
+        }
+    }
+
+    mettreAJourNouveauVillage():void{
+        super.mettreAJourNouveauVillage();
+        if(this.partie.joueursVivants.length <= 4 && !this.villageois.amoureux){
+            const loupPasLui: Villageois | undefined = this.partie.joueursVivants.find((j)=>j.equipeApparente == Equipe.LOUPS&&j!=this.villageois);
+            if(loupPasLui){
+                this.ajouterJoueursPasMemeEquipeAssuree(loupPasLui);
             }
         }
     }
