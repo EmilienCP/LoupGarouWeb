@@ -120,6 +120,7 @@ export class VerificationMorts extends GestionnaireDeTemps{
                     nouveauVillageois = this.servanteDevoueeVivante!.copier(nouveauVillageois);
                     nouveauVillageois.estCharmer = false;
                     if(cible.estInfecte){
+                        nouveauVillageois.estInfecte = true;
                         nouveauVillageois.unshiftEvenementIndividuelSansRaisons(EvenementIndividuel.INFO_INFECTE);
                     }
                     nouveauVillageois.unshiftEvenementIndividuelSansRaisons(EvenementIndividuel.MONTRER_PERSONNAGE);
