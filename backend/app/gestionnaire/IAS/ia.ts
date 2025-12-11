@@ -160,6 +160,11 @@ export class IA {
                 if(joueur.equipeApparente == Equipe.LOUPS && !this.loupsAnciens.includes(joueur)){
                     if(!this.loupsNouveaux.includes(joueur)){
                         this.loupsNouveaux.push(joueur);
+                        if(this.villageois.equipeReelle == Equipe.LOUPS){
+                            this.augmenterDiminuerCote(joueur, 2, true)
+                        } else{
+                            this.augmenterDiminuerCote(joueur, 1, true)
+                        }
                     }
                 }
                 //Pour l'infecter seulement
@@ -698,8 +703,11 @@ export class IA {
 
     afficherCotes(){
         console.log("cotes de "+this.villageois.nom);
+        const cotes: number[] = this.getValeursCotes(this.partie.joueursVivants.filter((joueur: Villageois)=>{return this.cotes.has(joueur)}));
         this.cotes.forEach((valeur: number[], key: Villageois)=>{
-            console.log(key.nom, valeur);
+            let index: number = this.partie.joueursVivants.filter((joueur: Villageois)=>{return this.cotes.has(joueur)}).indexOf(key);
+            
+            console.log(key.nom, valeur,(index == -1? "aucune cote finale":cotes[index]));
         })
     }
 
