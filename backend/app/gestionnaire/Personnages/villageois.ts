@@ -211,6 +211,9 @@ export class Villageois{
     }
 
     institutricePunir(cible: Villageois): void{
+        if(this.partie.seed){
+            console.log("L'institutrice "+this.nom+ " punis "+ cible.nom);
+        }
         this.joueurPunit = cible;
     }
 
@@ -246,6 +249,9 @@ export class Villageois{
                     this.trancherCapitaine(cible)
                     break;
                 case EvenementIndividuel.JOUER_PATATE_CHAUDE:
+                    if(this.partie.seed){
+                        console.log(this.nom+ " passe la patate chaude a "+ cible.nom);
+                    }
                     this.switchPatateChaude(cible);
                     break;
                 case EvenementIndividuel.JOUER_INSTITUTRICE:

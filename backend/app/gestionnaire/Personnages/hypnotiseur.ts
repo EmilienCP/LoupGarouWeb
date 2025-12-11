@@ -44,6 +44,11 @@ export class Hypnotiseur extends Villageois{
         }
     }
 
+    actionNuit(): void {
+        this.joueurChoisi = undefined
+        super.actionNuit();
+    }
+
     actionFinNuit(): void {
         super.actionFinNuit();
         //sil a la patate chaude pas de joueur choisi
