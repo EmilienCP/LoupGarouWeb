@@ -26,4 +26,13 @@ export class Corbeau extends Villageois{
             this.joueurVu = cible;
         }
     }
+
+    actionNuit(): void {
+        if(this.patateChaude){
+            const raisons: RaisonPasVoter[] = this.getRaisonsPasVoter([RaisonPasVoter.SOI_MEME]);
+            const joueursPeutChoisir: Villageois[] = this.partie.joueursVivants.filter((joueur: Villageois, index: number)=> raisons[index]==RaisonPasVoter.AUCUN);
+            this.joueurVu = joueursPeutChoisir[Math.floor(this.partie.random(joueursPeutChoisir.length))];
+        }
+        super.actionNuit();
+    }
 }
