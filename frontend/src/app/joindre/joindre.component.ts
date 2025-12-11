@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Socket } from 'socket.io-client';
 import { EvenementIndividuel } from '../../../../common/evenements';
-import {EtatPartie, JoindrePartieInfo} from "../../../../common/joindrePartieInfo"
+import {EtatPartie, JoindrePartieInfo} from '../../../../common/joindrePartieInfo';
 import { Joueur } from '../../../../common/Joueur';
 import { CommunicationService } from '../services/communication.service';
 import { InfoPartie } from '../../../../common/infoPartie';

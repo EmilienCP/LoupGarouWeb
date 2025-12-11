@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 // import * as Tone from 'tone';
-// import { Calcul, Filtre, Toune, Transition } from '../../../../common/toune';
+// import { Calcul, Filtre, Toune, Transition } from '../../../common/toune';
 // import { CommunicationService } from './communication.service';
 // import { Transitions } from './transitions/transition';
 // import { Fondu } from './transitions/fondu';

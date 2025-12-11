@@ -1,4 +1,4 @@
-import { Toune } from "../../../../../common/toune";
+import { Toune } from '../../../../../common/toune';
 
 export abstract class ASortieAudio{
     audioContext: AudioContext;

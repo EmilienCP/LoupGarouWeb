@@ -55,7 +55,7 @@ export class Jour extends GestionnaireDeTemps{
                 return true;
             case "InstitutriceInfo":
                 if(this.institutrice && this.institutrice.joueurPunit){
-                    this.partie.historiqueEvenements.push(["L'institutrice, soit "+ this.institutrice.nom+" a punit "+this.institutrice.joueurPunit.nom])
+                    this.partie.historiqueEvenements.push(["L'institutrice, soit "+ this.institutrice.nom+" a puni "+this.institutrice.joueurPunit.nom])
                     this.partie.preparerEvenementDeGroupe(EvenementDeGroupe.INFO_INSTITUTRICE, EvenementDeGroupe.INFO_INSTITUTRICE);
                     return false
                 }

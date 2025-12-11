@@ -175,7 +175,7 @@ export class Partie {
     }
 
     async initialiserBackup(){
-        let backup = fs.readFileSync("app\\backups\\backup.json", "utf-8")
+        let backup = fs.readFileSync("app\\backups\\backupStatique.json", "utf-8")
         this.recommencer();
         let historique: HistoriquePartie = JSON.parse(backup) as HistoriquePartie;
 
@@ -1002,7 +1002,7 @@ export class Partie {
         this.historiquePartie.actions.push(params);
         let hist: string = JSON.stringify(this.historiquePartie);
         hist.replace(",",",\n")
-        fs.writeFileSync(fs.Dir.name+"\\..\\app\\backups\\backup1.json", JSON.stringify(this.historiquePartie));
+        fs.writeFileSync(fs.Dir.name+"\\..\\app\\backups\\backupDynamique.json", JSON.stringify(this.historiquePartie));
     }
 
     getHistorique(): HistoriquePartie{

@@ -1,4 +1,4 @@
-import { Toune, Transition } from "../../../../../common/toune";
+import { Toune, Transition } from '../../../../../common/toune';
 import { ASortieAudio } from "../sortieAudio/AsortieAudio";
 
 export abstract class Transitions{

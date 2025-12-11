@@ -1,4 +1,4 @@
-import { Toune } from "../../../../../common/toune";
+import { Toune } from '../../../../../common/toune';
 import { ASortieAudio } from "../sortieAudio/AsortieAudio";
 import { Transitions } from "./transition";
 

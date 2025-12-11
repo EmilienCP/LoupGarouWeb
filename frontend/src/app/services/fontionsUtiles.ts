@@ -1,4 +1,4 @@
-import { Role, RolePublic } from "../../../../common/Joueur"
+import { Role, RolePublic } from '../../../../common/Joueur';
 
 export function convertirRoleTexte(role: Role, roleIndividuel: boolean = false): string {
     switch(role){
