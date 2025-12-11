@@ -620,11 +620,11 @@ export class IA {
 
     protected trouverRaisonParDefaut(cible: Villageois): RaisonAccusation{
         if(this.partie.random(this.partie.joueursVivants.length) == 0){
-            if(this.partie.getPersonnages((Role.MONTREUR_OURS)).filter((montreur: MontreurOurs)=>{
+            if((this.partie.getPersonnages((Role.MONTREUR_OURS)).filter((montreur: MontreurOurs)=>{
                 return montreur.oursGrogne();
-            }).length >0 && (this.partie.joueurVoisin(true, this.villageois)==this.partie.joueursVivants.indexOf(cible) ||
-                this.partie.joueurVoisin(false, this.villageois)==this.partie.joueursVivants.indexOf(cible))&&
-                this.rolePretendEtre == undefined || this.rolePretendEtre == Role.MONTREUR_OURS){
+            }).length >0) && ((this.partie.joueurVoisin(true, this.villageois)==this.partie.joueursVivants.indexOf(cible) ||
+                this.partie.joueurVoisin(false, this.villageois)==this.partie.joueursVivants.indexOf(cible)))&&
+                (this.rolePretendEtre == undefined || this.rolePretendEtre == Role.MONTREUR_OURS)){
                 this.rolePretendEtre = Role.MONTREUR_OURS;
                 return RaisonAccusation.MONTREUR_OURS;
             }else{
