@@ -16,7 +16,7 @@ export class IAJoueurDeFlute extends IA{
             let joueursPossibles: Villageois[] = this.joueursAucuneRaisonPasVoter(true);
             if(joueursPossibles.length>0){
                 if(joueursPossibles.some((j)=>j.role == Role.VILLAGEOIS_VILLAGEOIS)){
-                    this.villageois.choisirJoueur(joueursPossibles.find((j)=>j.role = Role.VILLAGEOIS_VILLAGEOIS)!, evenement, true);
+                    this.villageois.choisirJoueur(joueursPossibles.find((j)=>j.role == Role.VILLAGEOIS_VILLAGEOIS)!, evenement, true);
                 } else {
                     this.villageois.choisirJoueur(this.getVillageoisAuHasard(joueursPossibles), evenement, true);
                 }
