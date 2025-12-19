@@ -128,6 +128,7 @@ export class PartiesService {
             modeVideo: partie.modeVideo,
             modePatateChaude: partie.modePatateChaude,
             modeVillageoisVillageois: partie.modeVillageoisVillageois,
+            modeExtensionVillage: partie.modeExtensionVillage,
             backup: partie.activerBackup,
             idJeu: this.parties.indexOf(partie),
             idAppareil: partie.appareils.indexOf(this.getAppareil(idSocket)),

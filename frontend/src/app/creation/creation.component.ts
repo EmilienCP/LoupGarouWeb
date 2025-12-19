@@ -77,6 +77,7 @@ export class CreationComponent implements OnInit {
   socket: Socket;
   modeVideo: boolean = false;
   modePatateChaude: boolean = false;
+  modeExtensionVillage: boolean = false;
   modeVillageoisVillageois: boolean = false;
   backup: boolean = false;
   histoire: boolean = false;
@@ -171,6 +172,7 @@ export class CreationComponent implements OnInit {
         this.modePatateChaude = info.modePatateChaude;
         this.backup = info.backup;
         this.modeVillageoisVillageois = info.modeVillageoisVillageois;
+        this.modeExtensionVillage = info.modeExtensionVillage;
         if(info.idAppareil == 0 && this.idAppareil == -1){
           this.audioService.jouerCreation();
         }

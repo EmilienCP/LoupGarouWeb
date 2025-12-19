@@ -1,7 +1,7 @@
 import { Role } from "./Joueur";
 import { InfoPointsDeVictoire } from "./infoPointsDeVictoire";
 
-export interface InfoPartie{
+export interface InfoPartie {
     noms: string[][],
     nbJoueurs: number,
     nbLoups: number,
@@ -11,6 +11,7 @@ export interface InfoPartie{
     modeVideo: boolean;
     modePatateChaude: boolean;
     modeVillageoisVillageois: boolean;
+    modeExtensionVillage: boolean;
     backup: boolean;
     idAppareil: number;
     idJeu: number;
