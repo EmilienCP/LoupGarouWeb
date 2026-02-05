@@ -37,6 +37,9 @@ export class Sorciere extends Villageois{
     choisirJoueur(cible: Villageois, evenement: EvenementIndividuel | EvenementDeGroupe, passerSiUndefined: boolean, raisonAccusation: RaisonAccusation = RaisonAccusation.AUCUN): void {
         super.choisirJoueur(cible, evenement, passerSiUndefined, raisonAccusation);
         if(evenement == EvenementIndividuel.JOUER_SORCIERE_PROTEGER) {
+            if(this.partie.seed){
+                console.log("la soricere "+ this.nom+" decide de proteger "+ cible.nom)
+            }
             this.joueurProtege = cible;
         } else if(evenement == EvenementIndividuel.JOUER_SORCIERE_TUER) {
             this.sortMortelDisponible = false;

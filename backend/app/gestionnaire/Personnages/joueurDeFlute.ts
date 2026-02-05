@@ -24,6 +24,9 @@ export class JoueurDeFlute extends Villageois{
     choisirJoueur(cible: Villageois, evenement: EvenementIndividuel | EvenementDeGroupe, passerSiUndefined: boolean, raisonAccusation: RaisonAccusation = RaisonAccusation.AUCUN): void {
         super.choisirJoueur(cible, evenement, passerSiUndefined, raisonAccusation);
         if(evenement == EvenementIndividuel.JOUER_JOUEUR_DE_FLUTE) {
+            if(this.partie.seed){
+                console.log(`${this.nom} charme ${cible.nom} `);
+            }
             if(!this.choix1){
                 this.choix1 = cible;
                 this.raisonsPasVoter.unshift(this.getRaisonsPasVoterJoueurDeFlute());
