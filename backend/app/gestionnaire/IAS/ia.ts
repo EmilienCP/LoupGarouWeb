@@ -703,7 +703,7 @@ export class IA {
 
     afficherCotes(){
         console.log("cotes de "+this.villageois.nom);
-        const cotes: number[] = this.getValeursCotes(this.partie.joueursVivants.filter((joueur: Villageois)=>{return this.cotes.has(joueur)}));
+        const cotes: number[] = this.getValeursCotes(this.partie.joueursVivants.filter((joueur: Villageois)=>{return this.cotes.get(joueur) !== undefined}));
         this.cotes.forEach((valeur: number[], key: Villageois)=>{
             let index: number = this.partie.joueursVivants.filter((joueur: Villageois)=>{return this.cotes.has(joueur)}).indexOf(key);
             
