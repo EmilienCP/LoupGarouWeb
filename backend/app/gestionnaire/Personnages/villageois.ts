@@ -85,6 +85,7 @@ export class Villageois{
             this.raisonsPasVoter.push(this.getRaisonsPasVoter([RaisonPasVoter.SOI_MEME]));
         } else {
             if(this.equipeApparente == Equipe.LOUPS) {
+                //les loups infectés doivent toujours jouer avant leur pouvoir, sinon les autres loups vont savoir quils ne sont pas connectés.
                 this.ajouterEvenementIndividuelSansRaisons(EvenementIndividuel.JOUER_LOUP_GAROU);
                 this.raisonsPasVoter.push(this.getRaisonsPasVoterLoups());
             }

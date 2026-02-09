@@ -459,9 +459,13 @@ export class IA {
                         this.loupPublic(joueurGauche);
                     } else if(this.siJoueurSafe(joueurDroit, false, false, true, false, true) && this.villageoisPublics.includes(joueurGauche)){
                         this.loupPublic(joueurDroit);
-                    } else {
-                        //ce truc n'affecte pas les independants
-                        if(this.villageois.equipeApparente == Equipe.VILLAGEOIS){
+                    } else if(this.villageois.equipeApparente == Equipe.VILLAGEOIS){
+                        if(this.villageois == joueurDroit){
+                            this.ajouterJoueursMemeEquipeAssuree(joueurGauche);
+                        } else if(this.villageois == joueurGauche){
+                            this.ajouterJoueursPasMemeEquipeAssuree(joueurDroit);
+                        } else {
+                            //ce truc n'affecte pas les indépendants
                             this.augmenterDiminuerCote(joueurDroit, -1, false)
                             this.augmenterDiminuerCote(joueurGauche, -1, false)
                         }
@@ -703,7 +707,7 @@ export class IA {
 
     afficherCotes(){
         console.log("cotes de "+this.villageois.nom);
-        const cotes: number[] = this.getValeursCotes(this.partie.joueursVivants.filter((joueur: Villageois)=>{return this.cotes.has(joueur)}));
+        const cotes: number[] = this.getValeursCotes(this.partie.joueursVivants.filter((joueur: Villageois)=>{return this.cotes.get(joueur) !== undefined}));
         this.cotes.forEach((valeur: number[], key: Villageois)=>{
             let index: number = this.partie.joueursVivants.filter((joueur: Villageois)=>{return this.cotes.has(joueur)}).indexOf(key);
             

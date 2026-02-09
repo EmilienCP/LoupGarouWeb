@@ -121,6 +121,7 @@ export class VerificationMorts extends GestionnaireDeTemps{
                     nouveauVillageois.estCharmer = false;
                     if(cible.estInfecte){
                         nouveauVillageois.estInfecte = true;
+                        nouveauVillageois.equipeApparente = Equipe.LOUPS;
                         nouveauVillageois.unshiftEvenementIndividuelSansRaisons(EvenementIndividuel.INFO_INFECTE);
                     }
                     nouveauVillageois.unshiftEvenementIndividuelSansRaisons(EvenementIndividuel.MONTRER_PERSONNAGE);
