@@ -14,7 +14,7 @@ export class IAInfectPereDesLoups extends IA{
         super.jouerUnEvenement(evenement);
         if(+evenement == EvenementIndividuel.JOUER_INFECTE_PERE_LOUPS){
             const joueurs: Villageois[] = this.joueursAucuneRaisonPasVoter(false)
-            if(this.partie.random(2)==0){
+            if(this.partie.random(2)==0 || this.partie.numeroJour>=5){
                 this.villageois.choisirJoueur(this.getVillageoisAuHasard(joueurs), evenement, false)
             }
         }
