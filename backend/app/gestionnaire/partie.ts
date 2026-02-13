@@ -562,27 +562,34 @@ export class Partie {
     verifierVictoirePrematuree(): boolean{
         let matin: boolean = this.numeroJour%2==1;
 
-        //capitaine
-        if(matin && this.joueursVivants.length == 2 && !this.joueursVivants.some(j=>j.rolePublic==RolePublic.INSTITUTRICE || j.role == Role.CORBEAU)){
-            this.victoire = this.joueursVivants.find((joueur)=>joueur.estCapitaine)!.getSorteVictoireSilGagne();
-            return true;
+        //nuit a 1 villageois
+        if(!matin && this.joueursVivants.filter((j)=>j.equipeApparente == Equipe.VILLAGEOIS).length == 1){
+            let villageois: Villageois = this.joueursVivants.filter((j)=>j.equipeApparente == Equipe.VILLAGEOIS)[0];
+            if(villageois.role != Role.SORCIERE && villageois.role != Role.FEMME_DE_MENAGE){
+                if(villageois.role == Role.CHASSEUR && this.joueursVivants.length == 2){
+                    if(this.seed){console.log("Personne ne gagne")};
+                    this.victoire = Victoire.PERSONNE;
+                    return true;
+                }
+                if(this.joueursVivants.length == 2 && this.joueursVivants.some(j=>j.role == Role.LOUP_BLANC)){
+                    if(this.seed){console.log("Le loup garou blanc gagne")};
+                    this.victoire = Victoire.LOUP_BLANC;
+                    return true;
+                }
+                // ne peut pas etre le chasseur parce que si cest 3 joueurs, loup blanc, loup et chasseur, on sait pas qui gagne.
+                // si cest plus que 3 joueurs, les loups gagnent peut importe
+                if(villageois.role != Role.CHASSEUR || this.joueursVivants.length > 3){
+                    if(this.seed){console.log("Les loups gagnent")};
+                    this.victoire = Victoire.LOUP_GAROU;
+                    return true;
+                }
+                
+            }
         }
-        
-        //loups A FAIRE
-        if(!matin && this.joueursVivants.length == 2){
-            //le chasseur ne doit pas être infecté
-            if(this.joueursVivants.some((j)=>j.role == Role.CHASSEUR && j.equipeApparente == Equipe.VILLAGEOIS)){
-                if(this.seed){console.log("Personne ne gagne")};
-                this.victoire = Victoire.PERSONNE;
-                return true
-            }
-            if(this.joueursVivants.some((j)=>j.role == Role.LOUP_BLANC)){
-                if(this.seed){console.log("Le loup garou blanc gagne")};
-                this.victoire = Victoire.LOUP_BLANC;
-                return true
-            }
-            if(this.seed){console.log("Les loups gagnent")};
-            this.victoire = Victoire.LOUP_GAROU;
+
+        //jour a 2 joueurs
+        if(matin && this.joueursVivants.length == 2 && !this.joueursVivants.some(j=>j.rolePublic==RolePublic.INSTITUTRICE || j.role == Role.CORBEAU || j.role == Role.CHASSEUR)){
+            this.victoire = this.joueursVivants.find((joueur)=>joueur.estCapitaine)!.getSorteVictoireSilGagne();
             return true;
         }
 
