@@ -31,7 +31,7 @@ export class IAVoyante extends IAChercheurLoups{
                 }
                 else if(this.villageois.equipeReelle == Equipe.VILLAGEOIS){
                     //inclure l'enfant sauvage ici
-                    this.ajusterResultatGroupeDe3(choix.equipeApparente == Equipe.LOUPS && !choix.estInfecte && choix.role != Role.ENFANT_SAUVAGE, [choix]);
+                    this.ajusterResultatGroupeDe3((choix.equipeApparente == Equipe.LOUPS && !choix.estInfecte) || choix.role == Role.ENFANT_SAUVAGE, [choix]);
                 }
             }
         }
