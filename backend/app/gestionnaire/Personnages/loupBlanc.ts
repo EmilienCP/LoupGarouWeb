@@ -6,22 +6,21 @@ import { Villageois } from "./villageois";
 
 export class LoupBlanc extends Villageois{
 
-    loupATuer?: Villageois;
+    private loupATuer?: Villageois;
+    private tourPasse: boolean;
 
     constructor(partie: Partie){
         super(true, partie);
         this.role = Role.LOUP_BLANC;
         this.equipeReelle = Equipe.INDEPENDANT;
-        this.loupATuer = new Villageois(false, partie);
+        this.tourPasse = false;
     }
 
     protected jouerRole(): void {
-        if((!this.loupATuer) && this.partie.joueursVivants.filter((joueur: Villageois)=>{return joueur.equipeReelle == Equipe.LOUPS && joueur !== this}).length>0) {
+        if((!this.tourPasse) && this.partie.joueursVivants.filter((joueur: Villageois)=>{return joueur.equipeReelle == Equipe.LOUPS && joueur !== this}).length>0) {
             this.ajouterEvenementIndividuelSansRaisons(EvenementIndividuel.JOUER_LOUP_BLANC);
             const raisons: RaisonPasVoter[] = this.getRaisonsPasVoter([RaisonPasVoter.SOI_MEME, RaisonPasVoter.PAS_LOUP]);
             this.raisonsPasVoter.push(raisons);
-        } else {
-            this.loupATuer = undefined;
         }
     }
 
@@ -32,6 +31,7 @@ export class LoupBlanc extends Villageois{
                 console.log("Le loup blanc "+ this.nom+ " choisi de tuer aussi "+cible.nom);
             }
             this.loupATuer = cible;
+            this.tourPasse = true;
         }
     }
 
@@ -41,6 +41,9 @@ export class LoupBlanc extends Villageois{
             if(!this.partie.joueursMorts.includes(this.loupATuer)){
                 this.partie.joueursMorts.push(this.loupATuer);
             }
+            this.loupATuer = undefined;
+        } else {
+            this.tourPasse = false;
         }
     }
 

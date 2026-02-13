@@ -26,7 +26,11 @@ export class Victoire extends GestionnaireDeTemps{
             case "Montrer Personnages":
                 let texte: string[] = [];
                 this.partie.joueursVivants.forEach((joueur: Villageois)=>{
-                    texte.push(joueur.nom + " est " + this.convertirRoleTexte(joueur.role!) + (joueur.estInfecte ? " infecté." : ""));
+                    let sousTexte: string = joueur.nom + " est " + this.convertirRoleTexte(joueur.role!) + (joueur.estInfecte ? " infecté." : "");
+                    if(this.partie.seed){
+                        console.log(sousTexte);
+                    }
+                    texte.push(sousTexte);
                 })
                 this.partie.historiqueEvenements.push(texte);
                 this.partie.preparerEvenementDeGroupe(EvenementDeGroupe.MONTRER_VIVANTS, EvenementDeGroupe.MONTRER_VIVANTS);

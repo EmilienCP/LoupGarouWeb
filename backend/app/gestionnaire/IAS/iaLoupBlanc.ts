@@ -26,10 +26,12 @@ export class IALoupBlanc extends IA{
 
     mettreAJourNouveauVillage():void{
         super.mettreAJourNouveauVillage();
-        if(this.partie.joueursVivants.length <= 4 && !this.villageois.amoureux){
+
+        // ce code est vraiment pas beau, trouver un moyen pour que le loup blanc puisse voter contre ses amis loups quand ils sont trop nombreux
+        if((this.partie.joueursVivants.length <= 4 ||  this.partie.joueursVivants.length <= 6 && this.partie.joueursVivants.filter((j)=>j.equipeApparente == Equipe.LOUPS).length>2 )&& !this.villageois.amoureux){
             const loupPasLui: Villageois | undefined = this.partie.joueursVivants.find((j)=>j.equipeApparente == Equipe.LOUPS&&j!=this.villageois);
             if(loupPasLui){
-                this.ajouterJoueursPasMemeEquipeAssuree(loupPasLui);
+                this.ajouterJoueursPasMemeEquipeAssuree(loupPasLui)
             }
         }
     }
