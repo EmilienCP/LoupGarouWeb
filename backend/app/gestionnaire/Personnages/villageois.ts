@@ -195,6 +195,9 @@ export class Villageois{
         if(!this.estCapitaine){
             throw new Error(this.nom + " tente de choisir un successeur mais nest pas capitaine")
         }
+        if(this.partie.seed){
+            console.log(this.nom+" choisit "+ cible.nom+" comme successeur");
+        }
         this.estCapitaine = false;
         cible.estCapitaine = true;
     }

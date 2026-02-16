@@ -235,7 +235,7 @@ export class IA {
                 break;
             }
             case EvenementIndividuel.CHOISIR_SUCCESSEUR:{
-                if(this.villageois.equipeReelle == Equipe.LOUPS){
+                if(this.villageois.equipeReelle == Equipe.LOUPS && this.partie.joueursVivants.length > 3){
                     this.villageois.choisirJoueur(this.getVillageoisAuHasard(this.joueursAucuneRaisonPasVoter(false)), evenement, false);
                 } else {
                     this.villageois.choisirJoueur(this.getMaxOuMinCote(true, this.joueursAucuneRaisonPasVoter(false)), evenement, false);
