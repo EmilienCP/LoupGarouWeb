@@ -30,4 +30,10 @@ export class DeuxSoeurs extends Villageois{
         });
         (this.deuxiemeSoeur! as DeuxSoeurs).deuxiemeSoeur = this;
     }
+
+    changerPointeur(ancienJoueur: Villageois, nouveauJoueur: Villageois): void {
+        if(this.deuxiemeSoeur == ancienJoueur){
+            this.deuxiemeSoeur = nouveauJoueur;
+        }
+    }
 }

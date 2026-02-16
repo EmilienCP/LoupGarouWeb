@@ -8,6 +8,7 @@ import { GrandMechantLoup } from "../Personnages/grantMechantLoup";
 import { InfectPereDesLoups } from "../Personnages/infectPereDesLoups";
 import { ServanteDevouee } from "../Personnages/servanteDevouee";
 import { Villageois } from "../Personnages/villageois";
+import { Voyante } from "../Personnages/voyante";
 import { GestionnaireDeTemps } from "./gestionnaireDeTemps";
 import { Victoire } from "./victoire";
 
@@ -126,6 +127,12 @@ export class VerificationMorts extends GestionnaireDeTemps{
                     }
                     nouveauVillageois.unshiftEvenementIndividuelSansRaisons(EvenementIndividuel.MONTRER_PERSONNAGE);
                     nouveauVillageois.unshiftEvenementIndividuelSansRaisons(EvenementIndividuel.CACHER_APPAREIL);
+
+                    //faire modifier le role que la voyante a vu
+                    this.partie.getPersonnages(Role.VOYANTE).forEach((voyante: Voyante)=>{
+                        voyante.changerRoleServante(this.servanteDevoueeVivante!, cible)
+                    })
+
                     this.partie.changerPointeur(this.servanteDevoueeVivante!, nouveauVillageois);
                     nouveauVillageois.actionExServante(cible);
                     cible.role = Role.SERVANTE_DEVOUEE;
