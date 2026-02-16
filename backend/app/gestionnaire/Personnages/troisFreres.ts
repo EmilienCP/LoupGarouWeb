@@ -28,4 +28,10 @@ export class TroisFreres extends Villageois{
             frere.deuxFreres.push(this);
         })
     }
+
+    changerPointeur(ancienJoueur: Villageois, nouveauJoueur: Villageois): void {
+        if(this.deuxFreres.includes(ancienJoueur)){
+            this.deuxFreres[this.deuxFreres.indexOf(ancienJoueur)] = nouveauJoueur;
+        }
+    }
 }

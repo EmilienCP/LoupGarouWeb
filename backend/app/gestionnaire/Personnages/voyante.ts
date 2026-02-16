@@ -63,10 +63,11 @@ export class Voyante extends Villageois {
         })
     }
 
-    changerPointeur(ancienJoueur: Villageois, nouveauJoueur: Villageois): void {
-        super.changerPointeur(ancienJoueur, nouveauJoueur);
-        if(this.villageoisRolesConnus.includes(ancienJoueur)){
-            this.villageoisRolesConnus[this.villageoisRolesConnus.indexOf(ancienJoueur)] = nouveauJoueur;
+    changerRoleServante(exServante: Villageois, joueurMort: Villageois): void {
+        if(this.villageoisRolesConnus.includes(joueurMort)){
+            this.villageoisRolesConnus[this.villageoisRolesConnus.indexOf(joueurMort)] = exServante;
+        } else if(this.villageoisRolesConnus.includes(exServante)){
+            this.villageoisRolesConnus.splice(this.villageoisRolesConnus.indexOf(exServante), 1);
         }
     }
     
