@@ -44,7 +44,8 @@ export class IAChercheurLoups extends IA{
         if(this.differenteEquipeDeduis.includes(cible)){
             return this.raisonAccusation;
         } else{
-            return super.trouverRaisonParDefaut(cible);
+            //ne doit pas retourner au parent, parce que sinon il pourrait quand meme donner sa raison personnelle.
+            return this.partie.random(5);
         }
     }
 
