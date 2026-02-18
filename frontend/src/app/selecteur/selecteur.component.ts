@@ -389,7 +389,6 @@ export class SelecteurComponent implements OnInit {
   }
 
   getCompteurPretAPasser(): number{
-    if(this.communicationService.get)
     switch(+this.evenement!){
       case EvenementIndividuel.VOTER:
       case EvenementIndividuel.VOTER_CAPITAINE:
