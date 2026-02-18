@@ -306,7 +306,7 @@ export class VerificationMorts extends GestionnaireDeTemps{
                                 console.log("Rendre villageois villageois "+villageois.nom);
                             }
                             this.partie.changerPointeur(mort, villageois);
-                            this.partie.joueursDejaMorts.push(mort);
+                            this.partie.joueursDejaMortsPointeurs.push(mort);
                             return false;
                         }
                         return true;

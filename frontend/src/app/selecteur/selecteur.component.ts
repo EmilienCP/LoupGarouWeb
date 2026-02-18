@@ -163,7 +163,9 @@ export class SelecteurComponent implements OnInit {
     if(!this.pretAPasser){
       return;
     }
-    if(this.raisonsPasVoter[this.idJoueurSelectionne] !== RaisonPasVoter.AUCUN){
+    if(this.communicationService.infoVillage[this.idJoueurSelectionne].estMort){
+      this.messageAvertissement = "Ce joueur est mort";
+    } else if(this.raisonsPasVoter[this.idJoueurSelectionne] !== RaisonPasVoter.AUCUN){
       this.messageAvertissement = this.getMessageAvertissement(this.raisonsPasVoter[this.idJoueurSelectionne]); 
     } else{
       this.executerChoix(this.idJoueurSelectionne);
@@ -387,6 +389,7 @@ export class SelecteurComponent implements OnInit {
   }
 
   getCompteurPretAPasser(): number{
+    if(this.communicationService.get)
     switch(+this.evenement!){
       case EvenementIndividuel.VOTER:
       case EvenementIndividuel.VOTER_CAPITAINE:
