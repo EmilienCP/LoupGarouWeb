@@ -22,6 +22,7 @@
 
 .peutPasChoisirCercle{
     filter: grayscale(75%);
+    background-color: grey;
 }
 
 

@@ -96,7 +96,8 @@ export class DatabaseController {
             estCharmer: villageois.estCharmer,
             estAssocier: false,
             estSoeur: false,
-            estFrere: false
+            estFrere: false,
+            estMort: this.partiesService.getPartie(req.params.idSocket).joueursDejaMorts.includes(villageois)
           }
           res.json(joueur);
         }
@@ -131,11 +132,11 @@ export class DatabaseController {
             joueurPresent = appareil.getJoueurPresent();
           }
           let infoVillage: Joueur[] = [];
-          partie.joueursVivants.forEach((villageois: Villageois)=>{
+          partie.joueursVivants.concat(partie.joueursDejaMorts).forEach((villageois: Villageois)=>{
             infoVillage.push({
               nom: villageois.nom,
               estCapitaine: villageois.estCapitaine,
-              role: (villageois == joueurPresent || villageois.role == Role.VILLAGEOIS_VILLAGEOIS || (joueurPresent.role == Role.VOYANTE && (joueurPresent as Voyante).villageoisRolesConnus.includes(villageois)))?villageois.role:undefined,
+              role: (partie.joueursDejaMorts.includes(villageois) ||villageois == joueurPresent || villageois.role == Role.VILLAGEOIS_VILLAGEOIS || (joueurPresent.role == Role.VOYANTE && (joueurPresent as Voyante).villageoisRolesConnus.includes(villageois)))?villageois.role:undefined,
               rolePublic: villageois.rolePublic,
               //Si le loup garou du village ne sait pas encore quil est infecte, alors les autres loups ne doivent pas le voir non plus dans leur liste
               equipeApparente: villageois.equipeApparente == Equipe.LOUPS && !villageois.evenementsIndividuels.includes(EvenementIndividuel.INFO_INFECTE) && joueurPresent.equipeApparente == Equipe.LOUPS && !(partie.gestionnaireEtape.gestionnaireDeTemps instanceof Intro) && !joueurPresent.evenementsIndividuels.includes(EvenementIndividuel.INFO_INFECTE) && !joueurPresent.evenementsIndividuels.includes(EvenementIndividuel.INFO_ASSOCIER_MORT)? Equipe.LOUPS:Equipe.VILLAGEOIS,
@@ -146,7 +147,8 @@ export class DatabaseController {
               estCharmer: (joueurPresent.estCharmer || joueurPresent.role == Role.JOUEUR_DE_FLUTE) && villageois.estCharmer && !joueurPresent.evenementsIndividuels.includes(EvenementIndividuel.INFO_CHARMER),
               estAssocier: (joueurPresent.role == Role.ENFANT_SAUVAGE && (joueurPresent as EnfantSauvage).joueurAssocie == villageois),
               estSoeur: (joueurPresent.role == Role.DEUX_SOEURS && (joueurPresent as DeuxSoeurs).deuxiemeSoeur == villageois && !(partie.gestionnaireEtape.gestionnaireDeTemps instanceof Intro)),
-              estFrere: (joueurPresent.role == Role.TROIS_FRERES && (joueurPresent as TroisFreres).deuxFreres.includes(villageois) && !(partie.gestionnaireEtape.gestionnaireDeTemps instanceof Intro))
+              estFrere: (joueurPresent.role == Role.TROIS_FRERES && (joueurPresent as TroisFreres).deuxFreres.includes(villageois) && !(partie.gestionnaireEtape.gestionnaireDeTemps instanceof Intro)),
+              estMort: partie.joueursDejaMorts.includes(villageois)
             })
           })
           res.json(infoVillage);
@@ -162,7 +164,7 @@ export class DatabaseController {
           try {
             let partie: Partie = this.partiesService.getPartie(req.params.idSocket);
             let infoVillage: JoueurExtensionLoups[] = [];
-            partie.joueursVivants.forEach((villageois: Villageois)=>{
+            partie.joueursVivants.concat(partie.joueursDejaMorts).forEach((villageois: Villageois)=>{
               infoVillage.push({
                 nombreVotes: partie.voteCourant.getTailleElecteurs()[partie.voteCourant.getAccuses().indexOf(villageois)],
                 joueursQuiLePointent: (partie.voteCourant.getJoueursPointes()[partie.voteCourant.getAccuses().indexOf(villageois)])?(partie.voteCourant.getJoueursPointes()[partie.voteCourant.getAccuses().indexOf(villageois)].map((joueur: Villageois)=>{return joueur.nom})):[]
@@ -198,7 +200,8 @@ export class DatabaseController {
                   estCharmer: false,
                   estAssocier: false,
                   estSoeur: false,
-                  estFrere: false
+                  estFrere: false,
+                  estMort: false
                 })
               }
               appareil.joueurs.forEach((joueur: Villageois)=>{
@@ -215,7 +218,8 @@ export class DatabaseController {
                   estCharmer: false,
                   estAssocier: false,
                   estSoeur: false,
-                  estFrere: false
+                  estFrere: false,
+                  estMort: false
                 })
               })
             })
@@ -238,7 +242,7 @@ export class DatabaseController {
             joueurPresent = this.partiesService.getAppareil(req.params.idSocket).getJoueurPresent();
           }
           let infoVillageMort: Joueur[] = [];
-          this.partiesService.getPartie(req.params.idSocket).joueursDejaMorts.forEach((villageois: Villageois)=>{
+          this.partiesService.getPartie(req.params.idSocket).joueursDejaMorts.concat(this.partiesService.getPartie(req.params.idSocket).joueursDejaMortsPointeurs).forEach((villageois: Villageois)=>{
             infoVillageMort.push({
               nom: villageois.nom,
               estCapitaine: villageois.estCapitaine,
@@ -252,7 +256,8 @@ export class DatabaseController {
               estCharmer: false,
               estAssocier: (joueurPresent.role == Role.ENFANT_SAUVAGE && (joueurPresent as EnfantSauvage).joueurAssocie == villageois),
               estSoeur: (joueurPresent.role == Role.DEUX_SOEURS && (joueurPresent as DeuxSoeurs).deuxiemeSoeur == villageois),
-              estFrere: (joueurPresent.role == Role.TROIS_FRERES && (joueurPresent as TroisFreres).deuxFreres.includes(villageois))
+              estFrere: (joueurPresent.role == Role.TROIS_FRERES && (joueurPresent as TroisFreres).deuxFreres.includes(villageois)),
+              estMort: true
             })
           })
           res.json(infoVillageMort);
@@ -280,7 +285,8 @@ export class DatabaseController {
               estCharmer: villageois.estCharmer,
               estAssocier: false,
               estSoeur: false,
-              estFrere: false
+              estFrere: false,
+              estMort: true
             })
           })
           res.json(infoVillage);

@@ -53,6 +53,7 @@ export class Partie {
     joueursVivants: Villageois[] = [];
     joueursMorts: Villageois[] = [];
     joueursDejaMorts: Villageois[] = [];
+    joueursDejaMortsPointeurs: Villageois[] = [];
     private nbJoueurs: number;
     private nbLoups: number;
     victoire: Victoire =  Victoire.AUCUN;
@@ -137,6 +138,7 @@ export class Partie {
         this.joueursVivants = [];
         this.joueursMorts = [];
         this.joueursDejaMorts = [];
+        this.joueursDejaMortsPointeurs = [];
         this.voteCourant.clean();
         this.ias = [];
         this.momentsForts = [];

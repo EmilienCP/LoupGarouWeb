@@ -13,7 +13,7 @@ export class LoupBlanc extends Villageois{
         super(true, partie);
         this.role = Role.LOUP_BLANC;
         this.equipeReelle = Equipe.INDEPENDANT;
-        this.tourPasse = false;
+        this.tourPasse = true;
     }
 
     protected jouerRole(): void {

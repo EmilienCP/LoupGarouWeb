@@ -53,6 +53,10 @@ export class SelecteurVillageComponent implements OnInit {
     return this.communicationService.infoVillage[index].estFrere;
   }
 
+  estMort(index: number): boolean{
+    return this.communicationService.infoVillage[index].estMort;
+  }
+
   getNomRole(index: number): string{
     return utils.convertirRoleTexte(this.communicationService.infoVillage[index].role!);
   }
@@ -89,6 +93,9 @@ export class SelecteurVillageComponent implements OnInit {
   }
 
   getClasseBouton(index: number): string{
+    if(this.communicationService.infoVillage[index].estMort){
+      return 'peutPasChoisir'
+    }
     if(this.raisonsPasVoter.length == 0){
       return 'pasBouton'
     }
@@ -96,10 +103,7 @@ export class SelecteurVillageComponent implements OnInit {
   }
 
   getClasseBoutonCercle(index: number): string{
-    if(this.raisonsPasVoter.length == 0){
-      return 'pasBoutonCercle'
-    }
-    return this.raisonsPasVoter[index] == RaisonPasVoter.AUCUN?'peutChoisirCercle':'peutPasChoisirCercle'
+    return this.getClasseBouton(index) + "Cercle";
   }
 
   evenementAccusation(): boolean{

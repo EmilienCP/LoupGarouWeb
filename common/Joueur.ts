@@ -48,6 +48,7 @@ export interface Joueur{
     estAssocier: boolean;
     estSoeur: boolean;
     estFrere: boolean;
+    estMort: boolean;
 }
 
 export interface JoueurExtensionLoups{
