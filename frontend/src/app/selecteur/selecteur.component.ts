@@ -243,11 +243,8 @@ export class SelecteurComponent implements OnInit {
         case EvenementIndividuel.ARRIVER_EN_MILIEU_DE_PARTIE:
           this.communicationService.voterVillageois(index, this.evenement!).subscribe((ok: boolean)=>{
               if(ok){
-                if(this.communicationService.isUnMeneurDeJeu){
+                if(this.communicationService.infoPartie.isUnMeneurDeJeu){
                   this.communicationService.refreshInfoPartie().then(()=>{
-                    if(this.communicationService.infoPartie!.idAppareil == this.communicationService.infoPartie!.idMeneurDeJeu){
-                      this.communicationService.isMeneurDeJeu = true;
-                    }
                     this.router.navigate(["jeuComponent"]);
                   })
                 }else {
@@ -388,6 +385,7 @@ export class SelecteurComponent implements OnInit {
 
   getCompteurPretAPasser(): number{
     if(this.communicationService.infoPartie.nbJoueursConnectesVivants == 1){
+      this.pretAPasser = true;
       return 0;
     }
     switch(+this.evenement!){

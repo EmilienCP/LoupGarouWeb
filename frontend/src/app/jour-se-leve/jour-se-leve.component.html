@@ -14,13 +14,12 @@
     <p style = "font-size: 100%;">{{texteSecondaire}}</p>
 </div>
 
-<div *ngIf = "!isInfoAppareil && communicationService.isMeneurDeJeu" class = "lgAbsolu lgTexte" style = "left: 80%; top:5%;">{{communicationService.jour?'Jour':'Nuit'}} {{communicationService.numeroJour}}</div>
+<div *ngIf = "!isInfoAppareil && communicationService.infoPartie.isMeneurDeJeu" class = "lgAbsolu lgTexte" style = "left: 80%; top:5%;">{{communicationService.jour?'Jour':'Nuit'}} {{communicationService.infoPartie.numeroJour}}</div>
 
-<button *ngIf = "!isInfoAppareil && !communicationService.isMeneurDeJeu" class= "lgTexte boutonRole lgAbsolu" [style] = "'font-size: 130%; background-color: transparent; border: none; overflow-y: hidden;overflow-x:hidden;width: 20%; left: 40%; top: 70%; height:20%; max-height:'+imagee.offsetWidth+'px'" (click) = "ok()">
+<button *ngIf = "!isInfoAppareil && !communicationService.infoPartie.isMeneurDeJeu" class= "lgTexte boutonRole lgAbsolu" [style] = "'font-size: 130%; background-color: transparent; border: none; overflow-y: hidden;overflow-x:hidden;width: 20%; left: 40%; top: 70%; height:20%; max-height:'+imagee.offsetWidth+'px'" (click) = "ok()">
     <div #imagee class="lgAbsolu" [style] ="'background-repeat: unset;background-size: cover; background-image: url(./../../assets/wolf-print2.png); width: 100%;rotate: -40deg; height: 100%;left: 0%; top: 0%; max-height:'+imagee.offsetWidth+'px'"></div>
     <div class="lgTexte lgAbsolu lgBlanc" style = "width: 100%; left: 0%; top: 40%; height:20%; font-family: texteBouton;">Ok</div>
 </button>
-<button *ngIf = "!isInfoAppareil && !communicationService.isMeneurDeJeu && infoEvenement!.peutPasser && !infoEvenement!.passer" class = "lgBouton lgAbsolu" style = "width: 20%; left: 78%; top: 90%; height: 5%;font-size: 60%;" (click) = "passer()">Passer =></button>
-
-<button *ngIf = "!isInfoAppareil && communicationService.isMeneurDeJeu" class = "lgBouton lgAbsolu" style = "width: 10%; left: 3%; top: 92%; height: 5%;font-size: 30%;" (click) = "switchInfoAppareil()">info Appareil</button>
+<button *ngIf = "!isInfoAppareil && !communicationService.infoPartie.isMeneurDeJeu && infoEvenement!.peutPasser && !infoEvenement!.passer" class = "lgBouton lgAbsolu" style = "width: 20%; left: 78%; top: 90%; height: 5%;font-size: 60%;" (click) = "passer()">Passer =></button>
+<button *ngIf = "!isInfoAppareil && communicationService.infoPartie.isMeneurDeJeu" class = "lgBouton lgAbsolu" style = "width: 10%; left: 3%; top: 92%; height: 5%;font-size: 30%;" (click) = "switchInfoAppareil()">info Appareil</button>
 <app-creation-appareils *ngIf = "isInfoAppareil" (retourAppareil) = "switchInfoAppareil();"></app-creation-appareils>

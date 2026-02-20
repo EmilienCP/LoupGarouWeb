@@ -126,7 +126,7 @@ export class AttenteComponent implements OnInit {
         break;
       }
       case EvenementDeGroupe.SERVANTE_DEVOUEE_QUESTION_MENEUR:{
-        if(!this.communicationService.isMeneurDeJeu){
+        if(!this.communicationService.infoPartie.isMeneurDeJeu){
           this.texte = "La servante dévouée veut-elle prendre le personnage d'un mort?"
         } else {
           this.preparerAttente("La servante dévouée veut-elle prendre le personnage d'un mort?");

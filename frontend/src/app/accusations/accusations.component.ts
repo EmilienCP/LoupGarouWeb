@@ -52,7 +52,7 @@ export class AccusationsComponent implements OnInit {
     if(this.evenement == EvenementDeGroupe.SERVANTE_DEVOUEE_QUESTION){
       this.communicationService.ouiServanteDevouee().subscribe((ok: boolean)=>{
         if(ok){
-          if(this.communicationService.isMeneurDeJeu){
+          if(this.communicationService.infoPartie.isMeneurDeJeu){
             this.socket.emit("prochaineEtape")
           }
           this.router.navigate(["jeuComponent"]);
@@ -64,7 +64,7 @@ export class AccusationsComponent implements OnInit {
   }
 
   non(){
-    if(this.communicationService.isMeneurDeJeu && (this.evenement == EvenementDeGroupe.ACCUSER||this.evenement == EvenementDeGroupe.SERVANTE_DEVOUEE_QUESTION)){
+    if(this.communicationService.infoPartie.isMeneurDeJeu && (this.evenement == EvenementDeGroupe.ACCUSER||this.evenement == EvenementDeGroupe.SERVANTE_DEVOUEE_QUESTION)){
       this.socket.emit("prochaineEtape")
     }
     this.router.navigate(["jeuComponent"])

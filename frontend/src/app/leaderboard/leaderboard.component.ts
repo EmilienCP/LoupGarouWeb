@@ -34,14 +34,14 @@ export class LeaderboardComponent implements OnInit,OnChanges {
         }, this.infoEvenement!.timer)
       }
     });
-    if(this.communicationService.isMeneurDeJeu){
+    if(this.communicationService.infoPartie.isMeneurDeJeu){
       this.socket.on("prochaineEtape", ()=>{
         this.socket.off("prochaineEtape");
         this.router.navigate(["jeuComponent"])
       })
     }
     if(!this.menu){
-      if(!this.communicationService.isUnMeneurDeJeu || this.communicationService.isMeneurDeJeu){
+      if(!this.communicationService.infoPartie.isUnMeneurDeJeu || this.communicationService.infoPartie.isMeneurDeJeu){
         this.audioService.jouerCredits();
       }
       this.communicationService.getInfosPointsDeVictoire().subscribe((infos)=>{

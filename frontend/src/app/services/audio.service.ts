@@ -63,7 +63,7 @@ export class AudioService {
   }
 
   jouer(path: string, audio: HTMLAudioElement, loop: boolean = true){
-    if(!this.pasJouer && (!this.communicationService.isUnMeneurDeJeu || this.communicationService.isMeneurDeJeu)){
+    if(!this.pasJouer && (!this.communicationService.infoPartie.isUnMeneurDeJeu || this.communicationService.infoPartie.isMeneurDeJeu)){
       audio.pause();
       audio.src = path;
       audio.loop = loop;

@@ -178,6 +178,8 @@ export class PartiesService {
             infosPointsDeVictoire : pointsDeVictoire,
             nbJoueursConnectesVivants: partie.getNbJoueursConnectesVivants(),
             numeroJour: partie.numeroJour,
+            isMeneurDeJeu: appareil.siMeneurDeJeu(),
+            isUnMeneurDeJeu: partie.getMeneursDeJeu().length>0,
             village: infoVillage
         }
     }

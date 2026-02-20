@@ -166,8 +166,6 @@ export class CreationComponent implements OnInit {
         this.nbJoueurs = info.nbJoueurs;
         this.nbLoups = info.nbLoups;
         this.nbVillageois = info.nbVillageois;
-        this.communicationService.isMeneurDeJeu = info.idMeneurDeJeu == info.idAppareil;
-        this.communicationService.isUnMeneurDeJeu = info.idMeneurDeJeu !== -1;
         this.idMeneurDeJeu = info.idMeneurDeJeu;
         this.modeVideo = info.modeVideo;
         this.modePatateChaude = info.modePatateChaude;
@@ -207,7 +205,7 @@ export class CreationComponent implements OnInit {
 
   commencer(){
     if(this.backup){
-      this.communicationService.isMeneurDeJeu = true;
+      this.communicationService.infoPartie.isMeneurDeJeu = true;
     }
     if(this.idAppareil == 0){
       this.socket.emit("commencerPartie");

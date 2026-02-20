@@ -34,7 +34,7 @@ export class CreditsComponent implements OnInit {
     this.route.queryParams.subscribe((params =>{
       this.isMenu = params["isMenu"]? true: false;
       if(!this.isMenu){
-        if(this.communicationService.isMeneurDeJeu){
+        if(this.communicationService.infoPartie.isMeneurDeJeu){
           this.socket.on("prochaineEtape", ()=>{
             this.socket.off("prochaineEtape")
             this.audioService.arreter();
@@ -61,7 +61,6 @@ export class CreditsComponent implements OnInit {
     if(!this.isMenu){
       this.socket.emit("termine");
     }
-    this.communicationService.numeroJour = 0;
     this.router.navigate([this.isMenu?"":"creationComponent"])
   }
 

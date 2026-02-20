@@ -26,13 +26,13 @@
     <p *ngIf = "decompte" class = "lgAbsolu lgTexte" style = "top :25%; height: 10%; width: 100%; text-align: center; font-size: 150%; color : #AAFFAA; z-index: 5;">La partie commence</p>
     <p [@texte] = "compteur" *ngIf = "decompte" class = "lgAbsolu lgTexte" style = "top :40%; height: 10%; width: 100%; text-align: center; font-size: 200%; opacity: 0; color : #AAFFAA; z-index: 5;">{{compteur}}</p>
     
-    <div *ngIf = "!isDescriptionRole && (communicationService.isMeneurDeJeu || idAppareil==0)" class = "lgAbsolu lgTexte" style = "font-size: 50%; top: 4%; left:20%; text-align: center; width: 20%;">Wifi</div>
-    <div *ngIf = "!isDescriptionRole && (communicationService.isMeneurDeJeu || idAppareil==0)"  class= "lgAbsolu" style = "text-align: center; width: 20%; height: 20%; overflow-y: hidden;top: 8%; left:20%">
+    <div *ngIf = "!isDescriptionRole && (communicationService.infoPartie.isMeneurDeJeu || idAppareil==0)" class = "lgAbsolu lgTexte" style = "font-size: 50%; top: 4%; left:20%; text-align: center; width: 20%;">Wifi</div>
+    <div *ngIf = "!isDescriptionRole && (communicationService.infoPartie.isMeneurDeJeu || idAppareil==0)"  class= "lgAbsolu" style = "text-align: center; width: 20%; height: 20%; overflow-y: hidden;top: 8%; left:20%">
         <div #imagee [style] ="'background-repeat: unset;background-size: cover; background-image: url(./../../assets/wifi.png); width: 100%; height: 100%; max-height:'+imagee.offsetWidth+'px'"></div>
     </div>
     
-    <div *ngIf = "!isDescriptionRole && (communicationService.isMeneurDeJeu || idAppareil==0)" class = "lgAbsolu lgTexte" style = "font-size: 50%; top: 4%; left:60%; text-align: center; width: 20%;">Site Web</div>
-    <div *ngIf = "!isDescriptionRole && (communicationService.isMeneurDeJeu || idAppareil==0)"  class= "lgAbsolu" style = "text-align: center; width: 20%; height: 20%; overflow: hidden;top: 8%; left:60%">
+    <div *ngIf = "!isDescriptionRole && (communicationService.infoPartie.isMeneurDeJeu || idAppareil==0)" class = "lgAbsolu lgTexte" style = "font-size: 50%; top: 4%; left:60%; text-align: center; width: 20%;">Site Web</div>
+    <div *ngIf = "!isDescriptionRole && (communicationService.infoPartie.isMeneurDeJeu || idAppareil==0)"  class= "lgAbsolu" style = "text-align: center; width: 20%; height: 20%; overflow: hidden;top: 8%; left:60%">
         <div #imagee [style.background-image]="'url('+qrcodeurl+')'" [style] ="'background-repeat: unset;background-size: cover; width: 100%; height: 100%; max-height:'+imagee.offsetWidth+'px'"></div>
         <!-- <qrcode [qrdata]="'Your data string'" [width]="256" [errorCorrectionLevel]="'M'"></qrcode> -->
         

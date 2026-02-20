@@ -343,14 +343,13 @@ export class VideoMatinComponent implements OnInit {
         })
       }
     })
-    if(this.communicationService.isMeneurDeJeu){
+    if(this.communicationService.infoPartie.isMeneurDeJeu){
       this.socket.on("prochaineEtape", ()=>{
         this.audioService.jouerJour();
         this.socket.off("prochaineEtape")
         this.router.navigate(["jeuComponent"])
       })
     }
-    this.communicationService.numeroJour++;
     this.communicationService.getInfoVideo().subscribe((info: InfoVideo)=>{
       this.audioService.jouerMatin();
       this.nomVivant = info.nomJoueurAMontrer;

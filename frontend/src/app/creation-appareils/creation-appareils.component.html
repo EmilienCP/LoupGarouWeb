@@ -6,13 +6,13 @@
     <div *ngFor = "let appareil of infoAppareils; let i = index" class = "lgTexte" [style] = "'margin-bottom: 5px; margin-left: 5px; width: 150px;min-height: 50px;background-color:'+(i==idAppareil?'#AA4444':'red')+'; display:flex; align-items: center; flex-wrap: wrap; justify-content: center'">  
         <div *ngIf = "idAppareil != -1 && idAppareil == i" class = "lgTexte lgBlanc" style = "font-size: clamp(10%, 70%, 30px); width:100%; margin-top: 5px;">Votre Appareil</div>
         <div *ngIf = "idAppareil != -1 && idMeneurDeJeu == i" class = "lgTexte lgBlanc" style = "font-size: clamp(10%, 100%, 30px);width:100%;">(meneur de jeu)</div>
-        <div *ngIf = "idAppareil != -1 && idAppareil == i && (!communicationService.isUnMeneurDeJeu || communicationService.isMeneurDeJeu)" style = "display: grid; grid-template-columns: 20% 40% 20% 20%;width:100%">
+        <div *ngIf = "idAppareil != -1 && idAppareil == i && (!communicationService.infoPartie.isUnMeneurDeJeu || communicationService.infoPartie.isMeneurDeJeu)" style = "display: grid; grid-template-columns: 20% 40% 20% 20%;width:100%">
             <div></div>
             <div style = "vertical-align: middle;display: table-cell;">
-                <p *ngIf = "!communicationService.isUnMeneurDeJeu || communicationService.isMeneurDeJeu" class = "lgTexte lgBlanc" style = "font-size:clamp(10%, 60%, 20px); margin-top: 0%; height: 25px; vertical-align: middle;display: table-cell;" >Rendre meneur de jeu:</p>
+                <p *ngIf = "!communicationService.infoPartie.isUnMeneurDeJeu || communicationService.infoPartie.isMeneurDeJeu" class = "lgTexte lgBlanc" style = "font-size:clamp(10%, 60%, 20px); margin-top: 0%; height: 25px; vertical-align: middle;display: table-cell;" >Rendre meneur de jeu:</p>
             </div>
             <div style = "margin-top: 0%;">
-                <input type = "checkbox" style = "height: 25px; margin: 0; vertical-align: top;" (click) = "switch()" [checked] = "communicationService.isMeneurDeJeu">
+                <input type = "checkbox" style = "height: 25px; margin: 0; vertical-align: top;" (click) = "switch()" [checked] = "communicationService.infoPartie.isMeneurDeJeu">
             </div>
         </div>
         <div *ngFor = "let info of appareil; let j = index" style = "width:100%">
@@ -29,27 +29,27 @@
                 <div style = "font-size:clamp(10%, 100%, 30px); color: white;">{{info}}</div>
             </div>
         </div>
-        <button class = "lgBouton lgBoutonVert" *ngIf = "idAppareil != -1 && idAppareil == i && !communicationService.isMeneurDeJeu" (click) = "ajouter()" style = "font-size: 35%;margin-bottom: 5px;width: 60%;">Ajouter un joueur</button>
-        <div *ngIf = "idAppareil == -1 && infoAppareilsDetails.length > 0  && (!communicationService.isUnMeneurDeJeu || communicationService.isMeneurDeJeu)" style = "display: grid; grid-template-columns: 20% 40% 20% 20%;width:100%">
+        <button class = "lgBouton lgBoutonVert" *ngIf = "idAppareil != -1 && idAppareil == i && !communicationService.infoPartie.isMeneurDeJeu" (click) = "ajouter()" style = "font-size: 35%;margin-bottom: 5px;width: 60%;">Ajouter un joueur</button>
+        <div *ngIf = "idAppareil == -1 && infoAppareilsDetails.length > 0  && (!communicationService.infoPartie.isUnMeneurDeJeu || communicationService.infoPartie.isMeneurDeJeu)" style = "display: grid; grid-template-columns: 20% 40% 20% 20%;width:100%">
             <div></div>
             <div style = "vertical-align: middle;display: table-cell;">
-                <p *ngIf = "!communicationService.isUnMeneurDeJeu || communicationService.isMeneurDeJeu" class = "lgTexte lgBlanc" style = "font-size: 30%; margin-top: 0%; height: 25px; vertical-align: middle;display: table-cell;" >Appareil Pret:</p>
+                <p *ngIf = "!communicationService.infoPartie.isUnMeneurDeJeu || communicationService.infoPartie.isMeneurDeJeu" class = "lgTexte lgBlanc" style = "font-size: 30%; margin-top: 0%; height: 25px; vertical-align: middle;display: table-cell;" >Appareil Pret:</p>
             </div>
             <div style = "margin-top: 0%;">
                 <input type = "checkbox" style = "height: 25px; margin: 0; vertical-align: top;" (click) = "switchPret(i)" [checked] = "infoAppareilsDetails[i].pret">
             </div>
         </div>
-        <div *ngIf = "idAppareil == -1 && infoAppareilsDetails.length > 0 && (!communicationService.isUnMeneurDeJeu || communicationService.isMeneurDeJeu)" style = "display: grid; grid-template-columns: 20% 40% 20% 20%;width:100%">
+        <div *ngIf = "idAppareil == -1 && infoAppareilsDetails.length > 0 && (!communicationService.infoPartie.isUnMeneurDeJeu || communicationService.infoPartie.isMeneurDeJeu)" style = "display: grid; grid-template-columns: 20% 40% 20% 20%;width:100%">
             <div></div>
             <div style = "vertical-align: middle;display: table-cell;">
-                <p *ngIf = "!communicationService.isUnMeneurDeJeu || communicationService.isMeneurDeJeu" class = "lgTexte lgBlanc" style = "font-size: 30%; margin-top: 0%; height: 25px; vertical-align: middle;display: table-cell;" >Appareil Disconnect:</p>
+                <p *ngIf = "!communicationService.infoPartie.isUnMeneurDeJeu || communicationService.infoPartie.isMeneurDeJeu" class = "lgTexte lgBlanc" style = "font-size: 30%; margin-top: 0%; height: 25px; vertical-align: middle;display: table-cell;" >Appareil Disconnect:</p>
             </div>
             <div style = "margin-top: 0%;">
                 <input type = "checkbox" style = "height: 25px; margin: 0; vertical-align: top;" (click) = "switchDisconnect(i)" [checked] = "infoAppareilsDetails[i].disconnect">
             </div>
         </div>
         <button *ngIf = "idAppareil == -1" class = "lgBouton" style = "width: 30%;" (click) = "retirerAppareil(i)" style = "font-size: 30%;">RetirerAppareil</button>
-        <button class = "lgBouton lgBoutonVert" *ngIf = "(communicationService.isMeneurDeJeu || idAppareil == i) && i!=0" (click) = "versLeHaut(i)" style = "font-size: 35%;width: 60%;">Déplacer vers le haut</button>
+        <button class = "lgBouton lgBoutonVert" *ngIf = "(communicationService.infoPartie.isMeneurDeJeu || idAppareil == i) && i!=0" (click) = "versLeHaut(i)" style = "font-size: 35%;width: 60%;">Déplacer vers le haut</button>
     </div>
 </div>
 <div *ngIf = "idAppareil == -1" class = "lgAbsolu" style = "overflow-y: auto; top:80%; height: 20%;">{{communicationService.historiquePartie}}</div>

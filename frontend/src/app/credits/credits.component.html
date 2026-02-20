@@ -4,6 +4,6 @@
     </div>
 </div>
 
-<button *ngIf = "!isInfoAppareil && !communicationService.isMeneurDeJeu" class = "lgAbsolu lgBouton" style = "width: 20%; left: 78%; top: 90%; height: 5%;font-size: 60%;" (click) = "passer()" >Passer</button>
+<button *ngIf = "!isInfoAppareil && !communicationService.infoPartie.isMeneurDeJeu" class = "lgAbsolu lgBouton" style = "width: 20%; left: 78%; top: 90%; height: 5%;font-size: 60%;" (click) = "passer()" >Passer</button>
 
 <app-creation-appareils *ngIf = "isInfoAppareil" (retourAppareil) = "switchInfoAppareil();"></app-creation-appareils>

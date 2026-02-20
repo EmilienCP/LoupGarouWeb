@@ -1,4 +1,4 @@
-<button *ngIf = "!isInfoAppareil && communicationService.isMeneurDeJeu" class = "lgBouton lgAbsolu" style = "width: 10%; left: 3%; top: 92%; height: 5%;font-size: 30%;" (click) = "switchInfoAppareil()">info Appareil</button>
+<button *ngIf = "!isInfoAppareil && communicationService.infoPartie.isMeneurDeJeu" class = "lgBouton lgAbsolu" style = "width: 10%; left: 3%; top: 92%; height: 5%;font-size: 30%;" (click) = "switchInfoAppareil()">info Appareil</button>
 <div *ngIf = "!isInfoAppareil" class="lgTexte lgAbsolu" [style] = "(menu?'':'top: 5%;')+'font-size: 150%; text-align: center; width: 100%'" >Pointage</div>
 
 
@@ -35,7 +35,7 @@
     </div>
 </div>
 
-<button *ngIf = "!isInfoAppareil && !menu && !communicationService.isMeneurDeJeu" class= "lgTexte boutonRole lgAbsolu" [style] = "'font-size: 130%; background-color: transparent; border: none; height: 100%; overflow-y: hidden;overflow-x:hidden;width: 20%; left: 40%; top: 80%; height:20%; max-height:'+imagee.offsetWidth+'px'" (click) = "ok()">
+<button *ngIf = "!isInfoAppareil && !menu && !communicationService.infoPartie.isMeneurDeJeu" class= "lgTexte boutonRole lgAbsolu" [style] = "'font-size: 130%; background-color: transparent; border: none; height: 100%; overflow-y: hidden;overflow-x:hidden;width: 20%; left: 40%; top: 80%; height:20%; max-height:'+imagee.offsetWidth+'px'" (click) = "ok()">
     <div #imagee class="lgAbsolu" [style] ="'background-repeat: unset;background-size: cover; background-image: url(./../../assets/wolf-print2.png); width: 100%;rotate: -40deg; height: 100%;left: 0%; top: 0%; max-height:'+imagee.offsetWidth+'px'"></div>
     <div class="lgTexte lgAbsolu lgBlanc" style = "width: 100%; left: 0%; top: 38%; height:20%; font-family: texteBouton;">Ok</div>
 </button>

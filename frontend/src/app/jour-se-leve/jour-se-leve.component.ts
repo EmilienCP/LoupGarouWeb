@@ -59,23 +59,20 @@ export class JourSeLeveComponent implements OnInit {
           this.router.navigate(["jeuComponent"])
         })
       } else {
-        if(!this.communicationService.jour && !this.communicationService.isMeneurDeJeu){
+        if(!this.communicationService.jour && !this.communicationService.infoPartie.isMeneurDeJeu){
           this.timer = setTimeout(()=>{
             this.router.navigate(["jeuComponent"])
           }, 8000)
         }
       }
     });
-    if(this.communicationService.isMeneurDeJeu){
+    if(this.communicationService.infoPartie.isMeneurDeJeu){
       this.socket.on("prochaineEtape", ()=>{
         this.socket.off("prochaineEtape")
         this.router.navigate(["jeuComponent"])
       })
     }
     this.communicationService.jour? this.audioService.jouerJour(): this.audioService.jouerNuit();
-    if(this.communicationService.jour){
-      this.communicationService.numeroJour++;
-    }
     setTimeout(()=>{
       this.apparence = !this.apparence;
       this.present = false;

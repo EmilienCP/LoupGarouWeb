@@ -8,6 +8,8 @@ export interface InfoPartie {
     nbVillageois: number,
     joueursSpeciaux: boolean[],
     idMeneurDeJeu: number;
+    isMeneurDeJeu: boolean;
+    isUnMeneurDeJeu: boolean;
     modeVideo: boolean;
     modePatateChaude: boolean;
     modeVillageoisVillageois: boolean;

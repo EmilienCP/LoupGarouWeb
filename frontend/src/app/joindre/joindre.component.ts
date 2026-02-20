@@ -49,10 +49,7 @@ export class JoindreComponent implements OnInit {
       this.socket.on("infoPartieJointe", ()=>{
         this.eteindreSockets();
         //doit savoir qui est le meneur de jeu
-        this.communicationService.refreshInfoPartie().then(()=>{
-          this.communicationService.isMeneurDeJeu = false;
-          this.communicationService.isUnMeneurDeJeu = this.communicationService.infoPartie!.idMeneurDeJeu !== -1;
-        })
+        this.communicationService.refreshInfoPartie();
         this.router.navigate(["jeuComponent/selecteurComponent"], {queryParams: {"evenement": EvenementIndividuel.ARRIVER_EN_MILIEU_DE_PARTIE}});
       })
       this.socket.emit("joindrePartie", idJeu)

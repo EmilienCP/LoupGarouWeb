@@ -128,7 +128,7 @@ export class JeuComponent implements OnInit {
   }
 
   getHeight(): string{
-    if(this.communicationService.isMeneurDeJeu){
+    if(this.communicationService.infoPartie.isMeneurDeJeu){
       return "height:100%;";
     }else {
       return "height:93%;";
@@ -138,7 +138,7 @@ export class JeuComponent implements OnInit {
   
   onActivate(component: any){
     this.permetOnglets = true;
-    if(component instanceof SelecteurComponent && !this.communicationService.isMeneurDeJeu){
+    if(component instanceof SelecteurComponent && !this.communicationService.infoPartie.isMeneurDeJeu){
       this.communicationService.getInfoVillageVerite().subscribe((infoVillage: Joueur[])=>{
         this.joueursVivants = infoVillage;
         this.rolesVivantsEnum = this.joueursVivants.map((joueur: Joueur)=>{
@@ -188,7 +188,7 @@ export class JeuComponent implements OnInit {
   }
 
   mouseDown(event: any){
-    if(this.permetOnglets && !this.communicationService.isMeneurDeJeu){
+    if(this.permetOnglets && !this.communicationService.infoPartie.isMeneurDeJeu){
       this.entrainDeDrag = true;
       if(event.clientX){
         this.positionInitialeX = event.clientX;

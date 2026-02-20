@@ -28,9 +28,6 @@ export class CommunicationService {
   socket!: io.Socket;
   idSocket: string = "";
   jour: boolean = true;
-  numeroJour: number = 0;
-  isMeneurDeJeu: boolean = false;
-  isUnMeneurDeJeu: boolean = false;
   historiquePartie: string = "";
   listeners: any;
   infoPartie: InfoPartie = {} as InfoPartie;

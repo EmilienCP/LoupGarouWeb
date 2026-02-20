@@ -45,7 +45,7 @@ export class InformationsComponent implements OnInit {
   ngOnInit(): void {
     this.route.queryParams.subscribe(params =>{
       this.infoEvenement = JSON.parse(params["infoEvenement"]);
-      if(this.infoEvenement!.passer || +this.infoEvenement!.evenement == EvenementDeGroupe.INFO_ACCUSER || this.communicationService.isMeneurDeJeu){
+      if(this.infoEvenement!.passer || +this.infoEvenement!.evenement == EvenementDeGroupe.INFO_ACCUSER || this.communicationService.infoPartie.isMeneurDeJeu){
         //doit etre fait le plus vite possible, pcq si qqn a rien a faire, le meneur de jeu pourrait ne pas avoir le temps dattendre la prochaine etape
         this.attendreProchaineEtape();
       }
@@ -60,7 +60,7 @@ export class InformationsComponent implements OnInit {
           }, this.infoEvenement!.timer)
         }
         if(+this.infoEvenement!.evenement == EvenementDeGroupe.INFO_ACCUSER){
-          this.infoAccuser = this.communicationService.isUnMeneurDeJeu;
+          this.infoAccuser = this.communicationService.infoPartie.isUnMeneurDeJeu;
           this.communicationService.socket.on("derniereAccusation", ()=>{
             this.communicationService.getHistoriqueEvenements().subscribe((historiqueEvenement: string[][])=>{
               this.historiqueEvenements = historiqueEvenement
@@ -88,7 +88,7 @@ export class InformationsComponent implements OnInit {
   }
 
   partirAudio(){
-    if(this.communicationService.isMeneurDeJeu || !this.communicationService.isUnMeneurDeJeu){
+    if(this.communicationService.infoPartie.isMeneurDeJeu || !this.communicationService.infoPartie.isUnMeneurDeJeu){
       if(+this.infoEvenement!.evenement == EvenementDeGroupe.OURS_GROGNE){
         this.communicationService.getOursGrogne().subscribe((oui: boolean)=>{
           if(oui){
@@ -125,7 +125,7 @@ export class InformationsComponent implements OnInit {
   }
 
   changerTexte(): void {
-    if(this.communicationService.isUnMeneurDeJeu && !this.communicationService.isMeneurDeJeu &&
+    if(this.communicationService.infoPartie.isUnMeneurDeJeu && !this.communicationService.infoPartie.isMeneurDeJeu &&
        +this.infoEvenement!.evenement !== EvenementDeGroupe.INFO_VOTES && 
        +this.infoEvenement!.evenement !== EvenementIndividuel.CHANGER_JOUEUR && 
        +this.infoEvenement!.evenement !== EvenementIndividuel.MONTRER_TOUT_LE_MONDE &&
@@ -167,7 +167,7 @@ export class InformationsComponent implements OnInit {
       case EvenementDeGroupe.CHOIX_CAPITAINE:
       case EvenementDeGroupe.MORT_VOTES:{
         evenementTexte = this.historiqueEvenements.pop()!;
-        if(this.communicationService.isMeneurDeJeu && this.communicationService.isUnMeneurDeJeu){
+        if(this.communicationService.infoPartie.isMeneurDeJeu && this.communicationService.infoPartie.isUnMeneurDeJeu){
           evenementTexte = this.historiqueEvenements.pop()!;
         }
         break;
@@ -179,7 +179,7 @@ export class InformationsComponent implements OnInit {
       }
       case EvenementDeGroupe.VICTOIRE:{
         this.communicationService.getVictoire().subscribe((victoire: Victoire)=>{
-          if(!this.communicationService.isUnMeneurDeJeu || this.communicationService.isMeneurDeJeu){
+          if(!this.communicationService.infoPartie.isUnMeneurDeJeu || this.communicationService.infoPartie.isMeneurDeJeu){
             this.audioService.jouerVictoire();
           }
           evenementTexte.push(this.getTexteVictoire(+victoire));

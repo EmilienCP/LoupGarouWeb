@@ -1,4 +1,4 @@
-<button *ngIf = "!isInfoAppareil && communicationService.isMeneurDeJeu" class = "lgBouton lgAbsolu" style = "width: 10%; left: 3%; top: 92%; height: 5%;font-size: 30%;" (click) = "switchInfoAppareil()">info Appareil</button>
+<button *ngIf = "!isInfoAppareil && communicationService.infoPartie.isMeneurDeJeu" class = "lgBouton lgAbsolu" style = "width: 10%; left: 3%; top: 92%; height: 5%;font-size: 30%;" (click) = "switchInfoAppareil()">info Appareil</button>
 <div *ngIf = "!commencerVideo" style = "background-color: black; width: 100%; height: 100%; z-index: -100;"></div>
 <div *ngIf = "commencerVideo" style = "width: 100%; height: 100%; overflow: hidden; position: absolute;">
     <div @Fond style = "position: absolute;">
@@ -51,7 +51,7 @@
 
     <div @PendantLaNuit class= "lgAbsolu lgTexte lgBlanc" style = "width: 100%; top: 15%; visibility: hidden;">{{textePendantLaNuit}}</div>
     <div @JourSeLeve class= "lgAbsolu lgTexte lgBlanc" style = "width: 100%; top: 15%; visibility: hidden;">{{texteJourSeLeve}}</div>
-    <button *ngIf = "!communicationService.isMeneurDeJeu && !infoEvenement!.passer" class = "lgBouton lgAbsolu" style = "top: 90%; left: 80%; width: 20%; height: 5%;" (click) = "ok()">Passer</button>
+    <button *ngIf = "!communicationService.infoPartie.isMeneurDeJeu && !infoEvenement!.passer" class = "lgBouton lgAbsolu" style = "top: 90%; left: 80%; width: 20%; height: 5%;" (click) = "ok()">Passer</button>
 </div>
 <app-creation-appareils *ngIf = "isInfoAppareil" (retourAppareil) = "switchInfoAppareil();"></app-creation-appareils>
 
