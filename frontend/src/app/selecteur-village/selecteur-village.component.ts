@@ -30,59 +30,59 @@ export class SelecteurVillageComponent implements OnInit {
   ngOnInit(): void {}
 
   estAmoureux(index: number): boolean{
-    return this.communicationService.infoVillage[index].amoureux != undefined && this.evenement != EvenementIndividuel.VOTER_CAPITAINE;
+    return this.communicationService.infoPartie.village[index].amoureux != undefined && this.evenement != EvenementIndividuel.VOTER_CAPITAINE;
   }
 
   estCharme(index: number): boolean{
-    return this.communicationService.infoVillage[index].estCharmer && this.evenement != EvenementIndividuel.VOTER_CAPITAINE;
+    return this.communicationService.infoPartie.village[index].estCharmer && this.evenement != EvenementIndividuel.VOTER_CAPITAINE;
   }
 
   estAssocie(index: number): boolean{
-    return this.communicationService.infoVillage[index].estAssocier;
+    return this.communicationService.infoPartie.village[index].estAssocier;
   }
 
   estEquipeLoups(index: number): boolean{
-    return this.communicationService.infoVillage[index].equipeApparente == Equipe.LOUPS && this.evenement != EvenementIndividuel.VOTER_CAPITAINE && this.evenement != EvenementDeGroupe.ACCUSER;
+    return this.communicationService.infoPartie.village[index].equipeApparente == Equipe.LOUPS && this.evenement != EvenementIndividuel.VOTER_CAPITAINE && this.evenement != EvenementDeGroupe.ACCUSER;
   }
 
   estSoeur(index: number){
-    return this.communicationService.infoVillage[index].estSoeur;
+    return this.communicationService.infoPartie.village[index].estSoeur;
   }
 
   estFrere(index: number){
-    return this.communicationService.infoVillage[index].estFrere;
+    return this.communicationService.infoPartie.village[index].estFrere;
   }
 
   estMort(index: number): boolean{
-    return this.communicationService.infoVillage[index].estMort;
+    return this.communicationService.infoPartie.village[index].estMort;
   }
 
   getNomRole(index: number): string{
-    return utils.convertirRoleTexte(this.communicationService.infoVillage[index].role!);
+    return utils.convertirRoleTexte(this.communicationService.infoPartie.village[index].role!);
   }
 
   imageRole(index: number): string{
-    return utils.imageRole(this.communicationService.infoVillage[index].role!);
+    return utils.imageRole(this.communicationService.infoPartie.village[index].role!);
   }
 
   getNomRolePublic(index: number): string{
-    return utils.convertirRolePublicTexte(this.communicationService.infoVillage[index].rolePublic!);
+    return utils.convertirRolePublicTexte(this.communicationService.infoPartie.village[index].rolePublic!);
   }
 
   imageRolePublic(index: number): string{
-    return utils.imageRolePublic(this.communicationService.infoVillage[index].rolePublic!);
+    return utils.imageRolePublic(this.communicationService.infoPartie.village[index].rolePublic!);
   }
   
   estVillageoisVillageois(index: number): boolean{
-    return this.communicationService.infoVillage[index].role == Role.VILLAGEOIS_VILLAGEOIS;
+    return this.communicationService.infoPartie.village[index].role == Role.VILLAGEOIS_VILLAGEOIS;
   }
 
   isRole(index: number): boolean{
-    return this.communicationService.infoVillage[index].role != undefined;
+    return this.communicationService.infoPartie.village[index].role != undefined;
   }  
   
   isRolePublic(index: number): boolean{
-    return this.communicationService.infoVillage[index].rolePublic != undefined;
+    return this.communicationService.infoPartie.village[index].rolePublic != undefined;
   }
 
   selectionner(index: number){
@@ -93,7 +93,7 @@ export class SelecteurVillageComponent implements OnInit {
   }
 
   getClasseBouton(index: number): string{
-    if(this.communicationService.infoVillage[index].estMort){
+    if(this.communicationService.infoPartie.village[index].estMort){
       return 'peutPasChoisir'
     }
     if(this.raisonsPasVoter.length == 0){
@@ -121,14 +121,14 @@ export class SelecteurVillageComponent implements OnInit {
 
   getRotationCercle(index: number): string{
     const indexJoueurPresent: number = this.getIndexJoueurPresent();
-    const deltaAngle: number = 2*Math.PI/this.communicationService.infoVillage.length;
+    const deltaAngle: number = 2*Math.PI/this.communicationService.infoPartie.village.length;
     const angleActuel: number = -deltaAngle*(index-indexJoueurPresent);
     return "transform: rotate("+angleActuel+"rad);";
   }
 
   getLeftCercle(index: number): string{
     const indexJoueurPresent: number = this.getIndexJoueurPresent();
-    const deltaAngle: number = 2*Math.PI/this.communicationService.infoVillage.length;
+    const deltaAngle: number = 2*Math.PI/this.communicationService.infoPartie.village.length;
     const angleActuel: number = -deltaAngle*(index-indexJoueurPresent) + Math.PI/2;
     const valeur: number = Math.cos(angleActuel)*46 +46;
     return "left: "+valeur+"%;";
@@ -136,14 +136,14 @@ export class SelecteurVillageComponent implements OnInit {
 
   getTopCercle(index: number): string{
     const indexJoueurPresent: number = this.getIndexJoueurPresent();
-    const deltaAngle: number = 2*Math.PI/this.communicationService.infoVillage.length;
+    const deltaAngle: number = 2*Math.PI/this.communicationService.infoPartie.village.length;
     const angleActuel: number = -deltaAngle*(index-indexJoueurPresent) + Math.PI/2;
     const valeur: number = Math.sin(angleActuel)*46+46;
     return "top: "+valeur+"%;";
   }
 
   private getIndexJoueurPresent(): number{
-    return this.communicationService.infoVillage.indexOf(this.communicationService.infoVillage.filter((joueur: Joueur)=>{return joueur.soiMeme})[0])
+    return this.communicationService.infoPartie.village.indexOf(this.communicationService.infoPartie.village.filter((joueur: Joueur)=>{return joueur.soiMeme})[0])
   }
 
   getNomsPointent(index: number): string{

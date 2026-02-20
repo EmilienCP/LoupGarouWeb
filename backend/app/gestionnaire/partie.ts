@@ -1017,4 +1017,12 @@ export class Partie {
     getHistorique(): HistoriquePartie{
         return this.historiquePartie;
     }
+
+    getNbJoueursConnectesVivants(): number{
+        let compteur: number = 0;
+        this.appareils.forEach((appareil: Appareil)=>{
+            compteur +=appareil.getJoueursRestants(this.joueursVivants).length;
+        });
+        return compteur;
+    }
 }

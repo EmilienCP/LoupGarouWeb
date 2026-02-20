@@ -28,8 +28,8 @@ export class CreationAppareilsComponent implements OnInit {
 
   ngOnInit(): void {
     if(this.idAppareil == -1){
-      this.communicationService.getInfoPartie().subscribe((infos: InfoPartie)=>{
-        this.infoAppareils = infos.noms;
+      this.communicationService.refreshInfoPartie().then(()=>{
+        this.infoAppareils = this.communicationService.infoPartie!.noms;
         this.getInfoAppareilDetails();
         this.communicationService.voirHistorique().subscribe((historique: string)=>{
           this.communicationService.historiquePartie = historique;

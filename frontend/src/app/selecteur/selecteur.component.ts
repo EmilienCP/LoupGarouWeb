@@ -37,12 +37,10 @@ export class SelecteurComponent implements OnInit {
     this.route.queryParams.subscribe((params =>{
       this.evenement = params["evenement"]
       if(+this.evenement! !== EvenementIndividuel.ARRIVER_EN_MILIEU_DE_PARTIE){
-        this.communicationService.getInfoVillage().subscribe((infoVillage: Joueur[])=>{
-          this.communicationService.infoVillage = infoVillage;
-        })
+        this.communicationService.refreshInfoPartie();
       } else {
         this.communicationService.getInfoVillageArriverMilieuDePartie().subscribe((infoVillage: Joueur[])=>{
-          this.communicationService.infoVillage = infoVillage;
+          this.communicationService.infoPartie.village = infoVillage;
         })
       }
       if(+this.evenement! ==  EvenementIndividuel.JOUER_LOUP_GAROU){
@@ -163,7 +161,7 @@ export class SelecteurComponent implements OnInit {
     if(!this.pretAPasser){
       return;
     }
-    if(this.communicationService.infoVillage[this.idJoueurSelectionne].estMort){
+    if(this.communicationService.infoPartie.village[this.idJoueurSelectionne].estMort){
       this.messageAvertissement = "Ce joueur est mort";
     } else if(this.raisonsPasVoter[this.idJoueurSelectionne] !== RaisonPasVoter.AUCUN){
       this.messageAvertissement = this.getMessageAvertissement(this.raisonsPasVoter[this.idJoueurSelectionne]); 
@@ -246,8 +244,8 @@ export class SelecteurComponent implements OnInit {
           this.communicationService.voterVillageois(index, this.evenement!).subscribe((ok: boolean)=>{
               if(ok){
                 if(this.communicationService.isUnMeneurDeJeu){
-                  this.communicationService.getInfoPartie().subscribe((info: InfoPartie)=>{
-                    if(info.idAppareil == info.idMeneurDeJeu){
+                  this.communicationService.refreshInfoPartie().then(()=>{
+                    if(this.communicationService.infoPartie!.idAppareil == this.communicationService.infoPartie!.idMeneurDeJeu){
                       this.communicationService.isMeneurDeJeu = true;
                     }
                     this.router.navigate(["jeuComponent"]);

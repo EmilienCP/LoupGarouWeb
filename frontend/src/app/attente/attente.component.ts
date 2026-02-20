@@ -41,8 +41,7 @@ export class AttenteComponent implements OnInit {
 
   private suiteInfos(): void{
     this.communicationService.getInfoEvenement().subscribe((infoEvenement: InfoEvenement)=>{
-      this.communicationService.getInfoVillage().subscribe((infoVillage: Joueur[])=>{
-        this.communicationService.infoVillage = infoVillage;
+      this.communicationService.refreshInfoPartie().then(()=>{
         this.prochainLayout(infoEvenement);
       })
     })

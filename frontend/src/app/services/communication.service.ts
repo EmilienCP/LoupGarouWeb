@@ -33,7 +33,7 @@ export class CommunicationService {
   isUnMeneurDeJeu: boolean = false;
   historiquePartie: string = "";
   listeners: any;
-  infoVillage: Joueur[] = [];
+  infoPartie: InfoPartie = {} as InfoPartie;
 
   constructor(private http: HttpClient, private snack: SnackBarService) {}
 
@@ -51,8 +51,18 @@ export class CommunicationService {
     return this.socket;
   }
 
-  getInfoPartie(): Observable<InfoPartie>{
-    return this.http.get<InfoPartie>(this.ROOT_URL + 'infoPartie/'+this.idSocket);
+  refreshInfoPartie(): Promise<void> {
+    return new Promise((resolve, reject) => {
+      this.http.get<InfoPartie>(this.ROOT_URL + 'infoPartie/' + this.idSocket)
+        .pipe(catchError(err => this.handleError(err)))
+        .subscribe({
+          next: (infoPartie: InfoPartie) => {
+            this.infoPartie = infoPartie;
+            resolve();
+          },
+          error: (err) => reject(err)
+        });
+    });
   }
 
   getJoindrePartieInfo(): Observable<JoindrePartieInfo[]>{

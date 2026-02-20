@@ -155,11 +155,12 @@ export class CreationComponent implements OnInit {
   }
 
   majInfosJeu(){
-    this.communicationService.getInfoPartie().pipe(catchError(err => {
+    this.communicationService.refreshInfoPartie().catch(catchError(err => {
       this.router.navigate([""]);
       return this.communicationService.handleError(err);
-    })).subscribe((info: InfoPartie)=>{
-      if(info){
+    })).then(()=>{
+      if(this.communicationService.infoPartie){
+        let info: InfoPartie = this.communicationService.infoPartie;
         this.infoAppareils = info.noms;
         this.infosPointsDeVictoire = info.infosPointsDeVictoire;
         this.nbJoueurs = info.nbJoueurs;
