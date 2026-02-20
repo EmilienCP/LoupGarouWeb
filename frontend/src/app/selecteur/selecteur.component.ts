@@ -387,6 +387,9 @@ export class SelecteurComponent implements OnInit {
   }
 
   getCompteurPretAPasser(): number{
+    if(this.communicationService.infoPartie.nbJoueursConnectesVivants == 1){
+      return 0;
+    }
     switch(+this.evenement!){
       case EvenementIndividuel.VOTER:
       case EvenementIndividuel.VOTER_CAPITAINE:
