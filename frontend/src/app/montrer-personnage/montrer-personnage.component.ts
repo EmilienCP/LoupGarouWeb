@@ -36,6 +36,7 @@ export class MontrerPersonnageComponent implements OnInit {
   image: string = "loupBlanc.jpg";
   description: boolean = false;
   role?: Role|RolePublic;
+  rolePublic: boolean = false;
 
   constructor(private communicationService: CommunicationService, private router: Router, private route: ActivatedRoute) { }
 
@@ -70,6 +71,7 @@ export class MontrerPersonnageComponent implements OnInit {
           this.rolePersonnage = utils.convertirRoleTexte(joueur.role!);
           this.image = utils.imageRole(joueur.role!);
           this.role = joueur.role
+          this.rolePublic = false;
         })
         break;
       case EvenementIndividuel.MONTRER_PERSONNAGE_PUBLIC:
@@ -77,6 +79,7 @@ export class MontrerPersonnageComponent implements OnInit {
           this.rolePersonnage = utils.convertirRolePublicTexte(joueur.rolePublic!);
           this.image = utils.imageRolePublic(joueur.rolePublic!);
           this.role = joueur.rolePublic
+          this.rolePublic = true;
         })
         break;
       case EvenementIndividuel.JOUER_VOYANTE:
@@ -84,6 +87,7 @@ export class MontrerPersonnageComponent implements OnInit {
           this.rolePersonnage = utils.convertirRoleTexte(role);
           this.image = utils.imageRole(role);
           this.role = role;
+          this.rolePublic = false;
         })
         break;
     }

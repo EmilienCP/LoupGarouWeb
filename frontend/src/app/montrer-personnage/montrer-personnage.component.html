@@ -9,5 +9,5 @@
     <div #imagee class="lgAbsolu" [style] ="'background-repeat: unset;background-size: cover; background-image: url(./../../assets/wolf-print2.png); width: 100%;rotate: -40deg; height: 100%;left: 0%; top: 0%;'"></div>
     <div class="lgTexte lgAbsolu lgBlanc" style = "width: 100%; left: 0%; top: 40%; height:40%; font-family: texteBouton;">Ok</div>
 </button>
-<app-description-role *ngIf = "description" (fermer) = "fermerDescriptionRole()" [role] = "role"></app-description-role>
+<app-description-role *ngIf = "description" (fermer) = "fermerDescriptionRole()" [role] = "role" [rolePublic] = "rolePublic"></app-description-role>
 
