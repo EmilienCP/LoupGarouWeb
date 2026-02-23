@@ -94,7 +94,7 @@ export class SelecteurVillageComponent implements OnInit {
 
   getClasseBouton(index: number): string{
     if(this.communicationService.infoPartie.village[index].estMort){
-      return 'peutPasChoisir'
+      return 'peutPasChoisirMort'
     }
     if(this.raisonsPasVoter.length == 0){
       return 'pasBouton'
