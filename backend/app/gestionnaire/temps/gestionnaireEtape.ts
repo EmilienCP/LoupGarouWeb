@@ -26,7 +26,7 @@ export class GestionnaireEtape extends GestionnaireDeTemps{
                 break;
             case "Nuit":
                 this.partie.numeroJour++;
-                this.partie.historiqueEvenements.push(["Début du jour "+ Math.floor((this.partie.numeroJour+1)/2)])
+                this.partie.historiqueEvenements.push(["-----------------------------","---- Début du jour "+ Math.floor((this.partie.numeroJour+1)/2)+" ----", "-----------------------------"]);
                 this.gestionnaireDeTemps = new Matin(this.partie);
                 break;
             case "Matin":
