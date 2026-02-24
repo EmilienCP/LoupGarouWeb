@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Joueur, Role, RolePublic } from '../../../../common/Joueur';
 import { EvenementIndividuel } from '../../../../common/evenements';
