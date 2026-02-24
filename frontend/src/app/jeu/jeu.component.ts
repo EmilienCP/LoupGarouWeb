@@ -56,16 +56,10 @@ export class JeuComponent implements OnInit {
   @ViewChild('parent') myDiv?: ElementRef;
   
   indexOnglet: number = 0;
-  infoVillage: Joueur[] = [];
   proprieteFondEcran: string = "background-image: url(../../assets/fondEcran.png);";
   joueursVivants: Joueur[] = [];
   joueursMorts: Joueur[] = [];
-  rolesVivants: string[] = [];
-  rolesMorts: string[] = [];
-  rolesVivantsEnum: Role[] = [];
-  rolesMortsEnum: Role[] = [];
   historiqueEvenements: string[][] = [];
-
   
   entrainDeDrag: boolean = false;
   positionInitialeX: number = 0;
@@ -138,26 +132,6 @@ export class JeuComponent implements OnInit {
   
   onActivate(component: any){
     this.permetOnglets = true;
-    if(component instanceof SelecteurComponent && !this.communicationService.infoPartie.isMeneurDeJeu){
-      this.communicationService.getInfoVillageVerite().subscribe((infoVillage: Joueur[])=>{
-        this.joueursVivants = infoVillage;
-        this.rolesVivantsEnum = this.joueursVivants.map((joueur: Joueur)=>{
-          return joueur.role!
-        }).sort((a,b) => a-b);
-        this.rolesVivants = this.rolesVivantsEnum.map((role: Role)=>{
-          return convertirRoleTexte(role);
-        })
-      })
-      this.communicationService.getInfoVillageMort().subscribe((infoVillageMort: Joueur[])=>{
-        this.joueursMorts = infoVillageMort;
-        this.rolesMortsEnum = this.joueursMorts.map((joueur: Joueur)=>{
-          return joueur.role!;
-        }).sort(((a,b) => a-b));
-        this.rolesMorts = this.rolesMortsEnum.map((role: Role)=>{
-          return convertirRoleTexte(role);
-        })
-      })
-    }
     if(component instanceof InformationsComponent){
       this.route.queryParams.subscribe(params =>{
         if(JSON.parse(params["infoEvenement"]) && (JSON.parse(params["infoEvenement"]) as InfoEvenement).evenement == EvenementDeGroupe.INTRO_HISTOIRE){

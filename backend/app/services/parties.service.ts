@@ -159,6 +159,18 @@ export class PartiesService {
             })
         }
 
+        let rolesVivants: Role[] = partie.joueursVivants.map((villageois: Villageois)=>{
+            return villageois.role;
+        }).sort((a: Role, b: Role)=>{
+            return a-b;
+        });
+
+        let rolesMorts: Role[] = partie.joueursDejaMorts.map((villageois: Villageois)=>{
+            return villageois.role;
+        }).sort((a: Role, b: Role)=>{
+            return a-b;
+        });
+
 
         return {
             noms: noms,
@@ -180,7 +192,9 @@ export class PartiesService {
             numeroJour: partie.numeroJour,
             isMeneurDeJeu: appareil.siMeneurDeJeu(),
             isUnMeneurDeJeu: partie.getMeneursDeJeu().length>0,
-            village: infoVillage
+            village: infoVillage,
+            rolesVivants: rolesVivants,
+            rolesMorts: rolesMorts
         }
     }
 

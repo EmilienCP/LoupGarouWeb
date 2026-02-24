@@ -10,10 +10,6 @@ import * as utils from "../services/fontionsUtiles";
 })
 export class VillageOngletComponent implements OnInit {
 
-  @Input()rolesVivants: string[] = [];
-  @Input()rolesMorts: string[] = [];
-  @Input()rolesVivantsEnum: Role[] = [];
-  @Input()rolesMortsEnum: Role[] = [];
   roleChoisi?: Role;
   
   constructor(public communicationService: CommunicationService) {
@@ -28,15 +24,19 @@ export class VillageOngletComponent implements OnInit {
   }
 
   voirRoleVivant(index: number): void{
-    this.roleChoisi = this.rolesVivantsEnum[index];
+    this.roleChoisi = this.communicationService.infoPartie.rolesVivants[index];
   }
 
   voirRoleMort(index: number): void{
-    this.roleChoisi = this.rolesMortsEnum[index];
+    this.roleChoisi = this.communicationService.infoPartie.rolesMorts[index];
   }
 
   imageRole(role: Role): string{
     return utils.imageRole(role);
+  }
+
+  roleTexte(role: Role): string{
+    return utils.convertirRoleTexte(role, true);
   }
 
 }

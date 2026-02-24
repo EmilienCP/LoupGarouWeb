@@ -22,4 +22,6 @@ export interface InfoPartie {
     numeroJour: number;
     nbJoueursConnectesVivants: number;
     village: Joueur[];
+    rolesVivants: Role[];
+    rolesMorts: Role[];
 }

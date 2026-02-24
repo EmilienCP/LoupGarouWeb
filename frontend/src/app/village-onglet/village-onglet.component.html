@@ -9,18 +9,18 @@
             <div style = "width: 100%;">
                 <p style = "width: 100%; font-size: 70%;">Personnages Restants</p>
                 <div style = "height: 100%; width:100%; overflow-y: auto;">
-                    <div class = "boutonhover" *ngFor = "let role of rolesVivants; let i= index;" style = "border: none; margin: 0; padding: 0; width: auto; display: flex; margin-top: 2%;justify-content: center; align-items: center;" (click) = "voirRoleVivant(i)">
-                        <div #imagee style = "margin-right: 5%; font-size: 90%; " >{{role}}</div>
-                        <img [src] =  "'../../assets/'+imageRole(rolesVivantsEnum[i])" [style.height] = "imagee.offsetHeight+'px'">
+                    <div class = "boutonhover" *ngFor = "let role of this.communicationService.infoPartie.rolesVivants; let i= index;" style = "border: none; margin: 0; padding: 0; width: auto; display: flex; margin-top: 2%;justify-content: center; align-items: center;" (click) = "voirRoleVivant(i)">
+                        <div #imagee style = "margin-right: 5%; font-size: 90%; " >{{roleTexte(role)}}</div>
+                        <img [src] =  "'../../assets/'+imageRole(role)" [style.height] = "imagee.offsetHeight+'px'">
                     </div>
                 </div>
             </div>
             <div style = "width: 100%;">
                 <p style = "width: 100%; font-size: 70%;">Personnages Éliminés</p>
                 <div style = "height: 100%; width:100%; overflow-y: auto;">
-                    <div class = "boutonhover" *ngFor = "let role of rolesMorts; let i= index;" style = "border: none; margin: 0; padding: 0; width: auto; display: flex; margin-top: 2%;justify-content: center; align-items: center;" (click) = "voirRoleVivant(i)">
-                        <div #imagee style = "margin-right: 5%; font-size: 90%; " >{{role}}</div>
-                        <img [src] =  "'../../assets/'+imageRole(rolesMortsEnum[i])" [style.height] = "imagee.offsetHeight+'px'">
+                    <div class = "boutonhover" *ngFor = "let role of this.communicationService.infoPartie.rolesMorts; let i= index;" style = "border: none; margin: 0; padding: 0; width: auto; display: flex; margin-top: 2%;justify-content: center; align-items: center;" (click) = "voirRoleVivant(i)">
+                        <div #imagee style = "margin-right: 5%; font-size: 90%; " >{{roleTexte(role)}}</div>
+                        <img [src] =  "'../../assets/'+imageRole(role)" [style.height] = "imagee.offsetHeight+'px'">
                     </div>
                 </div>
             </div>

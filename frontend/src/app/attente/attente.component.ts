@@ -4,7 +4,6 @@ import { Socket } from 'socket.io-client';
 import { EvenementDeGroupe, EvenementIndividuel } from '../../../../common/evenements';
 import { CommunicationService } from '../services/communication.service';
 import { InfoEvenement } from '../../../../common/infoEvenement';
-import { Joueur } from '../../../../common/Joueur';
 
 @Component({
   selector: 'app-attente',
