@@ -11,6 +11,7 @@ import { Corbeau } from "../Personnages/corbeau";
 import { MomentFortType } from "../../../../common/momentFort";
 import { MontreurOurs } from "../Personnages/montreurOurs";
 import { GrandMechantLoup } from "../Personnages/grantMechantLoup";
+import { Appareil } from "../appareil";
 
 export class Matin extends GestionnaireDeTemps{
     verificationMorts: VerificationMorts;
@@ -105,7 +106,7 @@ export class Matin extends GestionnaireDeTemps{
                 return true;
 
             case "Afficher Morts":
-                if(this.partie.modeVideo){
+                if(this.partie.modeVideo && !this.partie.appareils.some((appareil: Appareil)=>{return appareil.passer})){
                     let nomJoueurQuiMarcheLaNuit: string = this.partie.joueursVivants[this.partie.random(this.partie.joueursVivants.length)].nom;
                     let textePendantLaNuit: string;
                     let texteJourSeLeve: string;
