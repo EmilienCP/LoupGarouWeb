@@ -8,5 +8,6 @@ export interface JoindrePartieInfo{
     id: number,
     etat: EtatPartie,
     nombreDeJoueurs: number,
-    nombreAppareilConnectes: number
+    nombreAppareilConnectes: number,
+    nombreJoueursPartis: number;
 }

@@ -106,7 +106,7 @@ export class Matin extends GestionnaireDeTemps{
                 return true;
 
             case "Afficher Morts":
-                if(this.partie.modeVideo && !this.partie.appareils.some((appareil: Appareil)=>{return appareil.passer})){
+                if(this.partie.modeVideo && this.partie.appareils.some((appareil: Appareil)=>{return !appareil.passer})){
                     let nomJoueurQuiMarcheLaNuit: string = this.partie.joueursVivants[this.partie.random(this.partie.joueursVivants.length)].nom;
                     let textePendantLaNuit: string;
                     let texteJourSeLeve: string;
