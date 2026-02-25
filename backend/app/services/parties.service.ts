@@ -1,7 +1,7 @@
 import { injectable } from 'inversify'
 import { InfoPartie } from '../../../common/infoPartie';
 import { InfoPointsDeVictoire } from '../../../common/infoPointsDeVictoire';
-import { EtatPartie, JoindrePartieInfo } from '../../../common/joindrePartieInfo';
+import { JoindrePartieInfo } from '../../../common/joindrePartieInfo';
 import { Appareil } from '../gestionnaire/appareil';
 import { Partie } from '../gestionnaire/partie';
 import { Villageois } from '../gestionnaire/Personnages/villageois';
@@ -40,31 +40,25 @@ export class PartiesService {
         return true;
     }
 
-    joindrePartie(idJeu: number, idSocket: string): void{
-        this.verifierSiDejaDansUnePartie(idSocket);
-        const nbJoueursExistants: number = this.parties[idJeu].appareils.map((appareil: Appareil) =>{return appareil.nomsJoueurs.length}).reduce((sum: number, value: number)=>{return sum+value}, 0)
-        this.parties[idJeu].appareils.push(new Appareil(idSocket, "Joueur "+nbJoueursExistants));
+    joindrePartie(idJeu: number, idSocket: string): boolean{
+        let dejaConnecteASonId: boolean = this.parties[idJeu].appareils.some((appareil: Appareil)=>{return appareil.idSocket == idSocket && appareil.disconnect});
+        if(dejaConnecteASonId){
+            this.getAppareil(idSocket).disconnect = false;
+        }
+        if(!dejaConnecteASonId){
+            const nbJoueursExistants: number = this.parties[idJeu].appareils.map((appareil: Appareil) =>{return appareil.nomsJoueurs.length}).reduce((sum: number, value: number)=>{return sum+value}, 0)
+            this.parties[idJeu].appareils.push(new Appareil(idSocket, "Joueur "+nbJoueursExistants));
+        }
+        return dejaConnecteASonId;
+        
     }
 
     quitterPartie(idSocket: string): void {
         this.parties.forEach((partie: Partie)=>{
-            const appareils: Appareil[] = partie.appareils.filter((appareil: Appareil)=>{
+            const appareil: Appareil| undefined = partie.appareils.find((appareil: Appareil)=>{
                 return appareil.idSocket == idSocket
             });
-            if(appareils.length ==1){
-                if(partie.etat == EtatPartie.EN_COURS){
-                    // partie.joueursVivants.forEach((joueur: Villageois)=>{
-                    //     if(appareils[0].joueurs.includes(joueur)){
-                    //         const nouvelIA: IA = partie.creerIA(joueur.role, joueur, true);
-                    //         partie.ias.push(nouvelIA);
-                    //         nouvelIA.initialiserCotes();
-                    //     }
-                    // })
-                    appareils[0].disconnect = true;
-                } else {
-                    partie.appareils.splice(partie.appareils.indexOf(appareils[0]), 1);
-                }
-            }
+            appareil!.disconnect = true;
         })
     }
 
@@ -83,10 +77,10 @@ export class PartiesService {
     }
 
     getPartie(idSocket: string): Partie{
-        const partiesPossibles: Partie[] = this.parties.filter((partie:Partie)=>{
-            return partie.appareils.filter((appareil:Appareil)=>{
+                const partiesPossibles: Partie[] = this.parties.filter((partie:Partie)=>{
+            return partie.appareils.some((appareil:Appareil)=>{
                 return appareil.idSocket == idSocket
-            }).length == 1;
+            });
         });
         if(partiesPossibles.length !== 1){
             throw new Error("get partie retourne pas une seule partie. idSocket: "+ idSocket + " parties.length: "+ partiesPossibles.length+ 
@@ -131,9 +125,8 @@ export class PartiesService {
         let appareil: Appareil = this.getAppareil(idSocket);
         let infoVillage: Joueur[] = [];
         if(partie.joueursVivants.length > 0){
-
-            if((appareil.indexJoueurPresent ==  -1 && appareil.getJoueursRestants(partie.joueursVivants).length>1) || appareil.siMeneurDeJeu()){
-                //voir le village par rapport a un villageois normal
+            if((appareil.indexJoueurPresent ==  -1) || appareil.siMeneurDeJeu()){
+                //si le joueur est meneur de jeu, ou s'il a plusieurs joueurs dans le meme appareil, ou s'il vient juste darriver en milieu de partie, voir le village par rapport a un villageois normal
                 joueurPresent = new Villageois(false, partie)
             } else {
                 joueurPresent = appareil.getJoueurPresent();
@@ -194,7 +187,14 @@ export class PartiesService {
             isUnMeneurDeJeu: partie.getMeneursDeJeu().length>0,
             village: infoVillage,
             rolesVivants: rolesVivants,
-            rolesMorts: rolesMorts
+            rolesMorts: rolesMorts,
+            appareils: partie.appareils.map((appareil: Appareil)=>{
+                return {
+                    noms: appareil.nomsJoueurs,
+                    pret: appareil.pret,
+                    disconnect: appareil.disconnect
+                }
+            })
         }
     }
 
@@ -202,7 +202,13 @@ export class PartiesService {
         let jpi: JoindrePartieInfo[]= [];
         this.parties.forEach((partie: Partie, id: number)=>{
             if(partie.appareils.filter((appareil: Appareil)=>{return !appareil.disconnect}).length >0){
-                jpi.push({etat: partie.etat, id: id, nombreAppareilConnectes: partie.appareils.length, nombreDeJoueurs: partie.appareils.map((value)=>{return value.nomsJoueurs.length}).reduce((a,b)=>{return a+ b})})
+                jpi.push({
+                    etat: partie.etat,
+                    id: id,
+                    nombreAppareilConnectes: partie.appareils.length,
+                    nombreDeJoueurs: partie.appareils.map((value)=>{return value.nomsJoueurs.length}).reduce((a,b)=>{return a+ b}),
+                    nombreJoueursPartis: partie.appareils.filter((appareil: Appareil)=>{return appareil.disconnect}).length
+                })
             }
         })
         return jpi;

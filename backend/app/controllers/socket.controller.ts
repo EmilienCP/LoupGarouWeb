@@ -6,6 +6,7 @@ import { Role } from '../../../common/Joueur';
 import { Action } from '../gestionnaire/gestionBugs/historiquePartie';
 import { PartiesService } from '../services/parties.service';
 import { Appareil } from '../gestionnaire/appareil';
+import { EtatPartie } from '../../../common/joindrePartieInfo';
 
 @injectable()
 export class SocketController{
@@ -35,6 +36,7 @@ export class SocketController{
             socket.on("creerPartie", ()=>{
                 try {
                     //ajouter une partie dans la liste des parties, et retourner le numero de partie
+
                     const ok: boolean = this.partiesService.creerPartie(socket.id);
                     if(!ok){
                         socket.emit("Plus de parties disponibles")
@@ -86,23 +88,20 @@ export class SocketController{
             socket.on("joindrePartie", (idJeu: number)=>{
                 try{
                     //ajouter un appareil dans la partie, et retourner le numero d'appareil
-                    this.partiesService.joindrePartie(idJeu, socket.id);
-                    socket.join(this.partiesService.getNomRoom(socket.id));
-                    socket.emit("infoPartieJointe")
-                    sio.emit("reloadPartie")
-                }
-                catch (err) {
-                   console.log(err)
-                }
-            })
-
-            socket.on("joindrePartieCommencee", (idJeu: number)=>{
-                try{
-                    //ajouter un appareil dans la partie, et retourner le numero d'appareil
-                    this.partiesService.joindrePartie(idJeu, socket.id);
-                    socket.join(this.partiesService.getNomRoom(socket.id));
-                    socket.emit("infoPartieJointe")
-                    sio.emit("reloadPartie")
+                    let dejaTrouve: boolean = this.partiesService.joindrePartie(idJeu, socket.id);
+                    let pasDappareilDisconnect: boolean = !this.partiesService.getPartie(socket.id).appareils.some((appareil:Appareil)=>{return appareil.disconnect})
+                    if(dejaTrouve){
+                        socket.emit("retourPartieJointeCreation")
+                        sio.emit("reloadPartie")
+                    } else if(pasDappareilDisconnect){
+                        socket.join(this.partiesService.getNomRoom(socket.id));
+                        socket.emit("retourPartieJointeCreation")
+                        sio.emit("reloadPartie")
+                    } else {
+                        //lappareil est ajouté mais c'est possible qu'il s'associe a un joueur disconnecté
+                        socket.join(this.partiesService.getNomRoom(socket.id));
+                        socket.emit("retourPartieJointeJoueur")
+                    }
                 }
                 catch (err) {
                    console.log(err)
@@ -390,6 +389,22 @@ export class SocketController{
                    console.log(err)
                 }
             })
+
+            socket.on("lierAppareil", (index: number) => {
+                try{
+                    this.partiesService.getPartie(socket.id).lierAppareil(index, socket.id)
+                    if(this.partiesService.getPartie(socket.id).etat == EtatPartie.EN_COURS){
+                        socket.emit("retourPartieJointeCommencee")
+                    } else {
+                        socket.emit("retourPartieJointeCreation");
+                        sio.to(this.partiesService.getNomRoom(socket.id)).emit("reloadPartie")
+                    }
+                }
+                catch (err) {
+                   console.log(err)
+                }
+            })
+            
             
         });
     }

@@ -1,11 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Socket } from 'socket.io-client';
-import { EvenementIndividuel } from '../../../../common/evenements';
-import {EtatPartie, JoindrePartieInfo} from '../../../../common/joindrePartieInfo';
-import { Joueur } from '../../../../common/Joueur';
+import { JoindrePartieInfo} from '../../../../common/joindrePartieInfo';
 import { CommunicationService } from '../services/communication.service';
-import { InfoPartie } from '../../../../common/infoPartie';
 
 @Component({
   selector: 'app-joindre',
@@ -45,21 +42,15 @@ export class JoindreComponent implements OnInit {
   }
 
   joindre(idJeu: number, indexUI: number){
-    if(this.listeParties[indexUI].etat == EtatPartie.EN_COURS){
-      this.socket.on("infoPartieJointe", ()=>{
-        this.eteindreSockets();
-        //doit savoir qui est le meneur de jeu
-        this.communicationService.refreshInfoPartie();
-        this.router.navigate(["jeuComponent/selecteurComponent"], {queryParams: {"evenement": EvenementIndividuel.ARRIVER_EN_MILIEU_DE_PARTIE}});
-      })
-      this.socket.emit("joindrePartie", idJeu)
-    } else {
-      this.socket.on("infoPartieJointe", ()=>{
-        this.eteindreSockets();
-        this.router.navigate(["creationComponent"])
-      })
-      this.socket.emit("joindrePartie", idJeu)
-    }
+    this.socket.on("retourPartieJointeCreation", ()=>{
+      this.eteindreSockets();
+      this.router.navigate(["creationComponent"]);
+    })
+    this.socket.on("retourPartieJointeJoueur", ()=>{
+      this.eteindreSockets();
+      this.router.navigate(["joindreJoueurComponent"])
+    })
+    this.socket.emit("joindrePartie", idJeu)
   }
 
 }

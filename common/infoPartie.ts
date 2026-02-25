@@ -1,4 +1,5 @@
 import { Joueur, Role } from "./Joueur";
+import { InfoAppareil } from "./infoAppareil";
 import { InfoPointsDeVictoire } from "./infoPointsDeVictoire";
 
 export interface InfoPartie {
@@ -24,4 +25,5 @@ export interface InfoPartie {
     village: Joueur[];
     rolesVivants: Role[];
     rolesMorts: Role[];
+    appareils: InfoAppareil[];
 }

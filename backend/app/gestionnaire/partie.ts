@@ -880,40 +880,25 @@ export class Partie {
         return index;
     }
 
-    remplacerIAEnJoueur(idJoueurAppareil: number, idSocket: string){
-        let joueurPresent: Villageois|undefined;
-        let appareilDisconnect: Appareil|undefined;
-        let index: number= 0;
-        this.appareils.forEach((appareil: Appareil)=>{
-            if(appareil.siMeneurDeJeu()){
-                if(index == idJoueurAppareil){
-                    appareilDisconnect = appareil;
-                }
-                index++;
-            }
-            appareil.joueurs.forEach((joueur: Villageois)=>{
-                if(index == idJoueurAppareil){
-                    appareilDisconnect = appareil;
-                    joueurPresent = joueur;
-                }
-                index++;
-            })
-        })
+    lierAppareil(idAppareilALier: number, idSocketAncienAppareil: string){
+        let appareilDisconnect: Appareil|undefined = this.appareils[idAppareilALier];
         if(!appareilDisconnect){
-            throw new Error("L'appareil tente de se connecter au joueur avec l'id "+ idJoueurAppareil+" mais il n'y a pas d'appareil lié");
+            throw new Error("L'appareil tente de se connecter au joueur avec l'id "+ idAppareilALier+" mais il n'y a pas d'appareil lié");
         }
-        if(!appareilDisconnect.disconnect){
-            throw new Error("Aucun appareil disconnect qui contient le joueur: "+joueurPresent!.nom);
+        let appareilCree:Appareil|undefined = this.appareils.find((appareil: Appareil)=>{return appareil.idSocket == idSocketAncienAppareil})
+        if(!appareilCree){
+            throw new Error("Aucun appareil trouvé dans la partie avec le socket id: "+idSocketAncienAppareil);
         }
-        let appareilCree:Appareil = this.appareils.filter((appareil: Appareil)=>{return appareil.idSocket == idSocket})[0]
         appareilDisconnect.idSocket = appareilCree.idSocket;
         appareilDisconnect.disconnect = false;
         if(appareilDisconnect.evenementPresent){
             appareilDisconnect.evenementsEnAttente.unshift(appareilDisconnect.evenementPresent);
         }
-        if(joueurPresent?.backupRaisonPasVoter){
-            joueurPresent!.raisonsPasVoter.unshift(joueurPresent!.backupRaisonPasVoter);
-        }
+        appareilDisconnect.joueurs.forEach((joueur: Villageois)=>{
+            if(joueur?.backupRaisonPasVoter){
+                joueur!.raisonsPasVoter.unshift(joueur!.backupRaisonPasVoter);
+            }
+        })
         this.appareils.splice(this.appareils.indexOf(appareilCree),1);
     }
 

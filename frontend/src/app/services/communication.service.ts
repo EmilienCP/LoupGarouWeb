@@ -14,7 +14,7 @@ import { InfoEvenement } from '../../../../common/infoEvenement'
 import { InfoPointsDeVictoire } from '../../../../common/infoPointsDeVictoire'
 import { environment } from 'src/environments/environment';
 import { Toune } from '../../../../common/toune';
-import { InfoAppareilDetail } from '../../../../common/infoAppareilDetail';
+import { InfoAppareil } from '../../../../common/infoAppareil';
 
 
 @Injectable({
@@ -169,11 +169,6 @@ export class CommunicationService {
 
   siPlusieursPersonnesPeuventAccuser(): Observable<boolean>{
     return this.http.get<boolean>(this.ROOT_URL + 'siPlusieursPersonnesPeuventAccuser/'+this.idSocket)
-    .pipe(catchError(err => this.handleError(err)));
-  }
-
-  getInfoAppareilDetails(): Observable<InfoAppareilDetail[]>{
-    return this.http.get<InfoAppareilDetail[]>(this.ROOT_URL + 'infoAppareilDetails/'+this.idSocket)
     .pipe(catchError(err => this.handleError(err)));
   }
 

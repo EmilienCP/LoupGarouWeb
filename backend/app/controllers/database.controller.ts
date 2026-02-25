@@ -1,6 +1,5 @@
 import { Request, Response, Router } from 'express'
 import { JoindrePartieInfo } from '../../../common/joindrePartieInfo'
-import { InfoAppareilDetail } from '../../../common/infoAppareilDetail'
 import { inject, injectable } from 'inversify'
 import { Equipe, Joueur, JoueurExtensionLoups, Role } from '../../../common/Joueur'
 import { PartiesService } from '../services/parties.service'
@@ -305,8 +304,6 @@ export class DatabaseController {
               this.partiesService.getPartie(req.body.idSocket).joueursVivants[+req.body.index],
               this.partiesService.getPartie(req.body.idSocket)
             )
-          } else if(+req.body.evenement == EvenementIndividuel.ARRIVER_EN_MILIEU_DE_PARTIE){
-            this.partiesService.getPartie(req.body.idSocket).remplacerIAEnJoueur(+req.body.index, req.body.idSocket);
           } else {
             const partie: Partie = this.partiesService.getPartie(req.body.idSocket);
             const joueurPresent: Villageois = this.partiesService.getAppareil(req.body.idSocket).getJoueurPresent();
@@ -475,21 +472,6 @@ export class DatabaseController {
       catch (err) {
         console.log(err)
         res.status(500).end()
-      }
-    })
-
-    router.get('/infoAppareilDetails/:idSocket',
-      async (req: Request, res: Response) => {
-        try {
-          let infoAppareilDetails: InfoAppareilDetail[] = [];
-          this.partiesService.getPartie(req.params.idSocket).appareils.forEach((appareil: Appareil)=>{
-            infoAppareilDetails.push({pret: appareil.pret, disconnect: appareil.disconnect})
-          })
-          res.json(infoAppareilDetails);
-        }
-        catch (err) {
-          console.log(err)
-          res.status(500).end()
       }
     })
 

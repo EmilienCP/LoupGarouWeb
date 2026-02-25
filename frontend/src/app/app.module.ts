@@ -54,6 +54,7 @@ import { JeuComponent } from './jeu/jeu.component';
 import { VillageOngletComponent } from './village-onglet/village-onglet.component';
 import { HistoriqueEvenementComponent } from './historique-evenement/historique-evenement.component';
 import { JeuAIComponent } from './jeu-ai/jeu-ai.component';
+import { JoindreJoueurComponent } from './joindre-joueur/joindre-joueur.component';
 
 @NgModule({
   declarations: [
@@ -84,6 +85,7 @@ import { JeuAIComponent } from './jeu-ai/jeu-ai.component';
     VillageOngletComponent,
     HistoriqueEvenementComponent,
     JeuAIComponent,
+    JoindreJoueurComponent,
   ],
   imports: [
     BrowserModule,
