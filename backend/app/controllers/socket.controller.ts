@@ -404,6 +404,21 @@ export class SocketController{
                    console.log(err)
                 }
             })
+
+            socket.on("nouveauJoueur", () => {
+                try{
+                    this.partiesService.getAppareil(socket.id).disconnect=false;
+                    if(this.partiesService.getPartie(socket.id).etat == EtatPartie.EN_COURS){
+                        socket.emit("retourPartieJointeCommencee")
+                    } else {
+                        socket.emit("retourPartieJointeCreation");
+                        sio.to(this.partiesService.getNomRoom(socket.id)).emit("reloadPartie")
+                    }
+                }
+                catch (err) {
+                   console.log(err)
+                }
+            })
             
             
         });
