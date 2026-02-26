@@ -56,9 +56,14 @@ export class PartiesService {
     quitterPartie(idSocket: string): void {
         this.parties.forEach((partie: Partie)=>{
             const appareil: Appareil| undefined = partie.appareils.find((appareil: Appareil)=>{
-                return appareil.idSocket == idSocket
+                return appareil.idSocket == idSocket;
             });
-            appareil!.disconnect = true;
+            if(appareil){
+                appareil.disconnect = true;
+                if(!partie.appareils.some((appareil: Appareil)=>{return !appareil.disconnect}) && this.parties.length>1){
+                    this.parties.splice(this.parties.indexOf(partie), 1);
+                }
+            }
         })
     }
 
@@ -167,6 +172,7 @@ export class PartiesService {
 
         return {
             noms: noms,
+            etat: partie.etat,
             nbJoueurs: partie.getNbJoueurs(),
             nbLoups: partie.getNbLoups(),
             nbVillageois: partie.getNbJoueurs()-partie.getNbLoups()-partie.getNbJoueursPourChoixPersonnages(),

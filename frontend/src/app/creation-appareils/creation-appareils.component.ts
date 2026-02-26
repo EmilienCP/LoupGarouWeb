@@ -12,8 +12,8 @@ export class CreationAppareilsComponent implements OnInit {
 
   
   socket: Socket;
-  @Input() idAppareil: number = -1;
-  @Input() idMeneurDeJeu: number = -1;
+  @Input() idAppareilReel: number = -1;
+  @Input() idMeneurDeJeuReel: number = -1;
   @Output() majInfosJeu = new EventEmitter<boolean>();
   @Output() retourAppareil = new EventEmitter<boolean>();
 
@@ -36,12 +36,12 @@ export class CreationAppareilsComponent implements OnInit {
   (total, appareil) => total + appareil.noms.length,
   0
 );
-    this.communicationService.infoPartie.appareils[this.idAppareil].noms.push(nomJoueur);
+    this.communicationService.infoPartie.appareils[this.idAppareilReel].noms.push(nomJoueur);
     this.socket.emit("ajouterJoueur", nomJoueur)
   }
 
   retirer(idJoueur: number): void{
-    this.communicationService.infoPartie.appareils[this.idAppareil].noms.splice(idJoueur,1);
+    this.communicationService.infoPartie.appareils[this.idAppareilReel].noms.splice(idJoueur,1);
     this.socket.emit("retirerJoueur", idJoueur)
   }
 
@@ -57,7 +57,7 @@ export class CreationAppareilsComponent implements OnInit {
     if(nomJoueur.length>40){
       nomJoueur = nomJoueur.substring(0,40);
     }
-    this.communicationService.infoPartie.appareils[this.idAppareil].noms[idJoueur] = nomJoueur;
+    this.communicationService.infoPartie.appareils[this.idAppareilReel].noms[idJoueur] = nomJoueur;
     this.socket.emit("renommerJoueur", idJoueur, nomJoueur)
   }
 
@@ -72,16 +72,16 @@ export class CreationAppareilsComponent implements OnInit {
   }
 
   versLeHaut(index: number){
-    this.socket.emit("versLeHaut", index);
+    this.socket.emit("versLeHaut", this.communicationService.infoPartie.appareils.indexOf(this.appareilsConnectes[index]));
   }
 
   switchPret(index: number){
-    this.socket.emit("switchAppareilPret", index);
+    this.socket.emit("switchAppareilPret", this.communicationService.infoPartie.appareils.indexOf(this.appareilsConnectes[index]));
     this.communicationService.refreshInfoPartie();
   }
 
   switchDisconnect(index: number){
-    this.communicationService.switchAppareilDisconnect(index).subscribe((ok: boolean)=>{
+    this.communicationService.switchAppareilDisconnect(this.communicationService.infoPartie.appareils.indexOf(this.appareilsConnectes[index])).subscribe((ok: boolean)=>{
       if(ok){
         this.communicationService.refreshInfoPartie();
       }
@@ -89,7 +89,7 @@ export class CreationAppareilsComponent implements OnInit {
   }
 
   retirerAppareil(index: number){
-    this.communicationService.retirerAppareil(index).subscribe((ok: boolean)=>{
+    this.communicationService.retirerAppareil(this.communicationService.infoPartie.appareils.indexOf(this.appareilsConnectes[index])).subscribe((ok: boolean)=>{
       if(ok){
         this.communicationService.refreshInfoPartie();
       }
@@ -107,6 +107,14 @@ export class CreationAppareilsComponent implements OnInit {
 
   get appareilsConnectes(): any[]{
     return this.communicationService.infoPartie.appareils.filter(appareil => !appareil.disconnect);
+  }
+
+  get idAppareil(): number{
+    return this.appareilsConnectes.indexOf(this.communicationService.infoPartie.appareils[this.idAppareilReel]);
+  }
+
+  get idMeneurDeJeu(): number{
+    return this.appareilsConnectes.indexOf(this.communicationService.infoPartie.appareils[this.idMeneurDeJeuReel]);
   }
 
 }

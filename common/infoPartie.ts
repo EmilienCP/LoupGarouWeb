@@ -1,9 +1,11 @@
 import { Joueur, Role } from "./Joueur";
 import { InfoAppareil } from "./infoAppareil";
 import { InfoPointsDeVictoire } from "./infoPointsDeVictoire";
+import { EtatPartie } from "./joindrePartieInfo";
 
 export interface InfoPartie {
     noms: string[][],
+    etat: EtatPartie
     nbJoueurs: number,
     nbLoups: number,
     nbVillageois: number,

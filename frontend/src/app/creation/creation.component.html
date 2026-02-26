@@ -3,7 +3,7 @@
     <p *ngIf = "!isDescriptionRole"  class = "lgTexte lgAbsolu lgBlanc" style = "left: 30%;width:40%; font-size: 60%;" [style.top] = "idAppareil==0?'1%':'5%'">Numero de partie : {{idJeu}}</p>
     <div *ngIf = "!isDescriptionRole"  #parent @parent class = "lgAbsolu" style = "width:100%; overflow-x: hidden;" [style.top] = "idAppareil==0?'27%':'15%'" [style.height] = "idAppareil==0?'75%':'95%'" (mousedown)="mouseDown($event)" (touchstart)="mouseDown($event)" (mousemove) = "mouseMove($event)" (touchmove) = "mouseMove($event)" (mouseup) = "mouseUp()" (touchend) = "mouseUp()">
         <div [@appareilsInfo] = "{value: entrainDeDrag?'deplacement':indexOnglet, params: { marginFinal: marginFinal-indexOnglet*parent.offsetWidth}}" class = "lgAbsolu" style = "width:100%; height: 70%;overflow-y: auto; overflow-x: hidden;">
-            <app-creation-appareils [idMeneurDeJeu] = "idMeneurDeJeu" [idAppareil] = "idAppareil" (majInfosJeu) = "majInfosJeu()"></app-creation-appareils>
+            <app-creation-appareils [idMeneurDeJeuReel] = "idMeneurDeJeu" [idAppareilReel] = "idAppareil" (majInfosJeu) = "majInfosJeu()"></app-creation-appareils>
         </div>
         
         <div [@partieInfo] = "{value: entrainDeDrag?'deplacement':indexOnglet, params: { marginFinal: marginFinal-(indexOnglet-1)*parent.offsetWidth}}" class = "lgAbsolu" style = "width:100%; height: 70%;overflow-y: auto; overflow-x: hidden;">

@@ -3,6 +3,7 @@ import { CommunicationService } from '../services/communication.service';
 import { Socket } from 'socket.io-client';
 import { Router } from '@angular/router';
 import { InfoAppareil } from '../../../../common/infoAppareil';
+import { EtatPartie } from '../../../../common/joindrePartieInfo';
 
 @Component({
   selector: 'app-joindre-joueur',
@@ -29,11 +30,30 @@ export class JoindreJoueurComponent implements OnInit {
     this.socket.on("retourPartieJointeCommencee", ()=>{
       this.router.navigate(["jeuComponent"])
     })
-    this.socket.emit("lierAppareil", i)
+    //doit trouver l'index de appareil correspondant à l'index i dans la liste de tous les appareils
+    this.socket.emit("lierAppareil", this.communicationService.infoPartie.appareils.indexOf(this.appareilsNonConnectes[i]))
   }
 
-  get appareilsConnectes(): InfoAppareil[]{
-    return this.communicationService.infoPartie.appareils;
+  public nouveauJoueur(): void{
+    this.socket.on("retourPartieJointeCreation", ()=>{
+      this.router.navigate(["creationComponent"])
+    })
+    this.socket.on("retourPartieJointeCommencee", ()=>{
+      this.router.navigate(["jeuComponent"])
+    })
+    this.socket.emit("nouveauJoueur")
+  }
+
+  get appareilsNonConnectes(): InfoAppareil[]{
+    return this.communicationService.infoPartie.appareils.filter((appareil: InfoAppareil)=>{return appareil.disconnect});
+  }
+
+  get partieEnCours(): boolean{
+    return this.communicationService.infoPartie.etat == EtatPartie.EN_COURS;
+  }
+
+  siMeneurDeJeu(index: number): boolean{
+    return this.communicationService.infoPartie.appareils[this.communicationService.infoPartie.idMeneurDeJeu] == this.appareilsNonConnectes[index]
   }
 
 }
