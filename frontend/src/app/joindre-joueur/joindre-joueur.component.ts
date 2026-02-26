@@ -52,4 +52,8 @@ export class JoindreJoueurComponent implements OnInit {
     return this.communicationService.infoPartie.etat == EtatPartie.EN_COURS;
   }
 
+  siMeneurDeJeu(index: number): boolean{
+    return this.communicationService.infoPartie.appareils[this.communicationService.infoPartie.idMeneurDeJeu] == this.appareilsNonConnectes[index]
+  }
+
 }

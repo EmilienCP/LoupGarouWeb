@@ -1,7 +1,7 @@
 <p class = "lgTexte"> Quel appareil êtes-vous?</p>
 <div class = "lgAbsolu" style = "display: flex; width: 100%; flex-wrap: wrap; justify-content: center; top: 15%; overflow-y: auto; max-height: 58%;">
     <button *ngFor = "let appareil of appareilsNonConnectes; let i = index" class = "lgBouton" style = "margin-bottom: 5px; margin-left: 5px; min-height: 50px;background-color:red; display:flex; align-items: center; flex-wrap: wrap; justify-content: center" (click)="choisir(i)" [disabled] = "!appareil.disconnect">  
-        <div *ngIf = "this.communicationService.infoPartie.idMeneurDeJeu == i" class = "lgTexte lgBlanc" style = "font-size: clamp(10%, 100%, 30px);width:100%;">(meneur de jeu)</div>
+        <div *ngIf = "siMeneurDeJeu(i)" class = "lgTexte lgBlanc" style = "font-size: clamp(10%, 100%, 30px);width:100%;">(meneur de jeu)</div>
         <div *ngFor = "let info of appareil.noms; let j = index" style = "width:100%">
             <div style ="display: grid;grid-template-columns: 100%;grid-template-rows: auto;">
                 <div style = "font-size:clamp(10%, 100%, 30px); color: white;">{{info}}</div>
