@@ -22,6 +22,11 @@ export enum Role{
     GRAND_MECHANT_LOUP
 }
 
+export enum EtatsSpeciaux{
+    AMOUREUX=21,
+    INFECTE
+}
+
 export enum RolePublic{
     VAGABOND,
     FERMIER,

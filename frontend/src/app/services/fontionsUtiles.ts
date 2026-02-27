@@ -1,6 +1,6 @@
-import { Role, RolePublic } from '../../../../common/Joueur';
+import { EtatsSpeciaux, Role, RolePublic } from '../../../../common/Joueur';
 
-export function convertirRoleTexte(role: Role, roleIndividuel: boolean = false): string {
+export function convertirRoleTexte(role: Role | EtatsSpeciaux, roleIndividuel: boolean = false): string {
     switch(role){
         case Role.VILLAGEOIS: return "un Villageois";
         case Role.LOUP_GAROU: return "un Loup-Garou";
@@ -23,7 +23,9 @@ export function convertirRoleTexte(role: Role, roleIndividuel: boolean = false):
         case Role.DEUX_SOEURS: return roleIndividuel?"les Deux Soeurs":"l'une des Deux Soeurs";
         case Role.TROIS_FRERES: return roleIndividuel?"les Trois Frères":"l'un des Trois Frères";
         case Role.GRAND_MECHANT_LOUP: return "le Grand Méchant Loup";
-      }
+        case EtatsSpeciaux.AMOUREUX: return "les Amoureux";
+        case EtatsSpeciaux.INFECTE: return "possiblement un infecté";
+    }
 }
 
 export function descriptionRole(role: Role): string{
@@ -52,7 +54,7 @@ export function descriptionRole(role: Role): string{
     }
 }
 
-export function imageRole(role: Role): string{
+export function imageRole(role: Role | EtatsSpeciaux): string{
   switch(role){
     case Role.VILLAGEOIS: return "villageois.png";
     case Role.LOUP_GAROU: return "loupGarou.png";
@@ -75,6 +77,8 @@ export function imageRole(role: Role): string{
     case Role.DEUX_SOEURS: return "deuxSoeurs.jpg";
     case Role.TROIS_FRERES: return "troisFreres.jpg";
     case Role.GRAND_MECHANT_LOUP: return "grandMechantLoup.jpg";
+    case EtatsSpeciaux.AMOUREUX: return "cupidon.png";
+    case EtatsSpeciaux.INFECTE: return "loupGarou.png";
   }
 }
 

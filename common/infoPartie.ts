@@ -1,4 +1,4 @@
-import { Joueur, Role } from "./Joueur";
+import { EtatsSpeciaux, Joueur, Role } from "./Joueur";
 import { InfoAppareil } from "./infoAppareil";
 import { InfoPointsDeVictoire } from "./infoPointsDeVictoire";
 import { EtatPartie } from "./joindrePartieInfo";
@@ -25,7 +25,7 @@ export interface InfoPartie {
     numeroJour: number;
     nbJoueursConnectesVivants: number;
     village: Joueur[];
-    rolesVivants: Role[];
-    rolesMorts: Role[];
+    rolesVivants: (Role|EtatsSpeciaux)[];
+    rolesMorts: (Role|EtatsSpeciaux)[];
     appareils: InfoAppareil[];
 }

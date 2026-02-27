@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { Joueur, Role } from '../../../../common/Joueur';
+import { EtatsSpeciaux, Joueur, Role } from '../../../../common/Joueur';
 import { CommunicationService } from '../services/communication.service';
 import * as utils from "../services/fontionsUtiles";
 
@@ -24,18 +24,22 @@ export class VillageOngletComponent implements OnInit {
   }
 
   voirRoleVivant(index: number): void{
-    this.roleChoisi = this.communicationService.infoPartie.rolesVivants[index];
+    if(Object.values(Role).includes(this.communicationService.infoPartie.rolesVivants[index] as Role)){
+      this.roleChoisi = this.communicationService.infoPartie.rolesVivants[index] as Role;
+    }
   }
 
   voirRoleMort(index: number): void{
-    this.roleChoisi = this.communicationService.infoPartie.rolesMorts[index];
+    if(Object.values(Role).includes(this.communicationService.infoPartie.rolesMorts[index] as Role)){
+      this.roleChoisi = this.communicationService.infoPartie.rolesMorts[index] as Role;
+    }
   }
 
-  imageRole(role: Role): string{
+  imageRole(role: Role | EtatsSpeciaux): string{
     return utils.imageRole(role);
   }
 
-  roleTexte(role: Role): string{
+  roleTexte(role: Role | EtatsSpeciaux): string{
     return utils.convertirRoleTexte(role, true);
   }
 

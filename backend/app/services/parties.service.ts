@@ -5,7 +5,7 @@ import { JoindrePartieInfo } from '../../../common/joindrePartieInfo';
 import { Appareil } from '../gestionnaire/appareil';
 import { Partie } from '../gestionnaire/partie';
 import { Villageois } from '../gestionnaire/Personnages/villageois';
-import { Equipe, Joueur, Role } from '../../../common/Joueur';
+import { Equipe, EtatsSpeciaux, Joueur, Role } from '../../../common/Joueur';
 import { EnfantSauvage } from '../gestionnaire/Personnages/enfantSauvage';
 import { EvenementIndividuel } from '../../../common/evenements';
 import { DeuxSoeurs } from '../gestionnaire/Personnages/deuxSoeurs';
@@ -163,12 +163,32 @@ export class PartiesService {
             return a-b;
         });
 
+        
+
         let rolesMorts: Role[] = partie.joueursDejaMorts.map((villageois: Villageois)=>{
             return villageois.role;
         }).sort((a: Role, b: Role)=>{
             return a-b;
         });
 
+        let rolesVivantsEtatsSpeciaux: (Role|EtatsSpeciaux)[] = rolesVivants;
+        let rolesMortsEtatsSpeciaux: (Role|EtatsSpeciaux)[] = rolesMorts;
+
+        if(partie.joueursVivants.some((villageois: Villageois)=>{return villageois.amoureux})){
+            rolesVivantsEtatsSpeciaux.push(EtatsSpeciaux.AMOUREUX);
+        } 
+
+        if(partie.joueursMorts.some((villageois: Villageois)=>{return villageois.amoureux})){
+            rolesMortsEtatsSpeciaux.push(EtatsSpeciaux.AMOUREUX);
+        }
+
+        if(!partie.joueursMorts.some((villageois: Villageois)=>{return villageois.estInfecte})&& partie.choixPersonnages.includes(Role.INFECT_PERE_LOUPS)){
+            rolesVivantsEtatsSpeciaux.push(EtatsSpeciaux.INFECTE);
+        }
+
+        if(partie.joueursMorts.some((villageois: Villageois)=>{return villageois.estInfecte})){
+            rolesMortsEtatsSpeciaux.push(EtatsSpeciaux.INFECTE);
+        }
 
         return {
             noms: noms,
@@ -192,8 +212,8 @@ export class PartiesService {
             isMeneurDeJeu: appareil.siMeneurDeJeu(),
             isUnMeneurDeJeu: partie.getMeneursDeJeu().length>0,
             village: infoVillage,
-            rolesVivants: rolesVivants,
-            rolesMorts: rolesMorts,
+            rolesVivants: rolesVivantsEtatsSpeciaux,
+            rolesMorts: rolesMortsEtatsSpeciaux,
             appareils: partie.appareils.map((appareil: Appareil)=>{
                 return {
                     noms: appareil.nomsJoueurs,
