@@ -750,13 +750,7 @@ export class Partie {
             console.log("Phase 4")
         }
         //Phase4:
-        //na pas de sens le 2e && pcq si les joueurs reels accusent pas ca crash
-        if(!this.voteCourant.auMoinsUnAccuse() && this.ias.length>0/* &&
-            this.appareils
-            .map((appareil: Appareil)=>{return appareil.getJoueursRestants(this.joueursVivants).length;})
-            .reduce((sum: number, current: number)=>{return sum + current;}) 
-            <= this.ias.length*/){//si nb joueurs vivants <= nb dias
-                
+        if(!this.voteCourant.auMoinsUnAccuse() && this.ias.length>0){
                 this.ias[this.random(this.ias.length)].accusationForcee();
                 return;
             }
@@ -780,20 +774,20 @@ export class Partie {
         }
         this.nbJoueurs = nbJoueurs;
         if(ajustements){
-            this.ajustementPartie(true, false, false);
+            //this.ajustementPartie(true, false, false);
         }
     }
 
     setNbLoups(nbLoups: number, ajustements: boolean = true): void{
         this.nbLoups = nbLoups;
         if(ajustements){
-            this.ajustementPartie(false, true, false);
+            //this.ajustementPartie(false, true, false);
         }
     }
 
     setNbVillageois(nbVillageois: number): void{
         this.nbJoueurs = nbVillageois + this.getNbJoueursPourChoixPersonnages();
-        this.ajustementPartie(false, false, true)
+        //this.ajustementPartie(false, false, true)
     }
 
     setPointage(idAppareil: number, idJoueur: number, pointage: number){
@@ -806,7 +800,7 @@ export class Partie {
         } else {
             this.choixPersonnages.splice(this.choixPersonnages.indexOf(role), 1)
         }
-        this.ajustementPartie(false, false, false);
+        //this.ajustementPartie(false, false, false);
     }
 
     private listeRoleEnParam(roles: Role[]): number{
@@ -817,53 +811,53 @@ export class Partie {
         return param;
     }
 
-    private ajustementPartie(joueursStatic: boolean, loupStatic: boolean, villageoisStatic: boolean): void{
-        var fs = require('fs');
-        let data = fs.readFileSync('matrix.json', 'utf8');
-        const infos: number[][] = JSON.parse(data) as number[][];
-        let paramPersonnages: number = this.listeRoleEnParam(this.choixPersonnages);
+    // private ajustementPartie(joueursStatic: boolean, loupStatic: boolean, villageoisStatic: boolean): void{
+    //     var fs = require('fs');
+    //     let data = fs.readFileSync('matrix.json', 'utf8');
+    //     const infos: number[][] = JSON.parse(data) as number[][];
+    //     let paramPersonnages: number = this.listeRoleEnParam(this.choixPersonnages);
 
-        if(joueursStatic){
-            let nbJoueurs: number = this.nbJoueurs;
-            let nbLoups: number = infos[paramPersonnages][nbJoueurs-3];
-            while(nbJoueurs < nbLoups + this.getNbJoueursPourChoixPersonnages()){
-                nbJoueurs = nbLoups + this.getNbJoueursPourChoixPersonnages();
-                if(!infos[paramPersonnages][nbJoueurs-3]) break;
-                nbLoups = infos[paramPersonnages][nbJoueurs-3];
-            }
-            this.nbLoups = nbLoups;
-            this.nbJoueurs = nbJoueurs;
-        } else if(loupStatic){
-            let nbJoueurs = this.getNbJoueursPourChoixPersonnages()+this.nbLoups;
-            let nbLoups: number = infos[paramPersonnages][nbJoueurs-3];
-            while(nbLoups < this.nbLoups){
-                nbJoueurs++;
-                if(!infos[paramPersonnages][nbJoueurs-3]) break;
-                nbLoups = infos[paramPersonnages][nbJoueurs-3];
-            }
-            this.nbJoueurs = nbJoueurs;
-        } else if(villageoisStatic){
-            let nbJoueurs: number = +this.nbJoueurs;
-            let nbLoups: number = infos[paramPersonnages][nbJoueurs-3];
-            while(nbJoueurs < nbLoups+this.nbJoueurs){
-                nbJoueurs++;
-                if(!infos[paramPersonnages][nbJoueurs-3]) break;
-                nbLoups = infos[paramPersonnages][nbJoueurs-3];
-            }
-            this.nbJoueurs = nbJoueurs;
-            this.nbLoups = nbLoups;
-        } else {
-            let nbJoueurs: number = this.nbJoueurs;
-            let nbLoups: number = infos[paramPersonnages][nbJoueurs-3];
-            while(nbLoups+this.getNbJoueursPourChoixPersonnages() > nbJoueurs){
-                nbJoueurs++;
-                if(!infos[paramPersonnages][nbJoueurs-3]) break;
-                nbLoups = infos[paramPersonnages][nbJoueurs-3];
-            }
-            this.nbLoups = nbLoups;
-            this.nbJoueurs = nbJoueurs;
-        }
-    }
+    //     if(joueursStatic){
+    //         let nbJoueurs: number = this.nbJoueurs;
+    //         let nbLoups: number = infos[paramPersonnages][nbJoueurs-3];
+    //         while(nbJoueurs < nbLoups + this.getNbJoueursPourChoixPersonnages()){
+    //             nbJoueurs = nbLoups + this.getNbJoueursPourChoixPersonnages();
+    //             if(!infos[paramPersonnages][nbJoueurs-3]) break;
+    //             nbLoups = infos[paramPersonnages][nbJoueurs-3];
+    //         }
+    //         this.nbLoups = nbLoups;
+    //         this.nbJoueurs = nbJoueurs;
+    //     } else if(loupStatic){
+    //         let nbJoueurs = this.getNbJoueursPourChoixPersonnages()+this.nbLoups;
+    //         let nbLoups: number = infos[paramPersonnages][nbJoueurs-3];
+    //         while(nbLoups < this.nbLoups){
+    //             nbJoueurs++;
+    //             if(!infos[paramPersonnages][nbJoueurs-3]) break;
+    //             nbLoups = infos[paramPersonnages][nbJoueurs-3];
+    //         }
+    //         this.nbJoueurs = nbJoueurs;
+    //     } else if(villageoisStatic){
+    //         let nbJoueurs: number = +this.nbJoueurs;
+    //         let nbLoups: number = infos[paramPersonnages][nbJoueurs-3];
+    //         while(nbJoueurs < nbLoups+this.nbJoueurs){
+    //             nbJoueurs++;
+    //             if(!infos[paramPersonnages][nbJoueurs-3]) break;
+    //             nbLoups = infos[paramPersonnages][nbJoueurs-3];
+    //         }
+    //         this.nbJoueurs = nbJoueurs;
+    //         this.nbLoups = nbLoups;
+    //     } else {
+    //         let nbJoueurs: number = this.nbJoueurs;
+    //         let nbLoups: number = infos[paramPersonnages][nbJoueurs-3];
+    //         while(nbLoups+this.getNbJoueursPourChoixPersonnages() > nbJoueurs){
+    //             nbJoueurs++;
+    //             if(!infos[paramPersonnages][nbJoueurs-3]) break;
+    //             nbLoups = infos[paramPersonnages][nbJoueurs-3];
+    //         }
+    //         this.nbLoups = nbLoups;
+    //         this.nbJoueurs = nbJoueurs;
+    //     }
+    // }
 
     public getNbJoueursPourChoixPersonnages(): number{
         return this.choixPersonnages.length + (this.choixPersonnages.includes(Role.DEUX_SOEURS)?1:0) + (this.choixPersonnages.includes(Role.TROIS_FRERES)?2:0);
