@@ -803,13 +803,13 @@ export class Partie {
         //this.ajustementPartie(false, false, false);
     }
 
-    private listeRoleEnParam(roles: Role[]): number{
-        let param: number = 0;
-        roles.forEach((role: Role)=>{
-            param+=2**(role-3);
-        })
-        return param;
-    }
+    // private listeRoleEnParam(roles: Role[]): number{
+    //     let param: number = 0;
+    //     roles.forEach((role: Role)=>{
+    //         param+=2**(role-3);
+    //     })
+    //     return param;
+    // }
 
     // private ajustementPartie(joueursStatic: boolean, loupStatic: boolean, villageoisStatic: boolean): void{
     //     var fs = require('fs');
