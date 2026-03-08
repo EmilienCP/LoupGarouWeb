@@ -25,7 +25,6 @@ export enum EvenementIndividuel {
     JOUER_HYPNOTISEUR,
     JOUER_ENFANT_SAUVAGE,
     INFO_HYPNOTISER,
-    ARRIVER_EN_MILIEU_DE_PARTIE,
     JOUER_JOUEUR_DE_FLUTE,
     JOUER_LOUP_BLANC,
     INFO_ASSOCIER_MORT,
@@ -40,7 +39,7 @@ export enum EvenementIndividuel {
 }
 
 export enum EvenementDeGroupe{
-    JOUR_SE_LEVE = 38,
+    JOUR_SE_LEVE = 37,
     SOLEIL_SE_COUCHE,
     ACCUSER,
     INFO_ACCUSER,

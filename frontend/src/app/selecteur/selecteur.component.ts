@@ -36,13 +36,7 @@ export class SelecteurComponent implements OnInit {
   ngOnInit(): void {
     this.route.queryParams.subscribe((params =>{
       this.evenement = params["evenement"]
-      if(+this.evenement! !== EvenementIndividuel.ARRIVER_EN_MILIEU_DE_PARTIE){
-        this.communicationService.refreshInfoPartie();
-      } else {
-        this.communicationService.getInfoVillageArriverMilieuDePartie().subscribe((infoVillage: Joueur[])=>{
-          this.communicationService.infoPartie.village = infoVillage;
-        })
-      }
+      this.communicationService.refreshInfoPartie();
       if(+this.evenement! ==  EvenementIndividuel.JOUER_LOUP_GAROU){
         this.nbVotes = 3;
         this.communicationService.getInfoVillageExtensionLoups().subscribe((infoVillageExtensionLoups: JoueurExtensionLoups[])=>{
@@ -78,13 +72,7 @@ export class SelecteurComponent implements OnInit {
         this.communicationService.getRaisonsPasVoterInstitutrice().subscribe((raisons: RaisonPasVoter[])=>{
           this.raisonsPasVoter = raisons;
         })
-      } 
-      else if(+this.evenement! == EvenementIndividuel.ARRIVER_EN_MILIEU_DE_PARTIE){
-        this.texte = this.changerTexte();
-        this.communicationService.getRaisonsPasVoterArriverMilieuDePartie().subscribe((raisons: RaisonPasVoter[])=>{
-          this.raisonsPasVoter = raisons;
-        })
-      } 
+      }
       else {
         this.texte = this.changerTexte();
         this.communicationService.getRaisonsPasVoter().subscribe((raisons: RaisonPasVoter[])=>{
@@ -135,8 +123,6 @@ export class SelecteurComponent implements OnInit {
         return "Qui soupconnez-vous d'être un loup-garou?"
       case EvenementIndividuel.JOUER_FEMME_DE_MENAGE:
         return "Chez qui voulez-vous faire le ménage cette nuit?"
-      case EvenementIndividuel.ARRIVER_EN_MILIEU_DE_PARTIE:
-        return "Quel personnage étiez-vous?"
       case EvenementIndividuel.JOUER_HYPNOTISEUR:
         return "Qui voulez-vous hypnotiser cette nuit?"
       case EvenementIndividuel.JOUER_JOUEUR_DE_FLUTE:
@@ -240,19 +226,6 @@ export class SelecteurComponent implements OnInit {
                 }
             })
             break;
-        case EvenementIndividuel.ARRIVER_EN_MILIEU_DE_PARTIE:
-          this.communicationService.voterVillageois(index, this.evenement!).subscribe((ok: boolean)=>{
-              if(ok){
-                if(this.communicationService.infoPartie.isUnMeneurDeJeu){
-                  this.communicationService.refreshInfoPartie().then(()=>{
-                    this.router.navigate(["jeuComponent"]);
-                  })
-                }else {
-                  this.router.navigate(["jeuComponent"]);
-                }
-              }
-          })
-          break;
         case EvenementDeGroupe.ACCUSER:
             if(this.siQuiEtesVous){
               this.communicationService.voterVillageois(index, this.evenement!).subscribe((ok: boolean)=>{
@@ -397,7 +370,6 @@ export class SelecteurComponent implements OnInit {
       case EvenementIndividuel.JOUER_INSTITUTRICE:
       case EvenementIndividuel.TRANCHER_CAPITAINE:
       case EvenementIndividuel.CHOISIR_SUCCESSEUR:
-      case EvenementIndividuel.ARRIVER_EN_MILIEU_DE_PARTIE:
       case EvenementIndividuel.JOUER_ENFANT_SAUVAGE:
       case EvenementIndividuel.JOUER_LOUP_BLANC:
       case EvenementIndividuel.JOUER_SERVANTE_DEVOUEE:

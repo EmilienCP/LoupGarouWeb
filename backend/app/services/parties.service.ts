@@ -130,7 +130,7 @@ export class PartiesService {
         let appareil: Appareil = this.getAppareil(idSocket);
         let infoVillage: Joueur[] = [];
         if(partie.joueursVivants.length > 0){
-            if((appareil.indexJoueurPresent ==  -1) || appareil.siMeneurDeJeu()){
+            if((appareil.indexJoueurPresent ==  -1 && appareil.joueurs.length > 1) || appareil.siMeneurDeJeu()){
                 //si le joueur est meneur de jeu, ou s'il a plusieurs joueurs dans le meme appareil, ou s'il vient juste darriver en milieu de partie, voir le village par rapport a un villageois normal
                 joueurPresent = new Villageois(false, partie)
             } else {

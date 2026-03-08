@@ -8,7 +8,7 @@
         
         <div [@partieInfo] = "{value: entrainDeDrag?'deplacement':indexOnglet, params: { marginFinal: marginFinal-(indexOnglet-1)*parent.offsetWidth}}" class = "lgAbsolu" style = "width:100%; height: 70%;overflow-y: auto; overflow-x: hidden;">
             <app-creation-info-partie [nomsPersonnages] = "nomsPersonnages" [idAppareil] = "idAppareil" [preferencesPersonnages] = "preferencesPersonnages"
-                 [modeVideo] = "modeVideo" [modePatateChaude] = "modePatateChaude" [modeVillageoisVillageois] = "modeVillageoisVillageois" [backup] = "backup" [histoire] = "histoire" [nbJoueurs] = "nbJoueurs" [nbLoups] = "nbLoups" [nbVillageois] = "nbVillageois" (description) = "descriptionRole($event)"></app-creation-info-partie>
+                 [modeVideo] = "modeVideo" [modePatateChaude] = "modePatateChaude" [modeVillageoisVillageois] = "modeVillageoisVillageois" [modeExtensionVillage] = "modeExtensionVillage" [backup] = "backup" [histoire] = "histoire" [nbJoueurs] = "nbJoueurs" [nbLoups] = "nbLoups" [nbVillageois] = "nbVillageois" (description) = "descriptionRole($event)"></app-creation-info-partie>
         </div>
     
         <div [@pointageInfo] = "{value: entrainDeDrag?'deplacement':indexOnglet, params: { marginFinal: marginFinal-(indexOnglet-2)*parent.offsetWidth}}" class = "lgAbsolu" style = "width:100%; height: 70%;overflow-y: auto; overflow-x: hidden;">
