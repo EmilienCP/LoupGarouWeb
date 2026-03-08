@@ -7,7 +7,7 @@ import { Partie } from '../gestionnaire/partie';
 import { Villageois } from '../gestionnaire/Personnages/villageois';
 import { Equipe, EtatsSpeciaux, Joueur, Role } from '../../../common/Joueur';
 import { EnfantSauvage } from '../gestionnaire/Personnages/enfantSauvage';
-import { EvenementIndividuel } from '../../../common/evenements';
+import { EvenementDeGroupe, EvenementIndividuel } from '../../../common/evenements';
 import { DeuxSoeurs } from '../gestionnaire/Personnages/deuxSoeurs';
 import { TroisFreres } from '../gestionnaire/Personnages/troisFreres';
 import { Voyante } from '../gestionnaire/Personnages/voyante';
@@ -256,15 +256,15 @@ export class PartiesService {
         partie.appareils[index] = temp;
     }
 
-    getInfosPointsDeVictoire(idSocket: string): InfoPointsDeVictoire[]{
+    getInfosPointsDeVictoire(idSocket: string, evenement: EvenementDeGroupe): InfoPointsDeVictoire[]{
         const partie: Partie = this.getPartie(idSocket);
         const infos: InfoPointsDeVictoire[] = [];
         partie.appareils.forEach((appareil: Appareil, idAppareil: number)=>{
             appareil.joueurs.forEach((joueur: Villageois, index: number)=>{
                 infos.push({
                     nom: joueur.nom,
-                    points: appareil.pointsJoueurs[index],
-                    pointsGagnes: appareil.pointsAAjouter[index],
+                    points: evenement == EvenementDeGroupe.MONTRER_POINTS_VICTOIRES ? appareil.pointsJoueurs[index] : joueur.getPrecision(),
+                    pointsGagnes: evenement == EvenementDeGroupe.MONTRER_POINTS_VICTOIRES ? appareil.pointsAAjouter[index] : appareil.pointsPrecision[index],
                     idAppareil: idAppareil,
                     idJoueur: index 
                 })

@@ -105,6 +105,16 @@ export class Vote {
         return infos;
     }
 
+    genererInfoVotesPointeurs(): Villageois[][]{
+        let infos: Villageois[][] = [];
+        this.electeurs.forEach((liste: Villageois[], index: number)=>{
+            liste.forEach((villageois: Villageois)=>{
+                infos.push([villageois, this.accuses[index]]);
+            })
+        })
+        return infos;
+    }
+
     genererAccusation(): string[]{
         let liste: string[] = [];
         if(this.voteCorbeau){

@@ -61,4 +61,15 @@ export class LoupBlanc extends Villageois{
         return Victoire.LOUP_BLANC;
     }
 
+    calculerPrecision(electeur: Villageois, cible: Villageois): void {
+        if(!this.amoureux){
+            if(electeur.equipeReelle != Equipe.INDEPENDANT){
+                this.totalReponsesPrecisions++;
+                if(electeur.equipeReelle == cible.equipeReelle && cible != this){
+                    this.totalBonnesReponsesPrecisions++;
+                }
+            }
+        }
+    }
+
 }

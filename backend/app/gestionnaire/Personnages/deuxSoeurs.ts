@@ -22,7 +22,7 @@ export class DeuxSoeurs extends Villageois{
 
     actionExServante(joueurQuelleAPris: Villageois): void {
         super.actionExServante(joueurQuelleAPris);
-        this.partie.joueursVivants.concat(this.partie.joueursDejaMorts).forEach((joueur: Villageois)=>{
+        this.partie.joueursVivants.concat(this.partie.joueursDejaMorts).concat(this.partie.joueursDejaMortsPointeurs).forEach((joueur: Villageois)=>{
             //si la servante devouee prend le role dune des deux soeurs et lautre est morte, on veut quand meme la trouver
             if(joueur.role == Role.DEUX_SOEURS && joueur != this && joueur != joueurQuelleAPris){
                 this.deuxiemeSoeur = joueur;

@@ -2,6 +2,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Socket } from 'socket.io-client';
 import { CommunicationService } from '../services/communication.service';
 import { Router } from '@angular/router';
+import { InfoAppareil } from '../../../../common/infoAppareil';
 
 @Component({
   selector: 'app-creation-appareils',
@@ -22,7 +23,7 @@ export class CreationAppareilsComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    if(this.idAppareil == -1){
+    if(this.idAppareilReel == -1){
       this.communicationService.refreshInfoPartie().then(()=>{
         this.communicationService.voirHistorique().subscribe((historique: string)=>{
           this.communicationService.historiquePartie = historique;
@@ -105,15 +106,21 @@ export class CreationAppareilsComponent implements OnInit {
     this.router.navigate(["attenteComponent"]);
   }
 
-  get appareilsConnectes(): any[]{
+  get appareilsConnectes(): InfoAppareil[]{
     return this.communicationService.infoPartie.appareils.filter(appareil => !appareil.disconnect);
   }
 
   get idAppareil(): number{
+    if(this.idAppareilReel == -1){
+      return -1;
+    }
     return this.appareilsConnectes.indexOf(this.communicationService.infoPartie.appareils[this.idAppareilReel]);
   }
 
   get idMeneurDeJeu(): number{
+    if(this.idMeneurDeJeuReel == -1){
+      return -1;
+    }
     return this.appareilsConnectes.indexOf(this.communicationService.infoPartie.appareils[this.idMeneurDeJeuReel]);
   }
 

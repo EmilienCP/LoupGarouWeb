@@ -194,7 +194,8 @@ export class AttenteComponent implements OnInit {
         this.router.navigate([this.router.url+"/creditsComponent"])
         break;
       }
-      case EvenementDeGroupe.MONTRER_POINTS_VICTOIRES:{
+      case EvenementDeGroupe.MONTRER_POINTS_VICTOIRES:
+      case EvenementDeGroupe.INFO_PRECISIONS:{
         this.eteindreSockets();
         this.router.navigate([this.router.url+"/leaderBoardComponent"],  {queryParams: {"infoEvenement": JSON.stringify(infoEvenement)}});
         break;

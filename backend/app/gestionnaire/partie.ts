@@ -1004,4 +1004,12 @@ export class Partie {
         });
         return compteur;
     }
+
+    getNbJoueursConnectes(): number{
+        let compteur: number = 0;
+        this.appareils.forEach((appareil: Appareil)=>{
+            compteur +=appareil.joueurs.length;
+        });
+        return compteur;
+    }
 }

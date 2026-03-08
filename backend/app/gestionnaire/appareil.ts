@@ -7,6 +7,7 @@ import { Villageois } from "./Personnages/villageois";
 export class Appareil {
     nomsJoueurs: string[];
     pointsJoueurs: number[];
+    pointsPrecision: number[];
     pointsAAjouter: number[];
     joueurs: Villageois[];
     evenementsEnAttente: (EvenementDeGroupe | EvenementIndividuel)[]; // actions a executer
@@ -23,6 +24,7 @@ export class Appareil {
         this.nomsJoueurs = [nomJoueur];
         this.pointsJoueurs = [0];
         this.pointsAAjouter = [0];
+        this.pointsPrecision = [0];
         this.evenementsEnAttente = [];
         this.joueurs = [];
         this.indexJoueurPresent = -1;
@@ -183,6 +185,7 @@ export class Appareil {
         this.nomsJoueurs.push(nomJoueur);
         this.pointsJoueurs.push(0);
         this.pointsAAjouter.push(0);
+        this.pointsPrecision.push(0);
     }
 
     siMeneurDeJeu(): boolean{

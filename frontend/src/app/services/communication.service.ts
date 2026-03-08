@@ -32,7 +32,12 @@ export class CommunicationService {
   listeners: any;
   infoPartie: InfoPartie = {} as InfoPartie;
 
-  constructor(private http: HttpClient, private snack: SnackBarService) {}
+  constructor(private http: HttpClient, private snack: SnackBarService) {
+    this.infoPartie = {
+      appareils: [] as InfoAppareil[],
+      village: [] as Joueur[]
+    } as InfoPartie;
+  }
 
   public connectSocket(): void{
     this.socket = io.connect(this.ROOT_URL)
@@ -202,8 +207,8 @@ export class CommunicationService {
     .pipe(catchError(err => this.handleError(err)));
   }
 
-  getInfosPointsDeVictoire(): Observable<InfoPointsDeVictoire[]>{
-    return this.http.get<InfoPointsDeVictoire[]>(this.ROOT_URL + 'infosPointsDeVictoire/'+this.idSocket)
+  getInfosPointsDeVictoire(evenement: EvenementDeGroupe): Observable<InfoPointsDeVictoire[]>{
+    return this.http.get<InfoPointsDeVictoire[]>(this.ROOT_URL + 'infosPointsDeVictoire/'+this.idSocket+'/'+evenement)
     .pipe(catchError(err => this.handleError(err)));
   }
 

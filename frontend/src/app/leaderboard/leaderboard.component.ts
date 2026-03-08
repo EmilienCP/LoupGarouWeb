@@ -5,6 +5,7 @@ import { CommunicationService } from '../services/communication.service';
 import { Socket } from 'socket.io-client';
 import { AudioService } from '../services/audio.service';
 import { InfoEvenement } from '../../../../common/infoEvenement';
+import { EvenementDeGroupe } from '../../../../common/evenements';
 
 @Component({
   selector: 'app-leaderboard',
@@ -16,6 +17,7 @@ export class LeaderboardComponent implements OnInit,OnChanges {
   @Input() infos: InfoPointsDeVictoire[] = [];
   @Input() menu: boolean = false;
   @Input() idAppareil: number = -1;
+  titreParametre: string = "Points Totaux";
   isInfoAppareil: boolean = false;
   private socket: Socket;
   infoEvenement?: InfoEvenement;
@@ -26,26 +28,30 @@ export class LeaderboardComponent implements OnInit,OnChanges {
   }
 
   ngOnInit(): void {
-    this.route.queryParams.subscribe(params =>{
-      this.infoEvenement = JSON.parse(params["infoEvenement"]);
-      if(this.infoEvenement!.timer>0){
-        this.timer = setTimeout(()=>{
-          this.ok();
-        }, this.infoEvenement!.timer)
-      }
-    });
-    if(this.communicationService.infoPartie.isMeneurDeJeu){
-      this.socket.on("prochaineEtape", ()=>{
-        this.socket.off("prochaineEtape");
-        this.router.navigate(["jeuComponent"])
-      })
-    }
+    this.titreParametre
     if(!this.menu){
-      if(!this.communicationService.infoPartie.isUnMeneurDeJeu || this.communicationService.infoPartie.isMeneurDeJeu){
+      this.route.queryParams.subscribe(params =>{
+        this.infoEvenement = JSON.parse(params["infoEvenement"]);
+        if(this.infoEvenement!.timer>0){
+          this.timer = setTimeout(()=>{
+            this.ok();
+          }, this.infoEvenement!.timer)
+        }
+      });
+      if(this.communicationService.infoPartie.isMeneurDeJeu){
+        this.socket.on("prochaineEtape", ()=>{
+          this.socket.off("prochaineEtape");
+          this.router.navigate(["jeuComponent"])
+        })
+      }
+      if(this.infoEvenement?.evenement == EvenementDeGroupe.INFO_PRECISIONS && (!this.communicationService.infoPartie.isUnMeneurDeJeu || this.communicationService.infoPartie.isMeneurDeJeu)){
         this.audioService.jouerCredits();
       }
-      this.communicationService.getInfosPointsDeVictoire().subscribe((infos)=>{
+      this.communicationService.getInfosPointsDeVictoire(this.infoEvenement?.evenement as EvenementDeGroupe).subscribe((infos)=>{
         this.infos = infos;
+        if(this.infoEvenement?.evenement == EvenementDeGroupe.INFO_PRECISIONS){
+          this.titreParametre = "Précision";
+        }
         this.infos.sort((info1: InfoPointsDeVictoire, info2: InfoPointsDeVictoire)=>{
           return info2.points-info1.points;
         });

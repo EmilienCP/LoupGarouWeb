@@ -81,4 +81,13 @@ export class JoueurDeFlute extends Villageois{
     getSorteVictoireSilGagne(): Victoire{
         return Victoire.JOUEUR_DE_FLUTE;
     }
+
+    calculerPrecision(electeur: Villageois, cible: Villageois): void {
+        if(electeur.estCharmer && !cible.estCharmer){
+            this.totalReponsesPrecisions++;
+            if(cible != this){
+                this.totalBonnesReponsesPrecisions++;
+            }
+        }
+    }
 }

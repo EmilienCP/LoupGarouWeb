@@ -252,7 +252,7 @@ export class InformationsComponent implements OnInit {
         break;
       }
       case EvenementDeGroupe.MONTRER_POINTS_VICTOIRES:{
-        this.communicationService.getInfosPointsDeVictoire().subscribe((infos: InfoPointsDeVictoire[]) => {
+        this.communicationService.getInfosPointsDeVictoire(this.infoEvenement?.evenement as EvenementDeGroupe).subscribe((infos: InfoPointsDeVictoire[]) => {
             infos.forEach((info: InfoPointsDeVictoire)=>{
               evenementTexte.push(info.nom + " a gagné "+info.pointsGagnes + " point" + ((info.pointsGagnes > 1)?"s":"")+".");
             })

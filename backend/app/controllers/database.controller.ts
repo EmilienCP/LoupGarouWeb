@@ -526,10 +526,10 @@ export class DatabaseController {
       }
     })
 
-    router.get('/infosPointsDeVictoire/:idSocket',
+    router.get('/infosPointsDeVictoire/:idSocket/:evenement',
     async (req: Request, res: Response) => {
       try {
-        res.json(this.partiesService.getInfosPointsDeVictoire(req.params.idSocket));
+        res.json(this.partiesService.getInfosPointsDeVictoire(req.params.idSocket, +req.params.evenement));
       }
       catch (err) {
         console.log(err)

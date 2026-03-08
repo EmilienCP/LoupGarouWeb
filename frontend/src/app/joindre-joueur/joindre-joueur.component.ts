@@ -12,6 +12,7 @@ import { EtatPartie } from '../../../../common/joindrePartieInfo';
 })
 export class JoindreJoueurComponent implements OnInit {
 
+  couleurFond: string = "black"
   socket: Socket;
 
   constructor(public communicationService: CommunicationService, private router: Router) {

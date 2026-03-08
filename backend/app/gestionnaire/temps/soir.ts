@@ -11,7 +11,7 @@ export class Soir extends GestionnaireDeTemps{
     trancherCapitaine?: Villageois;
 
     constructor(partie: Partie){
-        super(["Resultat votes", "Inserer Morts", "Afficher Morts","Info votes", "Trancher Capitaine", "Info trancher capitaine", "Verification Morts"], partie)
+        super(["Resultat votes","Caluler precisions", "Inserer Morts", "Afficher Morts","Info votes", "Trancher Capitaine", "Info trancher capitaine", "Verification Morts"], partie)
         this.verificationMorts = new VerificationMorts(this.partie);
     }
     
@@ -20,6 +20,14 @@ export class Soir extends GestionnaireDeTemps{
             case "Resultat votes":
                 this.partie.preparerEvenementDeGroupe(EvenementDeGroupe.RESULTATS_VOTES, EvenementDeGroupe.RESULTATS_VOTES);
                 return false;
+            case "Caluler precisions":
+                let infoVotes: Villageois[][] = this.partie.voteCourant.genererInfoVotesPointeurs();
+                infoVotes.forEach((info: Villageois[])=>{
+                    this.partie.joueursVivants.forEach((joueur: Villageois)=>{
+                        joueur.calculerPrecision(info[0], info[1]);
+                    });
+                });
+                return true;
             case "Inserer Morts":
                 this.partie.joueursMorts = this.partie.joueursMorts.concat(this.partie.voteCourant.gagnantsVote());
                 return true;

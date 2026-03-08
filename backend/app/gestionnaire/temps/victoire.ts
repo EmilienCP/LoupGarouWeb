@@ -8,7 +8,7 @@ import { GestionnaireDeTemps } from "./gestionnaireDeTemps";
 export class Victoire extends GestionnaireDeTemps{
 
     constructor(partie: Partie){
-        super(["Afficher Victoire","Montrer Personnages", "Points De Victoire","Moment Forts Info", "Moments Forts", "Credits",  "Terminer Partie"], partie)
+        super(["Afficher Victoire","Montrer Personnages","Precisions", "Points De Victoire","Moment Forts Info", "Moments Forts", "Credits",  "Terminer Partie"], partie)
     }
     
     protected async executerProchaineEtape(etapeCourante: number): Promise<boolean> {
@@ -35,13 +35,25 @@ export class Victoire extends GestionnaireDeTemps{
                 this.partie.historiqueEvenements.push(texte);
                 this.partie.preparerEvenementDeGroupe(EvenementDeGroupe.MONTRER_VIVANTS, EvenementDeGroupe.MONTRER_VIVANTS);
                 return false;
-            case "Points De Victoire":
+            case "Precisions":
+                let pointsPrecisions: number[] = [];
                 this.partie.appareils.forEach((appareil: Appareil)=>{
-                    appareil.joueurs.forEach((joueur: Villageois, i: number)=>{
-                        appareil.pointsAAjouter[i] = joueur.pointsDeVictoire();
-                        appareil.pointsJoueurs[i] += appareil.pointsAAjouter[i];
+                    appareil.joueurs.forEach((joueur: Villageois)=>{
+                        pointsPrecisions.push(joueur.getPrecision());
                     })
                 })
+                pointsPrecisions.sort((a, b) => a - b);
+                this.partie.appareils.forEach((appareil: Appareil)=>{
+                    appareil.joueurs.forEach((joueur: Villageois, i: number)=>{
+                        let pointsPrecision: number = Math.round(pointsPrecisions.indexOf(joueur.getPrecision())*(1/this.partie.getNbJoueursConnectes())*100)/100;
+                        appareil.pointsAAjouter[i] = joueur.pointsDeVictoire();
+                        appareil.pointsJoueurs[i] += appareil.pointsAAjouter[i] + pointsPrecision;
+                        appareil.pointsPrecision[i] = pointsPrecision;
+                    })
+                })
+                this.partie.preparerEvenementDeGroupe(EvenementDeGroupe.INFO_PRECISIONS, EvenementDeGroupe.INFO_PRECISIONS);
+                return false;
+            case "Points De Victoire":
                 this.partie.preparerEvenementDeGroupe(EvenementDeGroupe.MONTRER_POINTS_VICTOIRES, EvenementDeGroupe.MONTRER_POINTS_VICTOIRES);
                 return false;
             case "Moment Forts Info":{

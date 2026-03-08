@@ -21,6 +21,8 @@ export class Villageois{
     joueurPunit?: Villageois;
     backupRaisonPasVoter?: RaisonPasVoter[];
     rolePublic: RolePublic;
+    totalBonnesReponsesPrecisions: number;
+    totalReponsesPrecisions: number;
 
     constructor(estLoup: boolean, partie: Partie) {
         this.role = estLoup ? Role.LOUP_GAROU: Role.VILLAGEOIS;
@@ -32,6 +34,8 @@ export class Villageois{
         this.estInfecte = false;
         this.estCharmer = false;
         this.patateChaude = false;
+        this.totalBonnesReponsesPrecisions = 0;
+        this.totalReponsesPrecisions = 0;
     }
 
     copier(villageois: Villageois): Villageois{
@@ -56,6 +60,8 @@ export class Villageois{
         if(this.equipeReelle == Equipe.INDEPENDANT && villageois.equipeReelle != Equipe.INDEPENDANT){
             villageois.equipeReelle = Equipe.INDEPENDANT;
         }
+        villageois.totalBonnesReponsesPrecisions = this.totalBonnesReponsesPrecisions;
+        villageois.totalReponsesPrecisions = this.totalReponsesPrecisions;
         return villageois;
     }
 
@@ -319,6 +325,40 @@ export class Villageois{
             return Victoire.LOUP_GAROU;
         }
         throw new Error("Un villageois independant se retrouve seul a gagner, pas normal.")
+    }
+
+    calculerPrecision(electeur: Villageois, cible: Villageois): void{
+        if(this.equipeReelle == Equipe.VILLAGEOIS){
+            if(electeur == this){
+                this.totalReponsesPrecisions++;
+                if(cible.equipeReelle != Equipe.VILLAGEOIS){
+                    this.totalBonnesReponsesPrecisions++;
+                }
+            }
+        }
+        if(this.equipeReelle == Equipe.LOUPS){
+            if(electeur.equipeReelle == Equipe.VILLAGEOIS){
+                this.totalReponsesPrecisions++;
+                if(cible.equipeReelle == Equipe.VILLAGEOIS){
+                    this.totalBonnesReponsesPrecisions++;
+                }
+            }
+        }
+        if(this.amoureux){
+            if(electeur == this){
+                this.totalBonnesReponsesPrecisions++;
+            }
+        }
+    }
+
+    getPrecision(): number{
+        if(this.amoureux){
+            this.totalReponsesPrecisions = Math.round(this.partie.numeroJour/2);
+        }
+        if(this.totalReponsesPrecisions == 0){
+            return 50;
+        }
+        return Math.round(this.totalBonnesReponsesPrecisions*100 / this.totalReponsesPrecisions);
     }
     
 }
