@@ -40,7 +40,7 @@ export class AttenteComponent implements OnInit {
 
   private suiteInfos(): void{
     this.communicationService.getInfoEvenement().subscribe((infoEvenement: InfoEvenement)=>{
-      this.communicationService.refreshInfoPartie().then(()=>{
+      this.communicationService.refreshInfoPartie(false, true).then(()=>{
         this.prochainLayout(infoEvenement);
       })
     })

@@ -24,7 +24,7 @@ export class CreationAppareilsComponent implements OnInit {
 
   ngOnInit(): void {
     if(this.idAppareilReel == -1){
-      this.communicationService.refreshInfoPartie().then(()=>{
+      this.communicationService.refreshInfoPartie(true, false).then(()=>{
         this.communicationService.voirHistorique().subscribe((historique: string)=>{
           this.communicationService.historiquePartie = historique;
         })
@@ -78,13 +78,13 @@ export class CreationAppareilsComponent implements OnInit {
 
   switchPret(index: number){
     this.socket.emit("switchAppareilPret", this.communicationService.infoPartie.appareils.indexOf(this.appareilsConnectes[index]));
-    this.communicationService.refreshInfoPartie();
+    this.communicationService.refreshInfoPartie(true, false);
   }
 
   switchDisconnect(index: number){
     this.communicationService.switchAppareilDisconnect(this.communicationService.infoPartie.appareils.indexOf(this.appareilsConnectes[index])).subscribe((ok: boolean)=>{
       if(ok){
-        this.communicationService.refreshInfoPartie();
+        this.communicationService.refreshInfoPartie(true, false);
       }
     })
   }
@@ -92,7 +92,7 @@ export class CreationAppareilsComponent implements OnInit {
   retirerAppareil(index: number){
     this.communicationService.retirerAppareil(this.communicationService.infoPartie.appareils.indexOf(this.appareilsConnectes[index])).subscribe((ok: boolean)=>{
       if(ok){
-        this.communicationService.refreshInfoPartie();
+        this.communicationService.refreshInfoPartie(true, false);
       }
     })
   }

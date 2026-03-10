@@ -1,12 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Socket } from 'socket.io-client';
-import { Joueur, Equipe, Role, JoueurExtensionLoups } from '../../../../common/Joueur';
+import { JoueurExtensionLoups } from '../../../../common/Joueur';
 import { EvenementDeGroupe, EvenementIndividuel, RaisonPasVoter } from '../../../../common/evenements';
 import { CommunicationService } from '../services/communication.service';
 import { InfoEvenement } from '../../../../common/infoEvenement';
-import * as utils from '../services/fontionsUtiles';
-import { InfoPartie } from '../../../../common/infoPartie';
 
 @Component({
   selector: 'app-selecteur',
@@ -28,6 +26,7 @@ export class SelecteurComponent implements OnInit {
   idJoueurSelectionne: number = -1;
   detailsVillage: boolean = false;
   infoVillageExtensionLoups: JoueurExtensionLoups[] = [];
+  lock: boolean = false;
 
   constructor(private communicationService: CommunicationService, private route: ActivatedRoute, private router: Router) {
     this.socket = communicationService.getSocket();
@@ -36,7 +35,6 @@ export class SelecteurComponent implements OnInit {
   ngOnInit(): void {
     this.route.queryParams.subscribe((params =>{
       this.evenement = params["evenement"]
-      this.communicationService.refreshInfoPartie();
       if(+this.evenement! ==  EvenementIndividuel.JOUER_LOUP_GAROU){
         this.nbVotes = 3;
         this.communicationService.getInfoVillageExtensionLoups().subscribe((infoVillageExtensionLoups: JoueurExtensionLoups[])=>{
@@ -144,6 +142,9 @@ export class SelecteurComponent implements OnInit {
   }
 
   choisir(){
+    if(this.lock){
+      return;
+    }
     if(!this.pretAPasser){
       return;
     }
@@ -202,6 +203,7 @@ export class SelecteurComponent implements OnInit {
   }
 
   private executerChoix(index: number): void{
+    this.lock = true;
     switch(+this.evenement!){
         case EvenementIndividuel.VOTER_CAPITAINE:
         case EvenementIndividuel.TRANCHER_CAPITAINE:
@@ -221,6 +223,7 @@ export class SelecteurComponent implements OnInit {
         case EvenementIndividuel.JOUER_INSTITUTRICE:
         case EvenementIndividuel.JOUER_GRAND_MECHANT_LOUP:
             this.communicationService.voterVillageois(index, this.evenement!).subscribe((ok: boolean)=>{
+                this.lock = false;
                 if(ok){
                     this.router.navigate(["jeuComponent"]);
                 }
@@ -229,12 +232,14 @@ export class SelecteurComponent implements OnInit {
         case EvenementDeGroupe.ACCUSER:
             if(this.siQuiEtesVous){
               this.communicationService.voterVillageois(index, this.evenement!).subscribe((ok: boolean)=>{
+              this.lock = false;
                 if(ok){
-                this.siQuiEtesVous = false;
-                this.preparerAccusation();
+                  this.siQuiEtesVous = false;
+                  this.preparerAccusation();
                 }
               })
             } else {
+              this.lock = false;
               this.socket.on("nouvelleAccusation", ()=>{
                 this.socket.off("nouvelleAccusation");
                 this.router.navigate(["jeuComponent"]);
@@ -243,10 +248,12 @@ export class SelecteurComponent implements OnInit {
             }
             break;
         case EvenementIndividuel.JOUER_VILLAGEOIS:
+            this.lock = false;
             this.router.navigate(["jeuComponent"])
             break;
         case EvenementIndividuel.JOUER_LOUP_GAROU:
             this.communicationService.voterVillageois(index, this.evenement!).subscribe((ok: boolean)=>{
+                this.lock = false;
                 if(ok){
                     this.socket.emit("changementLoups");
                     this.communicationService.getNouvellesRaisonsPasVoter().subscribe((raisons: RaisonPasVoter[])=>{
@@ -263,13 +270,15 @@ export class SelecteurComponent implements OnInit {
       
         case EvenementIndividuel.JOUER_VOYANTE:
             this.communicationService.voterVillageois(index, this.evenement!).subscribe((ok: boolean)=>{
-            if(ok){
+              this.lock = false;
+              if(ok){
                 this.router.navigate(["jeuComponent/montrerPersonnageComponent"], {queryParams: {"evenement": this.evenement}});
-            }
+              }
             })
             break;
         case EvenementIndividuel.JOUER_RENARD:
             this.communicationService.voterVillageois(index, this.evenement!).subscribe((ok: boolean)=>{
+              this.lock = false;
               if(ok){
                 const info: InfoEvenement = {
                   evenement: this.evenement!,
@@ -283,6 +292,7 @@ export class SelecteurComponent implements OnInit {
             break;
         case EvenementIndividuel.JOUER_CUPIDON:
             this.communicationService.voterVillageois(index, this.evenement!).subscribe((ok: boolean)=>{
+              this.lock = false;
             if(ok){
                 this.nbVotes--;
                 if(this.nbVotes == -2){
@@ -297,16 +307,17 @@ export class SelecteurComponent implements OnInit {
         break;
         case EvenementIndividuel.JOUER_JOUEUR_DE_FLUTE:
             this.communicationService.voterVillageois(index, this.evenement!).subscribe((ok: boolean)=>{
-            if(ok){
-                this.nbVotes--;
-                if(this.nbVotes == -2){
-                this.router.navigate(["jeuComponent"]);
-                } else {
-                this.communicationService.getRaisonsPasVoter().subscribe((raisons: RaisonPasVoter[])=>{
-                    this.raisonsPasVoter = raisons;
-                })
-                }
-            }
+              this.lock = false;
+              if(ok){
+                  this.nbVotes--;
+                  if(this.nbVotes == -2){
+                    this.router.navigate(["jeuComponent"]);
+                  } else {
+                    this.communicationService.getRaisonsPasVoter().subscribe((raisons: RaisonPasVoter[])=>{
+                      this.raisonsPasVoter = raisons;
+                    })
+                  }
+              }
             })
         break;
     }

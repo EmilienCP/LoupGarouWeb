@@ -5,13 +5,8 @@ import { JoindrePartieInfo } from '../../../common/joindrePartieInfo';
 import { Appareil } from '../gestionnaire/appareil';
 import { Partie } from '../gestionnaire/partie';
 import { Villageois } from '../gestionnaire/Personnages/villageois';
-import { Equipe, EtatsSpeciaux, Joueur, Role } from '../../../common/Joueur';
-import { EnfantSauvage } from '../gestionnaire/Personnages/enfantSauvage';
-import { EvenementDeGroupe, EvenementIndividuel } from '../../../common/evenements';
-import { DeuxSoeurs } from '../gestionnaire/Personnages/deuxSoeurs';
-import { TroisFreres } from '../gestionnaire/Personnages/troisFreres';
-import { Voyante } from '../gestionnaire/Personnages/voyante';
-import { Intro } from '../gestionnaire/temps/intro';
+import { EtatsSpeciaux, Joueur, Role } from '../../../common/Joueur';
+import { EvenementDeGroupe } from '../../../common/evenements';
 
 @injectable()
 export class PartiesService {
@@ -109,7 +104,7 @@ export class PartiesService {
         })[0][0];
     }
 
-    getInfosJeu(idSocket: string): InfoPartie{
+    getInfosJeu(idSocket: string, villageoisQuelconque: boolean = false, details: boolean = true): InfoPartie{
         const partie: Partie = this.getPartie(idSocket);
         const noms: string[][] = [];
         const pointsDeVictoire: InfoPointsDeVictoire[] = [];
@@ -129,32 +124,13 @@ export class PartiesService {
         let joueurPresent: Villageois;
         let appareil: Appareil = this.getAppareil(idSocket);
         let infoVillage: Joueur[] = [];
-        if(partie.joueursVivants.length > 0){
-            if((appareil.indexJoueurPresent ==  -1 && appareil.joueurs.length > 1) || appareil.siMeneurDeJeu()){
-                //si le joueur est meneur de jeu, ou s'il a plusieurs joueurs dans le meme appareil, ou s'il vient juste darriver en milieu de partie, voir le village par rapport a un villageois normal
+        if(details){
+            if(villageoisQuelconque || appareil.siMeneurDeJeu()){
                 joueurPresent = new Villageois(false, partie)
             } else {
                 joueurPresent = appareil.getJoueurPresent();
             }
-            partie.joueursVivants.concat(partie.joueursDejaMorts).forEach((villageois: Villageois)=>{
-            infoVillage.push({
-                nom: villageois.nom,
-                estCapitaine: villageois.estCapitaine,
-                role: (partie.joueursDejaMorts.includes(villageois) ||villageois == joueurPresent || villageois.role == Role.VILLAGEOIS_VILLAGEOIS || (joueurPresent.role == Role.VOYANTE && (joueurPresent as Voyante).villageoisRolesConnus.includes(villageois)))?villageois.role:undefined,
-                rolePublic: villageois.rolePublic,
-                //Si le loup garou du village ne sait pas encore quil est infecte, alors les autres loups ne doivent pas le voir non plus dans leur liste
-                equipeApparente: villageois.equipeApparente == Equipe.LOUPS && !villageois.evenementsIndividuels.includes(EvenementIndividuel.INFO_INFECTE) && joueurPresent.equipeApparente == Equipe.LOUPS && !(partie.gestionnaireEtape.gestionnaireDeTemps instanceof Intro) && !joueurPresent.evenementsIndividuels.includes(EvenementIndividuel.INFO_INFECTE) && !joueurPresent.evenementsIndividuels.includes(EvenementIndividuel.INFO_ASSOCIER_MORT)? Equipe.LOUPS:Equipe.VILLAGEOIS,
-                equipeReelle: villageois.equipeReelle,
-                amoureux: ((joueurPresent.amoureux == villageois || (villageois.amoureux !== undefined && joueurPresent.role == Role.CUPIDON)) && !joueurPresent.evenementsIndividuels.includes(EvenementIndividuel.INFO_AMOUREUX)? villageois.nom: undefined),
-                estInfecte: villageois.estInfecte,
-                soiMeme: joueurPresent == villageois,
-                estCharmer: (joueurPresent.estCharmer || joueurPresent.role == Role.JOUEUR_DE_FLUTE) && villageois.estCharmer && !joueurPresent.evenementsIndividuels.includes(EvenementIndividuel.INFO_CHARMER),
-                estAssocier: (joueurPresent.role == Role.ENFANT_SAUVAGE && (joueurPresent as EnfantSauvage).joueurAssocie == villageois),
-                estSoeur: (joueurPresent.role == Role.DEUX_SOEURS && (joueurPresent as DeuxSoeurs).deuxiemeSoeur == villageois && !(partie.gestionnaireEtape.gestionnaireDeTemps instanceof Intro)),
-                estFrere: (joueurPresent.role == Role.TROIS_FRERES && (joueurPresent as TroisFreres).deuxFreres.includes(villageois) && !(partie.gestionnaireEtape.gestionnaireDeTemps instanceof Intro)),
-                estMort: partie.joueursDejaMorts.includes(villageois)
-            })
-            })
+            infoVillage = partie.getInfosVillageParRapportA(joueurPresent);
         }
 
         let rolesVivants: Role[] = partie.joueursVivants.map((villageois: Villageois)=>{

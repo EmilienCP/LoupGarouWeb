@@ -294,9 +294,10 @@ export class InformationsComponent implements OnInit {
       }
       case EvenementDeGroupe.MOMENTS_FORTS:{
         this.communicationService.getUnMomentFort().subscribe((moment: MomentFort)=>{
+          evenementTexte.push("Moment fort "+moment.numeroSurTotal);
           switch (moment.type){
             case MomentFortType.VOYANTE:
-              evenementTexte.push("La Voyante, soit "+moment.params[0]+", a vu que "+ moment.params[1]+" était "+utils.convertirRoleTexte(moment.params[2])+".")
+              evenementTexte.push("La Voyante"+(moment.params[3]?" infectée":"")+", soit "+moment.params[0]+", a vu que "+ moment.params[1]+" était "+utils.convertirRoleTexte(moment.params[2])+".")
               break;
             case MomentFortType.LOUP_BLANC_ACCUSE:
               evenementTexte.push("Un joueur de l'équipe des loups, soit "+moment.params[0]+", a accusé le Loup-Garou Blanc, soit "+ moment.params[1]+".");

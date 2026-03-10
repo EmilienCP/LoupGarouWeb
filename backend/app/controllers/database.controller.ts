@@ -17,7 +17,6 @@ import { Action } from '../gestionnaire/gestionBugs/historiquePartie'
 import { EnfantSauvage } from '../gestionnaire/Personnages/enfantSauvage'
 import { ServanteDevouee } from '../gestionnaire/Personnages/servanteDevouee'
 import { DJAIService } from '../services/djai.service'
-import { Intro } from '../gestionnaire/temps/intro'
 import { DeuxSoeurs } from '../gestionnaire/Personnages/deuxSoeurs'
 import { TroisFreres } from '../gestionnaire/Personnages/troisFreres'
 
@@ -32,10 +31,10 @@ export class DatabaseController {
   public get router(): Router {
     const router: Router = Router()
 
-    router.get('/infoPartie/:idSocket',
+    router.get('/infoPartie/:idSocket/:villageoisQuelconque/:details',
       async (req: Request, res: Response) => {
         try {
-          res.json(this.partiesService.getInfosJeu(req.params.idSocket));
+          res.json(this.partiesService.getInfosJeu(req.params.idSocket, req.params.villageoisQuelconque == "true", req.params.details == "true"));
         }
         catch (err) {
           console.log(err)
@@ -119,63 +118,24 @@ export class DatabaseController {
         }
     })
 
-    router.get('/infoVillage/:idSocket',
+    router.get('/infoVillageExtensionLoups/:idSocket',
       async (req: Request, res: Response) => {
         try {
-          let joueurPresent: Villageois;
           let partie: Partie = this.partiesService.getPartie(req.params.idSocket);
-          let appareil: Appareil = this.partiesService.getAppareil(req.params.idSocket);
-          if((appareil.indexJoueurPresent ==  -1 && appareil.getJoueursRestants(partie.joueursVivants).length>1) || appareil.siMeneurDeJeu()){
-            joueurPresent = new Villageois(false, partie)
-          } else {
-            joueurPresent = appareil.getJoueurPresent();
-          }
-          let infoVillage: Joueur[] = [];
+          let infoVillage: JoueurExtensionLoups[] = [];
           partie.joueursVivants.concat(partie.joueursDejaMorts).forEach((villageois: Villageois)=>{
             infoVillage.push({
-              nom: villageois.nom,
-              estCapitaine: villageois.estCapitaine,
-              role: (partie.joueursDejaMorts.includes(villageois) ||villageois == joueurPresent || villageois.role == Role.VILLAGEOIS_VILLAGEOIS || (joueurPresent.role == Role.VOYANTE && (joueurPresent as Voyante).villageoisRolesConnus.includes(villageois)))?villageois.role:undefined,
-              rolePublic: villageois.rolePublic,
-              //Si le loup garou du village ne sait pas encore quil est infecte, alors les autres loups ne doivent pas le voir non plus dans leur liste
-              equipeApparente: villageois.equipeApparente == Equipe.LOUPS && !villageois.evenementsIndividuels.includes(EvenementIndividuel.INFO_INFECTE) && joueurPresent.equipeApparente == Equipe.LOUPS && !(partie.gestionnaireEtape.gestionnaireDeTemps instanceof Intro) && !joueurPresent.evenementsIndividuels.includes(EvenementIndividuel.INFO_INFECTE) && !joueurPresent.evenementsIndividuels.includes(EvenementIndividuel.INFO_ASSOCIER_MORT)? Equipe.LOUPS:Equipe.VILLAGEOIS,
-              equipeReelle: villageois.equipeReelle,
-              amoureux: ((joueurPresent.amoureux == villageois || (villageois.amoureux !== undefined && joueurPresent.role == Role.CUPIDON)) && !joueurPresent.evenementsIndividuels.includes(EvenementIndividuel.INFO_AMOUREUX)? villageois.nom: undefined),
-              estInfecte: villageois.estInfecte,
-              soiMeme: joueurPresent == villageois,
-              estCharmer: (joueurPresent.estCharmer || joueurPresent.role == Role.JOUEUR_DE_FLUTE) && villageois.estCharmer && !joueurPresent.evenementsIndividuels.includes(EvenementIndividuel.INFO_CHARMER),
-              estAssocier: (joueurPresent.role == Role.ENFANT_SAUVAGE && (joueurPresent as EnfantSauvage).joueurAssocie == villageois),
-              estSoeur: (joueurPresent.role == Role.DEUX_SOEURS && (joueurPresent as DeuxSoeurs).deuxiemeSoeur == villageois && !(partie.gestionnaireEtape.gestionnaireDeTemps instanceof Intro)),
-              estFrere: (joueurPresent.role == Role.TROIS_FRERES && (joueurPresent as TroisFreres).deuxFreres.includes(villageois) && !(partie.gestionnaireEtape.gestionnaireDeTemps instanceof Intro)),
-              estMort: partie.joueursDejaMorts.includes(villageois)
+              nombreVotes: partie.voteCourant.getTailleElecteurs()[partie.voteCourant.getAccuses().indexOf(villageois)],
+              joueursQuiLePointent: (partie.voteCourant.getJoueursPointes()[partie.voteCourant.getAccuses().indexOf(villageois)])?(partie.voteCourant.getJoueursPointes()[partie.voteCourant.getAccuses().indexOf(villageois)].map((joueur: Villageois)=>{return joueur.nom})):[]
             })
           })
           res.json(infoVillage);
         }
         catch (err) {
           console.log(err)
-          res.status(500)
+          res.status(500).end()
         }
       })
-
-      router.get('/infoVillageExtensionLoups/:idSocket',
-        async (req: Request, res: Response) => {
-          try {
-            let partie: Partie = this.partiesService.getPartie(req.params.idSocket);
-            let infoVillage: JoueurExtensionLoups[] = [];
-            partie.joueursVivants.concat(partie.joueursDejaMorts).forEach((villageois: Villageois)=>{
-              infoVillage.push({
-                nombreVotes: partie.voteCourant.getTailleElecteurs()[partie.voteCourant.getAccuses().indexOf(villageois)],
-                joueursQuiLePointent: (partie.voteCourant.getJoueursPointes()[partie.voteCourant.getAccuses().indexOf(villageois)])?(partie.voteCourant.getJoueursPointes()[partie.voteCourant.getAccuses().indexOf(villageois)].map((joueur: Villageois)=>{return joueur.nom})):[]
-              })
-            })
-            res.json(infoVillage);
-          }
-          catch (err) {
-            console.log(err)
-            res.status(500).end()
-          }
-        })
 
       
 

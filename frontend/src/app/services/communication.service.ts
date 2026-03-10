@@ -53,9 +53,9 @@ export class CommunicationService {
     return this.socket;
   }
 
-  refreshInfoPartie(): Promise<void> {
+  refreshInfoPartie(villageoisQuelconque: boolean, details: boolean): Promise<void> {
     return new Promise((resolve, reject) => {
-      this.http.get<InfoPartie>(this.ROOT_URL + 'infoPartie/' + this.idSocket)
+      this.http.get<InfoPartie>(this.ROOT_URL + 'infoPartie/' + this.idSocket + '/' + villageoisQuelconque + '/' + details)
         .pipe(catchError(err => this.handleError(err)))
         .subscribe({
           next: (infoPartie: InfoPartie) => {
@@ -84,11 +84,6 @@ export class CommunicationService {
 
   getRoleVoyante(): Observable<Role>{
     return this.http.get<Role>(this.ROOT_URL + 'roleVoyante/'+this.idSocket)
-    .pipe(catchError(err => this.handleError(err))); 
-  }
-
-  getInfoVillage(): Observable<Joueur[]>{
-    return this.http.get<Joueur[]>(this.ROOT_URL + 'infoVillage/'+this.idSocket)
     .pipe(catchError(err => this.handleError(err))); 
   }
 

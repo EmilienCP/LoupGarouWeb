@@ -246,6 +246,9 @@ export class Villageois{
                             this.voter(cible);
                         }
                     } else {
+                        if(this.partie.voteCourant.getElecteurs().flat().includes(this)){
+                            throw new Error(this.nom + " tente de voter alors quil a déjà voté");
+                        }
                         this.voter(cible);
                     }
                     break;

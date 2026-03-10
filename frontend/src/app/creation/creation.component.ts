@@ -155,7 +155,7 @@ export class CreationComponent implements OnInit {
   }
 
   majInfosJeu(){
-    this.communicationService.refreshInfoPartie().catch(catchError(err => {
+    this.communicationService.refreshInfoPartie(true, false).catch(catchError(err => {
       this.router.navigate([""]);
       return this.communicationService.handleError(err);
     })).then(()=>{

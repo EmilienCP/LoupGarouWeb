@@ -2,7 +2,7 @@ import { EtatPartie } from "../../../common/joindrePartieInfo";
 import { EvenementDeGroupe, EvenementIndividuel, RaisonPasVoter, Victoire } from "../../../common/evenements";
 import { Appareil } from "./appareil";
 import { GestionnaireEtape } from "./temps/gestionnaireEtape";
-import { Equipe, Role, RolePublic } from "../../../common/Joueur";
+import { Equipe, Joueur, Role, RolePublic } from "../../../common/Joueur";
 import { IA } from "./IAS/ia";
 import { Villageois } from "./Personnages/villageois";
 import { Vote } from "./vote";
@@ -47,6 +47,7 @@ import { TroisFreres } from "./Personnages/troisFreres";
 import { IATroisFreres } from "./IAS/iaTroisFreres";
 import { GrandMechantLoup } from "./Personnages/grantMechantLoup";
 import { IAGrandMechantLoup } from "./IAS/iaGrandMechantLoup";
+import { Intro } from "./temps/intro";
 
 export class Partie {
     etat: EtatPartie;
@@ -964,7 +965,6 @@ export class Partie {
             case EvenementDeGroupe.MONTRER_VIVANTS:
             case EvenementDeGroupe.MONTRER_POINTS_VICTOIRES:
             case EvenementDeGroupe.MOMENTS_FORTS:
-            case EvenementDeGroupe.MOMENTS_FORTS_INFO:
             case EvenementDeGroupe.VICTOIRE:
             case EvenementDeGroupe.MORT_VOTES:
             case EvenementDeGroupe.MONTRER_MORTS:
@@ -1011,5 +1011,29 @@ export class Partie {
             compteur +=appareil.joueurs.length;
         });
         return compteur;
+    }
+
+    getInfosVillageParRapportA(joueur: Villageois): Joueur[]{
+        const infoVillage: Joueur[] = [];
+        this.joueursVivants.concat(this.joueursDejaMorts).forEach((villageois: Villageois)=>{
+            infoVillage.push({
+                nom: villageois.nom,
+                estCapitaine: villageois.estCapitaine,
+                role: (this.joueursDejaMorts.includes(villageois) ||villageois == joueur || villageois.role == Role.VILLAGEOIS_VILLAGEOIS || (joueur.role == Role.VOYANTE && (joueur as Voyante).villageoisRolesConnus.includes(villageois)))?villageois.role:undefined,
+                rolePublic: villageois.rolePublic,
+                //Si le loup garou du village ne sait pas encore quil est infecte, alors les autres loups ne doivent pas le voir non plus dans leur liste
+                equipeApparente: villageois.equipeApparente == Equipe.LOUPS && !villageois.evenementsIndividuels.includes(EvenementIndividuel.INFO_INFECTE) && joueur.equipeApparente == Equipe.LOUPS && !(this.gestionnaireEtape.gestionnaireDeTemps instanceof Intro) && !joueur.evenementsIndividuels.includes(EvenementIndividuel.INFO_INFECTE) && !joueur.evenementsIndividuels.includes(EvenementIndividuel.INFO_ASSOCIER_MORT)? Equipe.LOUPS:Equipe.VILLAGEOIS,
+                equipeReelle: villageois.equipeReelle,
+                amoureux: ((joueur.amoureux == villageois || (villageois.amoureux !== undefined && joueur.role == Role.CUPIDON)) && !joueur.evenementsIndividuels.includes(EvenementIndividuel.INFO_AMOUREUX)? villageois.nom: undefined),
+                estInfecte: villageois.estInfecte,
+                soiMeme: joueur == villageois,
+                estCharmer: (joueur.estCharmer || joueur.role == Role.JOUEUR_DE_FLUTE) && villageois.estCharmer && !joueur.evenementsIndividuels.includes(EvenementIndividuel.INFO_CHARMER),
+                estAssocier: (joueur.role == Role.ENFANT_SAUVAGE && (joueur as EnfantSauvage).joueurAssocie == villageois),
+                estSoeur: (joueur.role == Role.DEUX_SOEURS && (joueur as DeuxSoeurs).deuxiemeSoeur == villageois && !(this.gestionnaireEtape.gestionnaireDeTemps instanceof Intro)),
+                estFrere: (joueur.role == Role.TROIS_FRERES && (joueur as TroisFreres).deuxFreres.includes(villageois) && !(this.gestionnaireEtape.gestionnaireDeTemps instanceof Intro)),
+                estMort: this.joueursDejaMorts.includes(villageois)
+            })
+        })
+        return infoVillage;
     }
 }

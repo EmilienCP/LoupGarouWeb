@@ -58,6 +58,9 @@ export class Victoire extends GestionnaireDeTemps{
                 return false;
             case "Moment Forts Info":{
                 if(this.partie.momentsForts.length>0){
+                    this.partie.momentsForts.forEach((momentFort: any)=>{
+                        momentFort.numeroSurTotal = (this.partie.momentsForts.indexOf(momentFort)+1).toString() + "/" + this.partie.momentsForts.length.toString();
+                    })
                     this.partie.preparerEvenementDeGroupe(EvenementDeGroupe.MOMENTS_FORTS_INFO, EvenementDeGroupe.MOMENTS_FORTS_INFO);
                     return false;
                 }

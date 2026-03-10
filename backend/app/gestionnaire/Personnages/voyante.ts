@@ -47,8 +47,11 @@ export class Voyante extends Villageois {
             if(this.partie.seed){
                 console.log("La voyante "+this.nom+" regarde : "+ cible.nom, this.villageoisRolesConnus.map(joueur=>joueur.nom), "Role: "+cible.role);
             }
-            if(cible.equipeApparente == Equipe.LOUPS && !cible.estInfecte || cible.role == Role.JOUEUR_DE_FLUTE || cible.role == Role.ENFANT_SAUVAGE){
-                this.partie.momentsForts.push({type:MomentFortType.VOYANTE, params: [this.nom, cible.nom, cible.role]})
+            if(this.equipeApparente == Equipe.VILLAGEOIS && (cible.equipeApparente == Equipe.LOUPS && !cible.estInfecte || cible.role == Role.JOUEUR_DE_FLUTE || cible.role == Role.ENFANT_SAUVAGE  || cible.role == Role.MONTREUR_OURS)){
+                this.partie.momentsForts.push({type:MomentFortType.VOYANTE, params: [this.nom, cible.nom, cible.role, false]})
+            }
+            if(this.estInfecte && (cible.role == Role.JOUEUR_DE_FLUTE || cible.role == Role.FEMME_DE_MENAGE || cible.role == Role.SORCIERE || cible.role == Role.CHASSEUR)){
+                this.partie.momentsForts.push({type:MomentFortType.VOYANTE, params: [this.nom, cible.nom, cible.role, true]})
             }
         }
     }

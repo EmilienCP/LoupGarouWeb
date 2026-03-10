@@ -11,4 +11,5 @@ export enum MomentFortType{
 export interface MomentFort{
     type: MomentFortType;
     params: any[];
+    numeroSurTotal?: string;
 }

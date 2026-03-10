@@ -20,8 +20,7 @@ export class JoindreJoueurComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.communicationService.refreshInfoPartie();
-
+    this.communicationService.refreshInfoPartie(true, true);
   }
 
   public choisir(i: number): void{
