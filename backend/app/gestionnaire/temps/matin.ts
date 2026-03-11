@@ -106,6 +106,16 @@ export class Matin extends GestionnaireDeTemps{
                 return true;
 
             case "Afficher Morts":
+                let evenementTexte:string[] = [];
+                evenementTexte = ["Tout le monde se réveille sauf:"]
+                let texte2: string = ""
+                if(this.partie.joueursMorts.length == 0){
+                    evenementTexte = ["Personne n'est mort cette nuit"]
+                } else{
+                    texte2+= this.getNomsEnListe(this.partie.joueursMorts.map((joueur: Villageois)=>{return joueur.nom}));
+                    evenementTexte.push(texte2);
+                }
+                this.partie.historiqueEvenements.push(evenementTexte);
                 if(this.partie.modeVideo && this.partie.appareils.some((appareil: Appareil)=>{return !appareil.passer})){
                     let nomJoueurQuiMarcheLaNuit: string = this.partie.joueursVivants[this.partie.random(this.partie.joueursVivants.length)].nom;
                     let textePendantLaNuit: string;
@@ -128,16 +138,6 @@ export class Matin extends GestionnaireDeTemps{
                     }
                 } else {
                     this.partie.preparerEvenementDeGroupe(EvenementDeGroupe.MONTRER_MORTS, EvenementDeGroupe.MONTRER_MORTS);
-                    let evenementTexte:string[] = [];
-                    evenementTexte = ["Tout le monde se réveille sauf:"]
-                    let texte2: string = ""
-                    if(this.partie.joueursMorts.length == 0){
-                        evenementTexte = ["Personne n'est mort cette nuit"]
-                    } else{
-                        texte2+= this.getNomsEnListe(this.partie.joueursMorts.map((joueur: Villageois)=>{return joueur.nom}));
-                        evenementTexte.push(texte2);
-                    }
-                    this.partie.historiqueEvenements.push(evenementTexte);
                 }
                 return false;
             case "Verification Morts":

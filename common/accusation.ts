@@ -1,9 +1,6 @@
 export enum RaisonAccusation{
     AUCUN,
-    PAS_RAISON_PRECISE,
-    STEAK,
-    LOUCHE,
-    AGRESSIF,
+    ALEATOIRE,
     VOYANTE,
     MONTREUR_OURS,
     JOUEUR_DE_FLUTE,

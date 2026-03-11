@@ -121,7 +121,7 @@ export class Vote {
             liste.push("Le Corbeau accuse "+this.voteCorbeau.nom);
         }
         this.accuses.forEach((accuse: Villageois, index: number)=>{
-            liste.push(this.electeurs[index][0].nom+ " accuse "+accuse.nom+ " "+this.raisonAccusationEnTexte(this.raisons[index]))
+            liste.push(this.raisonAccusationEnTexte(this.raisons[index], this.electeurs[index][0].nom, accuse.nom))
         })
 
         return liste;
@@ -203,19 +203,37 @@ export class Vote {
         this.electeurs.push([]);
     }
 
-    private raisonAccusationEnTexte(raison: RaisonAccusation): string {
+    private raisonAccusationEnTexte(raison: RaisonAccusation, electeur: string, cible: string): string {
+        let texteRaison: string = electeur + " accuse " + cible + " ";
         switch(raison){
-            case RaisonAccusation.AUCUN: return "";
-            case RaisonAccusation.PAS_RAISON_PRECISE: return "sans raisons précises";
-            case RaisonAccusation.STEAK: return "parce qu'il l'a vu manger du steak la nuit";
-            case RaisonAccusation.LOUCHE: return "parce qu'il trouve ses actions louches";
-            case RaisonAccusation.AGRESSIF: return "parce qu'il trouve qu'il a une attitude agressive";
-            case RaisonAccusation.VOYANTE: return "parce qu'il dit qu'il est la voyante et qu'il a vu son personnage";
-            case RaisonAccusation.MONTREUR_OURS: return "parce qu'il dit qu'il est le montreur d'ours et que son ours a grogné";
-            case RaisonAccusation.JOUEUR_DE_FLUTE: return "parce qu'il soupçonne que c'est le joueur de flûte";
-            case RaisonAccusation.CONTRE_ACCUSATION: return "pour se venger de l'avoir accusé";
-            case RaisonAccusation.RENARD: return "parce qu'il dit qu'il est le renard et qu'il l'a flairé.";
+            case RaisonAccusation.AUCUN: return texteRaison;
+            case RaisonAccusation.ALEATOIRE: return this.raisonAccusationAleatoire(electeur, cible);
+            case RaisonAccusation.VOYANTE: return texteRaison+"parce qu'il dit qu'il est la voyante et qu'il a vu son personnage";
+            case RaisonAccusation.MONTREUR_OURS: return texteRaison+"parce qu'il dit qu'il est le montreur d'ours et que son ours a grogné";
+            case RaisonAccusation.JOUEUR_DE_FLUTE: return texteRaison+"parce qu'il soupçonne que c'est le joueur de flûte";
+            case RaisonAccusation.CONTRE_ACCUSATION: return texteRaison+"pour se venger de l'avoir accusé";
+            case RaisonAccusation.RENARD: return texteRaison+"parce qu'il dit qu'il est le renard et qu'il l'a flairé.";
           }
+    }
+
+    private raisonAccusationAleatoire(electeur: string, cible: string): string {
+        let texteRaison: string = electeur + " accuse " + cible + " ";
+        let raisons: string[] = ["sans raisons précises.",
+            "parce qu'il l'a vu manger du steak la nuit.",
+            "parce qu'il trouve ses actions louches.",
+            "parce qu'il trouve qu'il a une attitude agressive.",
+            "parce qu'il s'appelle "+cible+". On a tous déjà vu un loup qui s'appelle "+cible,
+            "parce qu'il a dit bonjour trop fort ce matin. Clairement il compense quelque chose.",
+            "parce que "+cible+" respire beaucoup trop calmement pour quelqu’un d’innocent.",
+            "parce que, quand on a parlé de la nuit, "+cible+" a souri. Les loups aiment la nuit.",
+            "parce qu'il a dit qu'il était innocent. Franchement, qui dit ça à part un loup?",
+            "parce qu'il est encore en vie. Statistiquement, c’est très louche.",
+            "parce qu'il a entendu des drôles de bruits dans sa maison la nuit.",
+            "parce qu'il l'a vu en loup dans son rêve, et les rêves sont porteurs de vérité.",
+            "parce que la veille au soir, "+electeur+" a vu "+cible+" perdre au poker. Louchement, quelqu'un est mort.",
+            "parce que chaque nuit, "+electeur+" entend des bruits de pas venant de chez "+cible+".",
+            "parce qu'il l'a vu réveillé la nuit. Qui se réveille la nuit à part les loups?"];
+        return texteRaison + raisons[Math.floor(Math.random() * raisons.length)];
     }
 
 

@@ -45,7 +45,7 @@ export class IAChercheurLoups extends IA{
             return this.raisonAccusation;
         } else{
             //ne doit pas retourner au parent, parce que sinon il pourrait quand meme donner sa raison personnelle.
-            return this.partie.random(5);
+            return RaisonAccusation.ALEATOIRE;
         }
     }
 

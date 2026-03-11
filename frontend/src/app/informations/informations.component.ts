@@ -297,32 +297,32 @@ export class InformationsComponent implements OnInit {
           evenementTexte.push("Moment fort "+moment.numeroSurTotal);
           switch (moment.type){
             case MomentFortType.VOYANTE:
-              evenementTexte.push("La Voyante"+(moment.params[3]?" infectée":"")+", soit "+moment.params[0]+", a vu que "+ moment.params[1]+" était "+utils.convertirRoleTexte(moment.params[2])+".")
+              evenementTexte.push(moment.params[0]+", la Voyante"+(moment.params[3]?" infectée":"")+", a vu que "+ moment.params[1]+" était "+utils.convertirRoleTexte(moment.params[2])+".")
               break;
             case MomentFortType.LOUP_BLANC_ACCUSE:
-              evenementTexte.push("Un joueur de l'équipe des loups, soit "+moment.params[0]+", a accusé le Loup-Garou Blanc, soit "+ moment.params[1]+".");
+              evenementTexte.push(moment.params[0]+", un loup, a accusé le Loup-Garou Blanc, soit "+ moment.params[1]+".");
               break;
             case MomentFortType.FEMME_DE_MENAGE:
-              evenementTexte.push("La Femme de ménage, soit "+moment.params[0]+", s'est échappée des loups-garous en se cachant chez "+ moment.params[1]+ ".");
+              evenementTexte.push(moment.params[0]+", la Femme de ménage, s'est échappée des loups-garous en se cachant chez "+ moment.params[1]+ ".");
               break;
             case MomentFortType.SORCIERE_PROTEGER:
               if(moment.params[2]){
-                evenementTexte.push("La Sorcière, soit "+moment.params[0]+", s'est sauvée des loups-garous en se protégeant elle même.")
+                evenementTexte.push(moment.params[0]+", la Sorcière, s'est sauvée des loups-garous en se protégeant elle même.")
               } else{
-                evenementTexte.push("La Sorcière, soit "+moment.params[0]+", a permis à "+ moment.params[1]+ " de se protéger des loups-garous.");
+                evenementTexte.push(moment.params[0]+", la Sorcière, a permis à "+ moment.params[1]+ " de se protéger des loups-garous.");
               }
               break;
             case MomentFortType.SORCIERE_SORT_MORT:
-              evenementTexte.push("La Sorcière, soit "+moment.params[0]+", a utilisé son sort de mort pour éliminer "+moment.params[1]+".")
+              evenementTexte.push(moment.params[0]+", la Sorcière, a utilisé son sort de mort pour éliminer "+moment.params[1]+".")
               break;
             case MomentFortType.HYPNOTISEUR_LOUP:
-              evenementTexte.push("L'Hypnotiseur, soit "+moment.params[0]+", a forcé un loup-garou, soit "+moment.params[1]+", à voter contre un autre loup: "+moment.params[2]+".")
+              evenementTexte.push(moment.params[0], ", l'Hypnotiseur, a forcé un loup-garou, soit "+moment.params[1]+", à voter contre un autre loup: "+moment.params[2]+".")
               break;
             case MomentFortType.HYPNOTISEUR_AMOUREUX:
-              evenementTexte.push("L'Hypnotiseur, soit "+moment.params[0]+", a forcé "+moment.params[1]+" à voter contre son amoureux: "+moment.params[2]+".")
+              evenementTexte.push(moment.params[0]+", l'Hypnotiseur, a forcé "+moment.params[1]+" à voter contre son amoureux: "+moment.params[2]+".")
               break;
             case MomentFortType.HYPNOTISEUR_INFECTE_VILLAGEOIS:
-              evenementTexte.push("L'Hypnotiseur infecté, soit "+moment.params[0]+", a forcé un villageois, soit "+moment.params[1]+" à voter contre un autre villageois: "+moment.params[2]+".")
+              evenementTexte.push(moment.params[0]+", l'Hypnotiseur infecté, a forcé un villageois, soit "+moment.params[1]+" à voter contre un autre villageois: "+moment.params[2]+".")
               break;
           }
         })

@@ -652,7 +652,7 @@ export class IA {
         if(this.partie.voteCourant.aAccuser(cible) && (this.partie.voteCourant.getAccuseDe(cible) == this.villageois)){
             return RaisonAccusation.CONTRE_ACCUSATION
         }
-        return this.partie.random(5);
+        return RaisonAccusation.ALEATOIRE;
     }
 
     //Phase 2: accuserSiHasard
@@ -668,6 +668,7 @@ export class IA {
 
     //Phase 3: accuserSiDanger
     accuserSiDanger(): boolean{
+        console.log("accusation de "+ this.villageois.nom)
         //joueur de flute
         if(this.villageois.role !== Role.JOUEUR_DE_FLUTE && this.partie.getPersonnages(Role.JOUEUR_DE_FLUTE).length>0 && this.villageois.estCharmer){
             let joueursNonCharmer: Villageois[] = this.partie.joueursVivants.filter((joueur: Villageois)=>{

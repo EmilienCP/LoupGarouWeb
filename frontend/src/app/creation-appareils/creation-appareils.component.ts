@@ -55,7 +55,11 @@ export class CreationAppareilsComponent implements OnInit {
       this.majInfosJeu.emit();
     })
     let nomJoueur: string = event.target.value;
-    if(nomJoueur.length>40){
+    console.log(this.communicationService.infoPartie.noms.flat(), nomJoueur);
+    if(this.communicationService.infoPartie.noms.flat().includes(nomJoueur)){
+      nomJoueur = nomJoueur + " (1)";
+    }
+    if(nomJoueur.length>40 || this.communicationService.infoPartie.noms.flat().includes(nomJoueur)){
       nomJoueur = nomJoueur.substring(0,40);
     }
     this.communicationService.infoPartie.appareils[this.idAppareilReel].noms[idJoueur] = nomJoueur;

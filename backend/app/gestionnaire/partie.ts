@@ -320,7 +320,8 @@ export class Partie {
 
         for(indexCourant; indexCourant < this.nbJoueurs; indexCourant++) {
             const villageois: Villageois = this.creerVillageois(roles[indexCourant]);
-            villageois.nom = "Joueur " + (indexCourant);
+            //villageois.nom = "Joueur " + (indexCourant);
+            villageois.nom = this.getNomRandom();
             if(this.modeExtensionVillage) villageois.rolePublic = rolesPublics[indexCourant];
             const ia: IA = this.creerIA(roles[indexCourant], villageois)
             this.joueursVivants.push(villageois);
@@ -1011,6 +1012,15 @@ export class Partie {
             compteur +=appareil.joueurs.length;
         });
         return compteur;
+    }
+
+    getNomRandom(): string{
+        const noms: string[] = ["Alaric", "Bastien", "Corentin", "Gaspard", "Théodore", "Isidore", "Léandre", "Octave", "Séraphin", "Alban", "Célestin", "Éloi", "Firmin", "Gervais", "Hector", "Lazare", "Marius", "Norbert", "Odon", "Prosper", "Arsène", "Bérenger", "Clovis", "Désiré", "Eustache", "Florent", "Gautier", "Honoré", "Isabeau", "Aliénor", "Berthe", "Cunégonde", "Eulalie", "Flavie", "Héloïse", "Joséphine", "Léonie", "Marguerite", "Odette", "Pétronille", "Rosalie", "Sidonie", "Thérèse", "Victoire", "Ysabeau", "Adélaïde", "Blanche", "Constance", "Églantine", "Philomène"];
+        let nomChoisi: string = noms[this.random(noms.length)];
+        while(this.joueursVivants.some((joueur: Villageois)=>{return joueur.nom == nomChoisi})){
+            nomChoisi = noms[this.random(noms.length)];
+        }
+        return nomChoisi;
     }
 
     getInfosVillageParRapportA(joueur: Villageois): Joueur[]{

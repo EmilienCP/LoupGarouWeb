@@ -23,14 +23,28 @@
     filter: brightness(0.8) sepia(0.2) saturate(5) hue-rotate(-10deg);
 }
 
-.peutPasChoisir{
-    background-color: transparent;
-    filter: grayscale(75%);
+.peutPasChoisir .interieurBouton,
+.peutPasChoisirMort .interieurBouton {
+  position: relative; /* nécessaire pour le pseudo-élément */
 }
 
-.peutPasChoisirMort{
-    background-color: transparent;
-    filter: grayscale(75%);
+.peutPasChoisir .interieurBouton::before,
+.peutPasChoisirMort .interieurBouton::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: inherit;
+  background-size: inherit;
+  background-repeat: inherit;
+  background-position: inherit;
+  filter: grayscale(75%);
+  z-index: 0; /* derrière le contenu */
+}
+
+.peutPasChoisir .interieurBouton > *,
+.peutPasChoisirMort .interieurBouton > * {
+  position: relative;
+  z-index: 1; /* devant le pseudo-élément */
 }
 
 .peutChoisirCercle, .pasBoutonCercle{
