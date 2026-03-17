@@ -11,10 +11,41 @@ import { animate, query, stagger, style, transition, trigger } from '@angular/an
 @Component({
   selector: 'app-video-matin',
   templateUrl: `./video-matin.component.html`,
-  styleUrls: ['./video-matin.component.css']
+  styleUrls: ['./video-matin.component.css'],
+  animations: [ 
+    trigger('Fond', [ 
+      transition(':enter', [ 
+        query('.image', [ 
+          style({ opacity: 0 }), 
+          stagger(1200, [ 
+            animate('2300ms ease', 
+              style({ opacity: 1 })) 
+            ]) 
+          ]) 
+        ]) 
+      ]) ,
+    trigger("PendantLaNuit", [
+      transition(":leave",[
+        style({opacity: 1, visibility: 'visible'}),
+        animate("2s ease-in", style({opacity: 0, visibility: 'visible'}))
+      ])
+    ]),
+    trigger("JourSeLeve", [
+      transition(":enter",[
+        style({opacity: 0, visibility: 'visible'}),
+        animate("2s ease-in", style({opacity: 1, visibility: 'visible'}))
+      ]),
+      transition(":leave",[
+        style({opacity: 1, visibility: 'visible'}),
+        animate("2s ease-in", style({opacity: 0, visibility: 'visible'}))
+      ])
+    ])
+    ]
 })
 export class VideoMatinComponent implements OnInit, AfterViewInit {
   @ViewChild('rendererContainerContainer') container!: ElementRef;
+
+  couleurFond = "black";
 
   // Éléments Three.js
   scene!: THREE.Scene;
@@ -31,13 +62,12 @@ export class VideoMatinComponent implements OnInit, AfterViewInit {
 
   listeBuissons: THREE.Group[] = [];
 
-  texteNarrateur: string = "";
   indexMessage: number = 0;
   opacityNarrateur: number = 0;
-  messages = [
-    "Le silence de la forêt était pesant...",
-    "Chaque pas semblait réveiller les ombres du passé."
-  ];
+  textePendantLaNuit: string = "texte pendant la nuit";
+  texteJourSeLeve: string = "texte jour se leve";
+  isTextePendantLaNuit: boolean = false;
+  isTexteJourSeLeve: boolean = false;
   nomsMorts: string[] = ["mort 1", "mort 2","mort 1", "mort 2","mort 1", "mort 2"];
 
   tempsMarche: number = 7500;
@@ -81,7 +111,8 @@ export class VideoMatinComponent implements OnInit, AfterViewInit {
       this.audioService.jouerMatin();
       this.nomVivant = info.nomJoueurAMontrer;
       this.nomsMorts = info.nomJoueursMorts;
-      this.messages = [info.textePendantLaNuit, info.texteJourSeLeve];
+      this.texteJourSeLeve = info.texteJourSeLeve;
+      this.textePendantLaNuit = info.textePendantLaNuit;
       this.initThree();
       this.audioService.jouerMatin();
       this.animate();
@@ -210,7 +241,6 @@ moonLight.shadow.mapSize.height = 2048;
 
     this.ajouterForet();
     this.ajouterBuissons();
-    this.afficherNarration();
   }
 
   getX(index: number): number{
@@ -442,7 +472,6 @@ moonLight.shadow.mapSize.height = 2048;
       let posY = 4;
       if(tempsPasse > this.tempsMarche+this.tempsZoom+this.tempsAttente+this.tempsMarcheBuissons+this.tempsDecouverte+this.tempsRecul){
         this.animationFinie = true;
-        console.log("yooo")
         posX = this.personnage.position.x+5 + Math.sin(this.angleCamera+Math.PI/2) * distance -5;
         posY=1+8;
       }
@@ -456,6 +485,8 @@ moonLight.shadow.mapSize.height = 2048;
         this.scene.background = couleurNuit.clone().lerp(couleurJour, proportion**3);
         //this.ambientLight.color = couleurNuit.clone().lerp(couleurJour, proportion**3)
         this.scene.fog = new THREE.Fog(couleurNuit.clone().lerp(couleurJour, proportion**3), 5+40*proportion, 30+40*proportion);
+        
+        this.isTexteJourSeLeve = true;
       }
       else if(tempsPasse > this.tempsMarche+this.tempsZoom+this.tempsAttente+this.tempsMarcheBuissons){
         const proportion: number= (tempsPasse-this.tempsMarche-this.tempsAttente-this.tempsMarcheBuissons-this.tempsZoom)/this.tempsDecouverte;
@@ -526,6 +557,8 @@ moonLight.shadow.mapSize.height = 2048;
         // petit déséquilibre (plus naturel)
         this.personnage.rotation.z = -0.12 * ease;
 
+        this.isTextePendantLaNuit = false;
+
 
       }  
       else if (tempsPasse > this.tempsMarche){
@@ -543,6 +576,7 @@ moonLight.shadow.mapSize.height = 2048;
         let retour: number[] = this.marche(tempsPasse, distance);
         posX = retour[0];
         posZ = retour[1];
+        this.isTextePendantLaNuit = true;
       }
 
       // On applique les positions
@@ -795,21 +829,6 @@ moonLight.shadow.mapSize.height = 2048;
     this.scene.add(buisson);
     this.listeBuissons.push(buisson);
 
-  }
-
-  afficherNarration() {
-    if (this.indexMessage >= this.messages.length) return;
-
-    this.texteNarrateur = this.messages[this.indexMessage];
-    this.opacityNarrateur = 1; // Le CSS transition fera le fondu
-
-    setTimeout(() => {
-      this.opacityNarrateur = 0;
-      this.indexMessage++;
-      
-      // Délai avant le prochain message
-      setTimeout(() => this.afficherNarration(), 1500);
-    }, this.tempsMarche+this.tempsAttente+this.tempsMarcheBuissons+this.tempsZoom);
   }
 
 creerLabel(nom: string): THREE.Sprite {

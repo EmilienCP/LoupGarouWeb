@@ -1,8 +1,11 @@
+<div *ngIf = "animationFinie" @Fond style = "width: 100%; height: 100%; position: absolute;">
+    <div class="image" *ngFor="let _ of [].constructor(8); let i = index" [style]="'background-image:url(../../assets/soleilTentative' + (i) + '.jpg);width: 100%; height: 100%;background-size: cover;background-repeat: unset;position:absolute'"></div>
+</div>
+
+
 <div class="scene-wrapper">
 
     <button *ngIf = "!communicationService.infoPartie.isMeneurDeJeu && !infoEvenement!.passer" class = "lgBouton lgAbsolu" style = "top: 90%; left: 80%; width: 20%; height: 5%;z-index: 10;" (click) = "ok()">Passer</button>
-    <!-- BACKGROUND SOLEIL -->
-    <div class="background-soleil" [class.finAnimation]="animationFinie"></div>
   <!-- THREEJS -->
   <div #rendererContainerContainer 
        class="three-container"
@@ -12,16 +15,14 @@
 
             <div class="renderer-canvas"></div>
 
-            <div id="narrateur"
-                 [style.opacity]="opacityNarrateur"
-                 class="narrateur-overlay">
-                {{ texteNarrateur }}
-            </div>
-
         </div>
 
     </div>
 </div>
+
+
+<div *ngIf = "isTextePendantLaNuit" @PendantLaNuit class= "lgAbsolu lgTexte lgBlanc" style = "width: 100%; top: 75%; font-size: 120%;">{{textePendantLaNuit}}</div>
+<div *ngIf = "isTexteJourSeLeve" @JourSeLeve class= "lgAbsolu lgTexte lgBlanc" style = "width: 100%; top: 15%;font-size: 120%;">{{texteJourSeLeve}}</div>
 
 <app-creation-appareils
  *ngIf="isInfoAppareil"
