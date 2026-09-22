@@ -193,7 +193,7 @@ export class Partie {
         this.modePatateChaude = historique.modePatateChaude;
         this.modeExtensionVillage = historique.modeExtensionVillage;
         this.modeVillageoisVillageois = historique.modeVillageoisVillageois;
-        this.modeVideo = historique.modeVideo;
+        this.modeVideo = false;
         if(historique.meneurDeJeu){
             this.appareils[0].switchMeneurDeJeu();
             historique.noms.splice(0,1);
@@ -347,6 +347,10 @@ export class Partie {
             noms: this.appareils.map((appareil: Appareil)=>{return appareil.nomsJoueurs}),
             points: this.appareils.map((appareil: Appareil)=>{return appareil.pointsJoueurs})
         }
+
+        let ordreDuVillage: string[] = this.joueursVivants.map((joueur: Villageois)=>{return joueur.nom});
+        ordreDuVillage.unshift("Ordre du village:");
+        this.historiqueEvenements.push(ordreDuVillage);
 
         await this.prochaineEtape();
     }

@@ -264,16 +264,13 @@ export class SocketController{
             })
 
             socket.on("commencerPartie", () => {
-                try{
                     sio.to(this.partiesService.getNomRoom(socket.id)).emit("decompte")
                     this.partiesService.getPartie(socket.id).commencerPartie().then(()=>{
                         sio.to(this.partiesService.getNomRoom(socket.id)).emit("partieCommencee")
                         sio.emit("reloadPartie")
+                    }).catch((err)=>{
+                        console.log(err)
                     });
-                }
-                catch (err) {
-                   console.log(err)
-                }
             })
 
             socket.on("termine", () => {
@@ -283,9 +280,9 @@ export class SocketController{
                         this.partiesService.getPartie(socket.id).ajouterActionHistorique([Action.PROCHAINE_ETAPE])
                         this.partiesService.getPartie(socket.id).prochaineEtape().then(()=>{
                             sio.to(this.partiesService.getNomRoom(socket.id)).emit("prochaineEtape")
-                        }, (err)=>{
+                        }).catch((err)=>{
                             console.log(err + " ---------- reproduction erreur "+this.partiesService.getPartie(socket.id).getHistorique().actions.length+"------------- " + JSON.stringify(this.partiesService.getPartie(socket.id).getHistorique()));
-                        });
+                        })
                     } else {
                         sio.to(this.partiesService.getNomRoom(socket.id)).emit("appareilTermine")
                     }
@@ -302,9 +299,9 @@ export class SocketController{
                         this.partiesService.getPartie(socket.id).ajouterActionHistorique([Action.PROCHAINE_ETAPE])
                         this.partiesService.getPartie(socket.id).prochaineEtape().then(()=>{
                             sio.to(this.partiesService.getNomRoom(socket.id)).emit("prochaineEtape")
-                        }, (err)=>{
+                        }).catch((err)=>{
                             console.log(err + " ---------- reproduction erreur "+this.partiesService.getPartie(socket.id).getHistorique().actions.length+"------------- " + JSON.stringify(this.partiesService.getPartie(socket.id).getHistorique()));
-                        });
+                        })
                     } else {
                         sio.to(this.partiesService.getNomRoom(socket.id)).emit("appareilTermine")
                     }
@@ -320,8 +317,8 @@ export class SocketController{
                     this.partiesService.getPartie(socket.id).ajouterActionHistorique([Action.PROCHAINE_ETAPE])
                     this.partiesService.getPartie(socket.id).prochaineEtape().then(()=>{
                         sio.to(this.partiesService.getNomRoom(socket.id)).emit("prochaineEtape")
-                    }, (err)=>{
-                        console.log(err, " ---------- reproduction erreur "+this.partiesService.getPartie(socket.id).getHistorique().actions.length+"------------- " + JSON.stringify(this.partiesService.getPartie(socket.id).getHistorique()));
+                    }).catch((err)=>{
+                        console.log(err + " ---------- reproduction erreur "+this.partiesService.getPartie(socket.id).getHistorique().actions.length+"------------- " + JSON.stringify(this.partiesService.getPartie(socket.id).getHistorique()));
                     });
                 }
                 catch (err) {
@@ -338,7 +335,7 @@ export class SocketController{
                         this.partiesService.getPartie(socket.id).ajouterActionHistorique([Action.PROCHAINE_ETAPE])
                         this.partiesService.getPartie(socket.id).prochaineEtape().then(()=>{
                             sio.to(this.partiesService.getNomRoom(socket.id)).emit("prochaineEtape")
-                        }, (err)=>{
+                        }).catch((err)=>{
                             console.log(err + " ---------- reproduction erreur "+this.partiesService.getPartie(socket.id).getHistorique().actions.length+"------------- " + JSON.stringify(this.partiesService.getPartie(socket.id).getHistorique()));
                         });
                     } else {

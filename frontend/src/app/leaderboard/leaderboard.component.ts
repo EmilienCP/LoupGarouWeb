@@ -18,6 +18,7 @@ export class LeaderboardComponent implements OnInit,OnChanges {
   @Input() menu: boolean = false;
   @Input() idAppareil: number = -1;
   titreParametre: string = "Points Totaux";
+  pourcentage: string = "";
   isInfoAppareil: boolean = false;
   private socket: Socket;
   infoEvenement?: InfoEvenement;
@@ -51,6 +52,7 @@ export class LeaderboardComponent implements OnInit,OnChanges {
         this.infos = infos;
         if(this.infoEvenement?.evenement == EvenementDeGroupe.INFO_PRECISIONS){
           this.titreParametre = "Précision";
+          this.pourcentage = "%";
         }
         this.infos.sort((info1: InfoPointsDeVictoire, info2: InfoPointsDeVictoire)=>{
           return info2.points-info1.points;

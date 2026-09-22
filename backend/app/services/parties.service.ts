@@ -154,15 +154,15 @@ export class PartiesService {
             rolesVivantsEtatsSpeciaux.push(EtatsSpeciaux.AMOUREUX);
         } 
 
-        if(partie.joueursMorts.some((villageois: Villageois)=>{return villageois.amoureux})){
+        if(partie.joueursDejaMorts.some((villageois: Villageois)=>{return villageois.amoureux})){
             rolesMortsEtatsSpeciaux.push(EtatsSpeciaux.AMOUREUX);
         }
 
-        if(!partie.joueursMorts.some((villageois: Villageois)=>{return villageois.estInfecte})&& partie.choixPersonnages.includes(Role.INFECT_PERE_LOUPS)){
+        if(!partie.joueursDejaMorts.some((villageois: Villageois)=>{return villageois.estInfecte})&& partie.choixPersonnages.includes(Role.INFECT_PERE_LOUPS)){
             rolesVivantsEtatsSpeciaux.push(EtatsSpeciaux.INFECTE);
         }
 
-        if(partie.joueursMorts.some((villageois: Villageois)=>{return villageois.estInfecte})){
+        if(partie.joueursDejaMorts.some((villageois: Villageois)=>{return villageois.estInfecte})){
             rolesMortsEtatsSpeciaux.push(EtatsSpeciaux.INFECTE);
         }
 
