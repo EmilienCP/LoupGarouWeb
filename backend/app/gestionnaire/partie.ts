@@ -239,7 +239,11 @@ export class Partie {
                         break;
                     }
                     case Action.GET_UN_EVENEMENT:{
-                        this.appareils[action[1]].getUnEvenement();
+                        if(this.appareils.length>action[1]){
+                            this.appareils[action[1]].getUnEvenement();
+                        } else {
+                            console.log("super louche, un appareil non existant essaie d'aller chercher un evenement.");
+                        }
                         break;
                     }
                 }

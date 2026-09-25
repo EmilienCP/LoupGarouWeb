@@ -60,14 +60,14 @@ export class DatabaseController {
           const partie: Partie = this.partiesService.getPartie(req.params.idSocket);
           const appareil: Appareil = this.partiesService.getAppareil(req.params.idSocket);
           const evenement: EvenementIndividuel|EvenementDeGroupe = appareil.getUnEvenement();
-          if(evenement !== EvenementIndividuel.ATTENTE){
-            partie.ajouterActionHistorique([Action.GET_UN_EVENEMENT, partie.appareils.indexOf(appareil)]);
-          }
           const infoEvenement: InfoEvenement = {
             evenement: evenement,
             passer: (appareil.passer) && (partie.victoire == Victoire.AUCUN),
             peutPasser: (appareil.getJoueursRestants(partie.joueursVivants).length == 0) && (partie.victoire == Victoire.AUCUN),
             timer: partie.getTimer(evenement)
+          }
+          if(evenement !== EvenementIndividuel.ATTENTE){
+            partie.ajouterActionHistorique([Action.GET_UN_EVENEMENT, partie.appareils.indexOf(appareil)]);
           }
           res.json(infoEvenement);
         }
