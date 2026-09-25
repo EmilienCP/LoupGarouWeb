@@ -31,7 +31,7 @@ export class AudioService {
   }
 
   jouerCredits(): void{
-    this.jouer("../../assets/Loup Garou Crédits.mp3", this.audio, false)
+    this.jouer("../../assets/Loup Garou Crédits.mp3", this.audio, true)
   }
 
   jouerVictoire(): void{
