@@ -102,5 +102,7 @@
       }
     }
   },
-  "defaultProject": "loup-garou-web"
+  "cli": {
+    "analytics": "7e571d5b-86e6-4b1f-adfe-64b6b66ff5b3"
+  }
 }
