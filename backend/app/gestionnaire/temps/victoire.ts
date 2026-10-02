@@ -32,6 +32,10 @@ export class Victoire extends GestionnaireDeTemps{
                     }
                     texte.push(sousTexte);
                 })
+                let amoureux = this.partie.joueursVivants.find((joueur: Villageois)=>joueur.amoureux);
+                if(amoureux){
+                    texte.push(amoureux.nom + " était en amour avec "+amoureux.amoureux!.nom+".");
+                }
                 this.partie.historiqueEvenements.push(texte);
                 this.partie.preparerEvenementDeGroupe(EvenementDeGroupe.MONTRER_VIVANTS, EvenementDeGroupe.MONTRER_VIVANTS);
                 return false;

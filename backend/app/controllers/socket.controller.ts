@@ -15,6 +15,7 @@ export class SocketController{
     public partiesService: PartiesService;
     public constructor(){
         SocketController.socketController = this;
+        this.partiesService = new PartiesService();
     }
 
     public static getInstance(): SocketController{

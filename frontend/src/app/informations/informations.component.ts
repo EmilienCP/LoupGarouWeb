@@ -287,8 +287,21 @@ export class InformationsComponent implements OnInit {
       }
       case EvenementDeGroupe.INTRO_HISTOIRE:{
         this.audioService.jouerIntro();
-        this.communicationService.getIntroHistoire().subscribe((response: string)=>{
-          evenementTexte.push(response)
+        this.communicationService.getIntroHistoire().subscribe((response: {texte: string, buffer: string})=>{
+          evenementTexte.push(response.texte)
+          const base64 = response.buffer;
+          const binary = atob(base64);
+          const bytes = new Uint8Array(binary.length);
+
+          for (let i = 0; i < binary.length; i++) {
+            bytes[i] = binary.charCodeAt(i);
+          }
+
+          const blob = new Blob([bytes], { type: 'audio/mpeg' });
+          const audioUrl = URL.createObjectURL(blob);
+          const audio = new Audio(audioUrl);
+
+          audio.play();
         })
         break;
       }

@@ -4,7 +4,7 @@ import { Villageois } from "./villageois";
 
 export class DeuxSoeurs extends Villageois{
 
-    deuxiemeSoeur: Villageois; // on ne veut jamais quil n'ait pas de deuxieme soeur, meme quand elle est morte
+    deuxiemeSoeur!: Villageois; // on ne veut jamais quil n'ait pas de deuxieme soeur, meme quand elle est morte
  
     constructor(partie: Partie){
         super(false, partie);

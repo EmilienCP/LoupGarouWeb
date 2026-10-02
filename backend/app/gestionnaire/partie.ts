@@ -69,6 +69,7 @@ export class Partie {
     private historiquePartie: HistoriquePartie;
     chatgptService: ChatgptService;
     texteCourant: string;
+    bufferIntro: Buffer;
     momentsForts: MomentFort[];
     momentFortPresent: MomentFort | undefined;
     activerBackup: boolean = false;
@@ -132,6 +133,8 @@ export class Partie {
                                 Role.LOUP_BLANC, Role.SERVANTE_DEVOUEE, Role.DEUX_SOEURS];
         this.chatgptService = new ChatgptService(this.seed?true:false);
         this.historiqueEvenements = [];
+        this.texteCourant = "";
+        this.bufferIntro = Buffer.from("");
         //this.ajustementPartie(false, false, false);
     }
 
@@ -689,8 +692,8 @@ export class Partie {
     }
 
     tuerDefinitivementMorts(): void{
-        this.getPersonnages(Role.ENFANT_SAUVAGE).forEach((enfantSauvage: EnfantSauvage)=>{
-            enfantSauvage.nouveauMort(this.joueursMorts);
+        this.getPersonnages(Role.ENFANT_SAUVAGE).forEach((enfantSauvage: Villageois)=>{
+            (enfantSauvage as EnfantSauvage).nouveauMort(this.joueursMorts);
         })
         this.joueursMorts.forEach((villagois: Villageois)=>{
             this.ias.forEach((ia: IA)=>{

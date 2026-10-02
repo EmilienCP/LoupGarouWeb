@@ -24,7 +24,9 @@ export class Intro extends GestionnaireDeTemps{
                     })
                 })
                 const reponse: string = await this.partie.chatgptService.genererIntro(noms);
-                this.partie.texteCourant = reponse
+                const buffer: Buffer = await this.partie.chatgptService.genererSpeech(reponse);
+                this.partie.texteCourant = reponse;
+                this.partie.bufferIntro = buffer;
                 this.partie.preparerEvenementDeGroupe(EvenementDeGroupe.INTRO_HISTOIRE, EvenementDeGroupe.INTRO_HISTOIRE);
                 return false;
             case "Cacher Appareil":

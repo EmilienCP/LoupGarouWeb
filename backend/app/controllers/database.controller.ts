@@ -522,7 +522,10 @@ export class DatabaseController {
     router.get('/introHistoire/:idSocket',
       async (req: Request, res: Response) => {
         try {
-          res.json(this.partiesService.getPartie(req.params.idSocket).texteCourant);
+          res.json({
+            texte: this.partiesService.getPartie(req.params.idSocket).texteCourant,
+            buffer: this.partiesService.getPartie(req.params.idSocket).bufferIntro.toString('base64')
+          })
         }
         catch (err) {
           console.log(err)

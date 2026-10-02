@@ -2,24 +2,94 @@ import { OpenAI } from "openai";
 
 export class ChatgptService {
 
-    private key: string = process.env.OPEN_AI_KEY!;
+    private key: string;
     private openai: OpenAI;
     public finiDeGenerer: boolean = true;
     private seed: boolean;
     private discussionPrecendente:OpenAI.Chat.Completions.ChatCompletionMessageParam[]; 
     constructor(seed: boolean = false){
+        this.key = process.env.OPEN_AI_KEY!;
         this.openai = new OpenAI({apiKey: this.key});
         this.seed = seed;
         this.discussionPrecendente = [];
+        if(!this.key){
+            throw new Error("pas de OPEN_AI_KEY.");
+        }
     }
 
     async test(): Promise<string>{
         this.openai = new OpenAI({apiKey: this.key});
         const chatCompletion = await this.openai.chat.completions.create({
-            messages: [{ role: 'user', content: 'Peux tu parler francais' }],
-            model: 'gpt-3.5-turbo-0125',
-          });
+            messages: this.discussionPrecendente,
+            model: 'gpt-5.6-luna',
+        });
         return chatCompletion.choices[0].message.content as string
+    }
+
+    async genererSpeech(texte: string): Promise<Buffer>{
+        console.log("alloooo");
+    //     const speech = await this.openai.audio.speech.create({
+    //     model: "gpt-4o-mini-tts",
+    //     voice: "onyx",
+    //     input: texte,
+    //     instructions: `
+    //     Perform this narration as a real human voice actor in a cinematic dark-fantasy film.
+
+    // VOICE:
+    // - Very deep, resonant, mature male baritone
+    // - Extremely low and rich vocal register
+    // - Strong chest resonance
+    // - Dark, warm and powerful timbre
+    // - Authoritative but natural
+    // - Never artificially deepen or exaggerate the voice
+
+    // PERFORMANCE:
+    // - Do not simply read the words.
+    // - ACT the text and emotionally experience what you are saying.
+    // - Every sentence should have a clear intention and emotion.
+    // - React emotionally to the meaning of each sentence.
+    // - Build tension progressively when the story becomes darker.
+    // - Sound genuinely intrigued, concerned, mysterious, threatening or solemn
+    //   depending on what the text says.
+    // - Use natural variations in pitch, volume, rhythm and intensity.
+    // - Let important words carry emotional weight.
+    // - Use subtle breaths and natural pauses where appropriate.
+    // - Do not give every sentence the same intonation.
+    // - Avoid repetitive speech patterns.
+
+    // DELIVERY:
+    // - Slow and deliberate, but NOT unnaturally slow.
+    // - Natural human phrasing.
+    // - Dramatic pauses before important revelations.
+    // - Vary the rhythm from sentence to sentence.
+    // - Sometimes whisper slightly when the story calls for secrecy.
+    // - Become more powerful when announcing something important.
+    // - Become quieter and more intimate during mysterious moments.
+    // - Never sound like an AI assistant.
+    // - Never sound like a GPS, audiobook robot or automated announcement.
+
+    // CINEMATIC STYLE:
+    // - Premium cinematic movie trailer / television commercial narration.
+    // - Dark fantasy atmosphere.
+    // - Ancient storyteller who has witnessed centuries of history.
+    // - Wise, imposing and mysterious.
+    // - The listener should feel that something important and dangerous is about to happen.
+
+    // Most importantly:
+    // FEEL THE STORY.
+    // Do not mechanically pronounce the text.
+    // Perform it as an experienced human actor would.
+    // `
+    //     });
+        const speech = await this.openai.audio.speech.create({
+            model: "tts-1",
+            voice: "alloy",
+            input: texte
+        });
+        const buffer = Buffer.from(await speech.arrayBuffer());
+
+
+        return buffer;
     }
 
     async genererIntro(noms: string[]): Promise<string>{

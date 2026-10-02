@@ -36,6 +36,7 @@ export class IA {
         this.loupsPublics = [];
         this.loupsNouveaux = [];
         this.loupsAnciens = [];
+        this.voteDuJour = new Vote();
     }
 
     copierVillageoisVillageois(ia: IA): IA{ // pour la servante devouee et le villageois villageois
@@ -298,8 +299,8 @@ export class IA {
                 if(this.villageois.equipeReelle == Equipe.VILLAGEOIS){
                     //uniquement transferer les cotes quand cest un villlageois pcq les loups veulent garder la cote de la servante;
                     //possible que la cible n'ait pas de cote, ca peut etre un joueur dans les liste dequipe assurer etc;
-                    if(this.cotes.get(servante.cible)){
-                        this.cotes.set(servante, this.cotes.get(servante.cible)!);
+                    if(this.cotes.get(servante.cible!)){
+                        this.cotes.set(servante, this.cotes.get(servante.cible!)!);
                     }
 
                     //si la servante dévouée prend le role de qqn qui est mort la nuit
@@ -629,7 +630,7 @@ export class IA {
 
     protected trouverRaisonParDefaut(cible: Villageois): RaisonAccusation{
         if(this.partie.random(this.partie.joueursVivants.length) == 0){
-            if((this.partie.getPersonnages((Role.MONTREUR_OURS)).filter((montreur: MontreurOurs)=>{
+            if(((this.partie.getPersonnages((Role.MONTREUR_OURS)) as MontreurOurs[]).filter((montreur: MontreurOurs)=>{
                 return montreur.oursGrogne();
             }).length >0) && ((this.partie.joueurVoisin(true, this.villageois)==this.partie.joueursVivants.indexOf(cible) ||
                 this.partie.joueurVoisin(false, this.villageois)==this.partie.joueursVivants.indexOf(cible)))&&

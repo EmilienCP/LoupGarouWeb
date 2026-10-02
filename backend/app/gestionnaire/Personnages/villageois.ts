@@ -25,6 +25,7 @@ export class Villageois{
     totalReponsesPrecisions: number;
 
     constructor(estLoup: boolean, partie: Partie) {
+        this.nom = "";
         this.role = estLoup ? Role.LOUP_GAROU: Role.VILLAGEOIS;
         this.equipeApparente = estLoup ? Equipe.LOUPS : Equipe.VILLAGEOIS;
         this.equipeReelle = estLoup ? Equipe.LOUPS : Equipe.VILLAGEOIS;
@@ -36,6 +37,7 @@ export class Villageois{
         this.patateChaude = false;
         this.totalBonnesReponsesPrecisions = 0;
         this.totalReponsesPrecisions = 0;
+        this.rolePublic = RolePublic.VAGABOND;
     }
 
     copier(villageois: Villageois): Villageois{
@@ -238,7 +240,7 @@ export class Villageois{
                     this.voter(cible)
                     break;
                 case EvenementIndividuel.VOTER:
-                    const hypnotiseurs: Villageois[] = this.partie.getPersonnages(Role.HYPNOTISEUR).filter((hypnotiseur: Hypnotiseur)=>{
+                    const hypnotiseurs: Villageois[] = (this.partie.getPersonnages(Role.HYPNOTISEUR) as Hypnotiseur[]).filter((hypnotiseur: Hypnotiseur)=>{
                         return hypnotiseur.joueurChoisi == this;
                     });
                     if(hypnotiseurs.length>0){

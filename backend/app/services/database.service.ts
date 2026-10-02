@@ -16,9 +16,16 @@ export class DatabaseService {
       charset: 'utf8'
     });
 
-    public static query (sql: string, args: any[]): Promise<any> {
-      return util.promisify(this.connection.query)
-        .call(this.connection, sql, args)
+    public static query(sql: string, args: any[]): Promise<any> {
+        return new Promise((resolve, reject) => {
+            this.connection.query(sql, args, (error, results) => {
+                if (error) {
+                    reject(error);
+                } else {
+                    resolve(results);
+                }
+            });
+        });
     }
 
     public static async withTransaction (callback: any): Promise<void> {

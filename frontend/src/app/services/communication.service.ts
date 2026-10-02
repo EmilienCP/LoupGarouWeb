@@ -212,8 +212,8 @@ export class CommunicationService {
     .pipe(catchError(err => this.handleError(err)));
   }
 
-  getIntroHistoire(): Observable<string>{
-    return this.http.get<string[]>(this.ROOT_URL + 'introHistoire/'+this.idSocket)
+  getIntroHistoire(): Observable<{texte: string, buffer: string}>{
+    return this.http.get<{texte: string, buffer: string}>(this.ROOT_URL + 'introHistoire/'+this.idSocket)
     .pipe(catchError(err => this.handleError(err)));
   }
 

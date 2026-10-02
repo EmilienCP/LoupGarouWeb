@@ -6,7 +6,7 @@ import { Villageois } from "./villageois";
 
 export class ServanteDevouee extends Villageois{
 
-    cible: Villageois;
+    cible?: Villageois;
     veutPrendrePersonnage: boolean = false;
 
     constructor(partie: Partie){

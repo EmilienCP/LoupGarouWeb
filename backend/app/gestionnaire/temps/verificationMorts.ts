@@ -24,6 +24,7 @@ export class VerificationMorts extends GestionnaireDeTemps{
     constructor(partie: Partie){
         super(["Mort Amoureux", "Ajouter Amoureux", "Servante Devouee Question", "Servante Devouee Action", "Servante Devouee Info", "Prendre Personnage Servante Devouee","Verifier Infecter Mort", "Montrer Roles Morts", "VerifierVillageoisVillageois", "EnleverPouvoirGrandMechantLoup", "Capitaine Mort", "Successeur Capitaine", "Info Successeur", "Info Chevalier A Lepee Rouillee", "Info Mort Chasseur", "Jouer Chasseur", "Info Choix Chasseur", "Annuler Role", "RendreVillageoisVillageois", "Eliminer Morts", "Mettre A Jour IAs Nouveau Village", "Verifier Victoire"], partie)
         this.victoire = new Victoire(partie)
+        this.chasseursMorts = [];
     }
     
     protected async executerProchaineEtape(etapeCourante: number): Promise<boolean> {
@@ -109,14 +110,14 @@ export class VerificationMorts extends GestionnaireDeTemps{
             case "Servante Devouee Info":{
                 if((this.servanteDevoueeVivante as ServanteDevouee)?.veutPrendrePersonnage){
                     this.partie.preparerEvenementDeGroupe(EvenementDeGroupe.INFO_SERVANTE_DEVOUEE, EvenementDeGroupe.INFO_SERVANTE_DEVOUEE);
-                    this.partie.historiqueEvenements.push(["La Servante dévouée, soit "+this.servanteDevoueeVivante!.nom+" a pris le rôle de " + (this.servanteDevoueeVivante! as ServanteDevouee).cible.nom]);
+                    this.partie.historiqueEvenements.push(["La Servante dévouée, soit "+this.servanteDevoueeVivante!.nom+" a pris le rôle de " + (this.servanteDevoueeVivante! as ServanteDevouee).cible!.nom]);
                     return false;
                 }
                 return true;
             }
             case "Prendre Personnage Servante Devouee":{
                 if((this.servanteDevoueeVivante as ServanteDevouee)?.cible){
-                    const cible: Villageois = (this.servanteDevoueeVivante as ServanteDevouee).cible;
+                    const cible: Villageois = (this.servanteDevoueeVivante as ServanteDevouee).cible!;
                     let nouveauVillageois: Villageois = this.partie.creerVillageois(cible.role, true);
                     nouveauVillageois = this.servanteDevoueeVivante!.copier(nouveauVillageois);
                     nouveauVillageois.estCharmer = false;
@@ -129,8 +130,8 @@ export class VerificationMorts extends GestionnaireDeTemps{
                     nouveauVillageois.unshiftEvenementIndividuelSansRaisons(EvenementIndividuel.CACHER_APPAREIL);
 
                     //faire modifier le role que la voyante a vu
-                    this.partie.getPersonnages(Role.VOYANTE).forEach((voyante: Voyante)=>{
-                        voyante.changerRoleServante(this.servanteDevoueeVivante!, cible)
+                    this.partie.getPersonnages(Role.VOYANTE).forEach((voyante: Villageois)=>{
+                        (voyante as Voyante).changerRoleServante(this.servanteDevoueeVivante!, cible)
                     })
 
                     this.partie.changerPointeur(this.servanteDevoueeVivante!, nouveauVillageois);
@@ -160,7 +161,7 @@ export class VerificationMorts extends GestionnaireDeTemps{
             case "Montrer Roles Morts":
                 //enlever le mort de la servante pour pas devoiler son role
                 if((this.servanteDevoueeVivante as ServanteDevouee)?.cible){
-                    this.partie.joueursMorts.splice(this.partie.joueursMorts.indexOf((this.servanteDevoueeVivante as ServanteDevouee)?.cible), 1);
+                    this.partie.joueursMorts.splice(this.partie.joueursMorts.indexOf((this.servanteDevoueeVivante as ServanteDevouee)?.cible!), 1);
                 }
 
                 //verifier la liste des chasseurs ici pour ne pas quil disparaissent au villageois villageois
@@ -186,7 +187,7 @@ export class VerificationMorts extends GestionnaireDeTemps{
             case "VerifierVillageoisVillageois":{
                 // remmettre le joueur mort de la servante devouee
                 if((this.servanteDevoueeVivante as ServanteDevouee)?.cible){
-                    this.partie.joueursMorts.push((this.servanteDevoueeVivante as ServanteDevouee)?.cible);
+                    this.partie.joueursMorts.push((this.servanteDevoueeVivante as ServanteDevouee)?.cible!);
                 }
 
                 let mortsPasLoups: Villageois[] = this.partie.joueursMorts.filter((mort: Villageois)=>{return mort.equipeApparente!=Equipe.LOUPS});
@@ -199,9 +200,9 @@ export class VerificationMorts extends GestionnaireDeTemps{
             }
             case "EnleverPouvoirGrandMechantLoup":{
                 let grandLoups: Villageois[] = this.partie.getPersonnages(Role.GRAND_MECHANT_LOUP);
-                if(grandLoups.some((loup: GrandMechantLoup)=>{return !loup.perdrePouvoir})){
+                if(grandLoups.some((loup: Villageois)=>{return !(loup as GrandMechantLoup).perdrePouvoir})){
                     if(this.partie.joueursMorts.some((joueur: Villageois)=>{return joueur.equipeApparente == Equipe.LOUPS && !grandLoups.includes(joueur)})){
-                        grandLoups.forEach((loup: GrandMechantLoup)=>{loup.enleverPouvoir()});
+                        grandLoups.forEach((loup: Villageois)=>{ (loup as GrandMechantLoup).enleverPouvoir() });
                         this.partie.historiqueEvenements.push(["Puisqu'un loup garou est éliminé, le grand méchant loup perd son pouvoir."])
                         this.partie.preparerEvenementDeGroupe(EvenementDeGroupe.GRAND_MECHANT_LOUP_PERDRE_POUVOIR, EvenementDeGroupe.GRAND_MECHANT_LOUP_PERDRE_POUVOIR);
                         return false;
@@ -274,9 +275,9 @@ export class VerificationMorts extends GestionnaireDeTemps{
             }
             case "Info Choix Chasseur":{
                 if(this.chasseursMorts.length > 0){
-                    this.partie.getPersonnages(Role.CHASSEUR).forEach((chasseur: Chasseur)=>{
-                        if(chasseur.choix){
-                            this.partie.historiqueEvenements.push([chasseur.nom + " a décidé d'éliminer "+ chasseur.choix.nom]);
+                    this.partie.getPersonnages(Role.CHASSEUR).forEach((chasseur: Villageois)=>{
+                        if((chasseur as Chasseur).choix){
+                            this.partie.historiqueEvenements.push([chasseur.nom + " a décidé d'éliminer "+ (chasseur as Chasseur).choix!.nom]);
                         }
                       })
                     this.partie.preparerEvenementDeGroupe(EvenementDeGroupe.INFO_CHOIX_CHASSEUR, EvenementDeGroupe.INFO_CHOIX_CHASSEUR);

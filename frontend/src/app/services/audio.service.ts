@@ -51,6 +51,7 @@ export class AudioService {
   }
 
   jouerIntro(): void{
+    this.audio.volume = 0.5;
     this.jouer("../../assets/loup_garou_intro.wav", this.audio, false)
   }
 

@@ -48,7 +48,7 @@ export class Matin extends GestionnaireDeTemps{
 
             case "Corbeau":
                 if(this.partie.getPersonnages(Role.CORBEAU).length > 0 && (this.partie.getPersonnages(Role.CORBEAU)[0] as Corbeau).joueurVu) {
-                    this.partie.getPersonnages(Role.CORBEAU).forEach((corbeau: Corbeau)=>{
+                    (this.partie.getPersonnages(Role.CORBEAU) as Corbeau[]).forEach((corbeau: Corbeau)=>{
                         this.partie.historiqueEvenements.push(["Le corbeau a vu "+ corbeau.joueurVu!.nom]);
                         if(this.partie.seed){
                             console.log("Le corbeau a vu "+ corbeau.joueurVu!.nom);
@@ -60,7 +60,7 @@ export class Matin extends GestionnaireDeTemps{
                 return true;
             
             case "Inserer Morts":
-                let sorcieres: Villageois[] = this.partie.getPersonnages(Role.SORCIERE);
+                let sorcieres: Sorciere[] = this.partie.getPersonnages(Role.SORCIERE) as Sorciere[];
                 if(this.partie.seed){
                     console.log("Vote de loups: ",this.partie.voteCourant.genererInfoVotes());
                 }
@@ -68,7 +68,7 @@ export class Matin extends GestionnaireDeTemps{
                 if(this.partie.voteCourant.auMoinsUnVote()){
                     joueursCibles.push(this.partie.voteCourant.gagnantVote(this.partie));
                 }
-                let grandMechantLoups: Villageois[] = this.partie.getPersonnages(Role.GRAND_MECHANT_LOUP);
+                let grandMechantLoups: GrandMechantLoup[] = this.partie.getPersonnages(Role.GRAND_MECHANT_LOUP) as GrandMechantLoup[];
                 grandMechantLoups.forEach((grandMechantLoup: GrandMechantLoup)=>{
                     if(grandMechantLoup.villageoisATuer && !joueursCibles.includes(grandMechantLoup.villageoisATuer)){
                         joueursCibles.push(grandMechantLoup.villageoisATuer);

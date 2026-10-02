@@ -24,8 +24,8 @@ export class TroisFreres extends Villageois{
     actionExServante(joueurQuelleAPris: Villageois): void {
         super.actionExServante(joueurQuelleAPris);
         this.actionIntro();
-        this.deuxFreres.forEach((frere: TroisFreres)=>{
-            frere.deuxFreres.push(this);
+        this.deuxFreres.forEach((frere: Villageois)=>{
+            (frere as TroisFreres).deuxFreres.push(this);
         })
     }
 
