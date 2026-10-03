@@ -127,7 +127,7 @@ export class VideoMatinComponent implements OnInit, AfterViewInit {
       // window.addEventListener('resize', () => this.onWindowResize());
   }
 
-  @HostListener('window:resize', ['$event'])
+  @HostListener('window:resize')
   onWindowResize() {
     const container = this.container.nativeElement;
     const width = container.clientWidth;
