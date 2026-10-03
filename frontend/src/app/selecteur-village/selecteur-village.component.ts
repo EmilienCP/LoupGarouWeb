@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, ChangeDetectionStrategy } from '@angular/core';
 import { Equipe, Joueur, JoueurExtensionLoups, Role, RolePublic } from '../../../../common/Joueur';
 import { EvenementDeGroupe, EvenementIndividuel, RaisonPasVoter } from '../../../../common/evenements';
 import * as utils from '../services/fontionsUtiles';
@@ -6,9 +6,11 @@ import { Socket } from 'socket.io-client';
 import { CommunicationService } from '../services/communication.service';
 
 @Component({
-  selector: 'app-selecteur-village',
-  templateUrl: './selecteur-village.component.html',
-  styleUrls: ['./selecteur-village.component.css']
+    selector: 'app-selecteur-village',
+    templateUrl: './selecteur-village.component.html',
+    styleUrls: ['./selecteur-village.component.css'],
+    changeDetection: ChangeDetectionStrategy.Eager,
+    standalone: false
 })
 export class SelecteurVillageComponent implements OnInit {
 

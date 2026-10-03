@@ -1,13 +1,15 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Socket } from 'socket.io-client';
 import { EvenementDeGroupe, EvenementIndividuel } from '../../../../common/evenements';
 import { CommunicationService } from '../services/communication.service';
 
 @Component({
-  selector: 'app-accusations',
-  templateUrl: './accusations.component.html',
-  styleUrls: ['./accusations.component.css']
+    selector: 'app-accusations',
+    templateUrl: './accusations.component.html',
+    styleUrls: ['./accusations.component.css'],
+    changeDetection: ChangeDetectionStrategy.Eager,
+    standalone: false
 })
 export class AccusationsComponent implements OnInit {
 

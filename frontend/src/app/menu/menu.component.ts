@@ -1,10 +1,12 @@
-import { AfterViewInit, Component, HostListener, NgZone, OnInit } from '@angular/core';
+import { AfterViewInit, Component, HostListener, NgZone, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { CommunicationService } from '../services/communication.service';
 
 @Component({
-  selector: 'app-menu',
-  templateUrl: './menu.component.html',
-  styleUrls: ['./menu.component.css']
+    selector: 'app-menu',
+    templateUrl: './menu.component.html',
+    styleUrls: ['./menu.component.css'],
+    changeDetection: ChangeDetectionStrategy.Eager,
+    standalone: false
 })
 export class MenuComponent implements OnInit, AfterViewInit {
 

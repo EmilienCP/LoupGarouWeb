@@ -1,13 +1,15 @@
-import { Component, HostListener, Injectable, OnDestroy, OnInit } from '@angular/core';
+import { Component, HostListener, Injectable, OnDestroy, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { filter } from 'rxjs/operators'
 import { Socket } from 'socket.io-client';
 import { CommunicationService } from '../services/communication.service';
 
 @Component({
-  selector: 'app-home',
-  templateUrl: './home.component.html',
-  styleUrls: ['./home.component.css']
+    selector: 'app-home',
+    templateUrl: './home.component.html',
+    styleUrls: ['./home.component.css'],
+    changeDetection: ChangeDetectionStrategy.Eager,
+    standalone: false
 })
 @Injectable()
 export class HomeComponent implements OnInit {

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { Router } from '@angular/router';
 import { Socket } from 'socket.io-client';
 import { EvenementDeGroupe, EvenementIndividuel } from '../../../../common/evenements';
@@ -6,9 +6,11 @@ import { CommunicationService } from '../services/communication.service';
 import { InfoEvenement } from '../../../../common/infoEvenement';
 
 @Component({
-  selector: 'app-attente',
-  templateUrl: './attente.component.html',
-  styleUrls: ['./attente.component.css']
+    selector: 'app-attente',
+    templateUrl: './attente.component.html',
+    styleUrls: ['./attente.component.css'],
+    changeDetection: ChangeDetectionStrategy.Eager,
+    standalone: false
 })
 export class AttenteComponent implements OnInit {
 

@@ -1,5 +1,5 @@
 import { animate, state, style, transition, trigger } from '@angular/animations';
-import { Component, ElementRef, HostListener, NgZone, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, HostListener, NgZone, OnInit, ViewChild, ChangeDetectionStrategy } from '@angular/core';
 import { CommunicationService } from '../services/communication.service';
 import { SelecteurComponent } from '../selecteur/selecteur.component';
 import { Joueur, Role } from '../../../../common/Joueur';
@@ -12,44 +12,46 @@ import { AttenteComponent } from '../attente/attente.component';
 import { Subscription } from 'rxjs';
 
 @Component({
-  selector: 'app-jeu',
-  templateUrl: './jeu.component.html',
-  styleUrls: ['./jeu.component.css'],
-  animations:[
-    trigger('parent', [
-      transition(':enter', [])
-    ]),
-    trigger("evenements", [
-      state('deplacement', style({marginLeft: "{{marginFinal}}px"}), {params : { marginFinal: 0}}),
-      state('0', style({marginLeft: "0%"})),
-      state('1', style({marginLeft: "-100%"})),
-      state('2', style({marginLeft: "-200%"})),
-      transition("0 <=> 1", [animate("0.2s")]),
-      transition("0 <=> 2", [animate("0.2s")]),
-      transition("1 <=> 2", [animate("0.2s")]),
-      transition("deplacement => *", [animate("0.2s")])
-    ]),
-    trigger("village", [
-      state('deplacement', style({marginLeft: "{{marginFinal}}px"}), {params : { marginFinal: 0}}),
-      state('0', style({marginLeft: "100%"})),
-      state('1', style({marginLeft: "0%"})),
-      state('2', style({marginLeft: "-100%"})),
-      transition("0 <=> 1", [animate("0.2s")]),
-      transition("0 <=> 2", [animate("0.2s")]),
-      transition("1 <=> 2", [animate("0.2s")]),
-      transition("deplacement => *", [animate("0.2s")])
-    ]),
-    trigger("historique", [
-      state('deplacement', style({marginLeft: "{{marginFinal}}px"}), {params : { marginFinal: 0}}),
-      state('0', style({marginLeft: "200%"})),
-      state('1', style({marginLeft: "100%"})),
-      state('2', style({marginLeft: "0%"})),
-      transition("0 <=> 1", [animate("0.2s")]),
-      transition("0 <=> 2", [animate("0.2s")]),
-      transition("1 <=> 2", [animate("0.2s")]),
-      transition("deplacement => *", [animate("0.2s")])
-    ])
-  ]
+    selector: 'app-jeu',
+    templateUrl: './jeu.component.html',
+    styleUrls: ['./jeu.component.css'],
+    animations: [
+        trigger('parent', [
+            transition(':enter', [])
+        ]),
+        trigger("evenements", [
+            state('deplacement', style({ marginLeft: "{{marginFinal}}px" }), { params: { marginFinal: 0 } }),
+            state('0', style({ marginLeft: "0%" })),
+            state('1', style({ marginLeft: "-100%" })),
+            state('2', style({ marginLeft: "-200%" })),
+            transition("0 <=> 1", [animate("0.2s")]),
+            transition("0 <=> 2", [animate("0.2s")]),
+            transition("1 <=> 2", [animate("0.2s")]),
+            transition("deplacement => *", [animate("0.2s")])
+        ]),
+        trigger("village", [
+            state('deplacement', style({ marginLeft: "{{marginFinal}}px" }), { params: { marginFinal: 0 } }),
+            state('0', style({ marginLeft: "100%" })),
+            state('1', style({ marginLeft: "0%" })),
+            state('2', style({ marginLeft: "-100%" })),
+            transition("0 <=> 1", [animate("0.2s")]),
+            transition("0 <=> 2", [animate("0.2s")]),
+            transition("1 <=> 2", [animate("0.2s")]),
+            transition("deplacement => *", [animate("0.2s")])
+        ]),
+        trigger("historique", [
+            state('deplacement', style({ marginLeft: "{{marginFinal}}px" }), { params: { marginFinal: 0 } }),
+            state('0', style({ marginLeft: "200%" })),
+            state('1', style({ marginLeft: "100%" })),
+            state('2', style({ marginLeft: "0%" })),
+            transition("0 <=> 1", [animate("0.2s")]),
+            transition("0 <=> 2", [animate("0.2s")]),
+            transition("1 <=> 2", [animate("0.2s")]),
+            transition("deplacement => *", [animate("0.2s")])
+        ])
+    ],
+    changeDetection: ChangeDetectionStrategy.Eager,
+    standalone: false
 })
 export class JeuComponent implements OnInit {
 

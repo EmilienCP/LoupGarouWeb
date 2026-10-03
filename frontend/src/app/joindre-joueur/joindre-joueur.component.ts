@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { CommunicationService } from '../services/communication.service';
 import { Socket } from 'socket.io-client';
 import { Router } from '@angular/router';
@@ -6,9 +6,11 @@ import { InfoAppareil } from '../../../../common/infoAppareil';
 import { EtatPartie } from '../../../../common/joindrePartieInfo';
 
 @Component({
-  selector: 'app-joindre-joueur',
-  templateUrl: './joindre-joueur.component.html',
-  styleUrls: ['./joindre-joueur.component.css']
+    selector: 'app-joindre-joueur',
+    templateUrl: './joindre-joueur.component.html',
+    styleUrls: ['./joindre-joueur.component.css'],
+    changeDetection: ChangeDetectionStrategy.Eager,
+    standalone: false
 })
 export class JoindreJoueurComponent implements OnInit {
 

@@ -1,10 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { CommunicationService } from '../services/communication.service';
 
 @Component({
-  selector: 'app-voir-historique',
-  templateUrl: './voir-historique.component.html',
-  styleUrls: ['./voir-historique.component.css']
+    selector: 'app-voir-historique',
+    templateUrl: './voir-historique.component.html',
+    styleUrls: ['./voir-historique.component.css'],
+    changeDetection: ChangeDetectionStrategy.Eager,
+    standalone: false
 })
 export class VoirHistoriqueComponent implements OnInit {
 

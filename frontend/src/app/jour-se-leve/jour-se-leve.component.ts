@@ -1,5 +1,5 @@
 import { animate, animation, keyframes, query, sequence, stagger, state, style, transition, trigger, useAnimation, AnimationEvent } from '@angular/animations';
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Socket } from 'socket.io-client';
 import { AudioService } from '../services/audio.service';
@@ -8,24 +8,23 @@ import { InfoEvenement } from '../../../../common/infoEvenement';
 
 
 @Component({
-  selector: 'app-jour-se-leve',
-  templateUrl: './jour-se-leve.component.html',
-  styleUrls: ['./jour-se-leve.component.css'],
-  animations:[
-    trigger("divAnimation", [
-      transition(":leave",[
-            query("div", [
-              style({ opacity: 1}),
-              stagger(-800, [
-                animate(
-                  "2000ms",
-                  style({ opacity: 0})
-                )
-              ])
+    selector: 'app-jour-se-leve',
+    templateUrl: './jour-se-leve.component.html',
+    styleUrls: ['./jour-se-leve.component.css'],
+    animations: [
+        trigger("divAnimation", [
+            transition(":leave", [
+                query("div", [
+                    style({ opacity: 1 }),
+                    stagger(-800, [
+                        animate("2000ms", style({ opacity: 0 }))
+                    ])
+                ])
             ])
-          ])
-      ])
-  ]
+        ])
+    ],
+    changeDetection: ChangeDetectionStrategy.Eager,
+    standalone: false
 })
 export class JourSeLeveComponent implements OnInit {
 

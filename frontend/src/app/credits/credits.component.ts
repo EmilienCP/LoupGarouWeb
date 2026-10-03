@@ -1,22 +1,24 @@
 import { animate, style, transition, trigger } from '@angular/animations';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Socket } from 'socket.io-client';
 import { AudioService } from '../services/audio.service';
 import { CommunicationService } from '../services/communication.service';
 
 @Component({
-  selector: 'app-credits',
-  templateUrl: './credits.component.html',
-  styleUrls: ['./credits.component.css'],
-  animations:[
-    trigger("texte", [
-      transition(":enter", [
-        style({marginTop: '100%', visibility: 'visible'}),
-        animate("70s", style({marginTop: '-600%', visibility: 'visible'}))
-      ])
-    ])
-  ]
+    selector: 'app-credits',
+    templateUrl: './credits.component.html',
+    styleUrls: ['./credits.component.css'],
+    animations: [
+        trigger("texte", [
+            transition(":enter", [
+                style({ marginTop: '100%', visibility: 'visible' }),
+                animate("70s", style({ marginTop: '-600%', visibility: 'visible' }))
+            ])
+        ])
+    ],
+    changeDetection: ChangeDetectionStrategy.Eager,
+    standalone: false
 })
 export class CreditsComponent implements OnInit {
 

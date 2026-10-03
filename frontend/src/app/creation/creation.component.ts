@@ -1,5 +1,5 @@
 import { animate, state, style, transition, trigger } from '@angular/animations';
-import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild, ChangeDetectionStrategy } from '@angular/core';
 import { Router } from '@angular/router';
 import { catchError, timeout } from 'rxjs/operators';
 import { Socket } from 'socket.io-client';
@@ -10,57 +10,59 @@ import { AudioService } from '../services/audio.service';
 import { CommunicationService } from '../services/communication.service';
 import * as utils from '../services/fontionsUtiles';
 import * as qrcode from 'qrcode';
-import { environment } from 'src/environments/environment';
+import { environment } from '../../environments/environment';
 
 @Component({
-  selector: 'app-creation',
-  templateUrl: './creation.component.html',
-  styleUrls: ['./creation.component.css'],
-  animations:[
-    trigger("texte", [
-      transition(":enter", [
-        style({opacity: 1}),
-        animate("0.7s", style({opacity: 0}))
-      ]),
-      transition(":decrement", [
-        style({opacity: 1}),
-        animate("0.7s", style({opacity: 0}))
-      ])
-    ]),
-    trigger('parent', [
-      transition(':enter', [])
-    ]),
-    trigger("appareilsInfo", [
-      state('deplacement', style({marginLeft: "{{marginFinal}}px"}), {params : { marginFinal: 0}}),
-      state('0', style({marginLeft: "0%"})),
-      state('1', style({marginLeft: "-100%"})),
-      state('2', style({marginLeft: "-200%"})),
-      transition("0 <=> 1", [animate("0.2s")]),
-      transition("0 <=> 2", [animate("0.2s")]),
-      transition("1 <=> 2", [animate("0.2s")]),
-      transition("deplacement => *", [animate("0.2s")])
-    ]),
-    trigger("partieInfo", [
-      state('deplacement', style({marginLeft: "{{marginFinal}}px"}), {params : { marginFinal: 0}}),
-      state('0', style({marginLeft: "100%"})),
-      state('1', style({marginLeft: "0%"})),
-      state('2', style({marginLeft: "-100%"})),
-      transition("0 <=> 1", [animate("0.2s")]),
-      transition("0 <=> 2", [animate("0.2s")]),
-      transition("1 <=> 2", [animate("0.2s")]),
-      transition("deplacement => *", [animate("0.2s")])
-    ]),
-    trigger("pointageInfo", [
-      state('deplacement', style({marginLeft: "{{marginFinal}}px"}), {params : { marginFinal: 0}}),
-      state('0', style({marginLeft: "200%"})),
-      state('1', style({marginLeft: "100%"})),
-      state('2', style({marginLeft: "0%"})),
-      transition("0 <=> 1", [animate("0.2s")]),
-      transition("0 <=> 2", [animate("0.2s")]),
-      transition("1 <=> 2", [animate("0.2s")]),
-      transition("deplacement => *", [animate("0.2s")])
-    ])
-  ]
+    selector: 'app-creation',
+    templateUrl: './creation.component.html',
+    styleUrls: ['./creation.component.css'],
+    animations: [
+        trigger("texte", [
+            transition(":enter", [
+                style({ opacity: 1 }),
+                animate("0.7s", style({ opacity: 0 }))
+            ]),
+            transition(":decrement", [
+                style({ opacity: 1 }),
+                animate("0.7s", style({ opacity: 0 }))
+            ])
+        ]),
+        trigger('parent', [
+            transition(':enter', [])
+        ]),
+        trigger("appareilsInfo", [
+            state('deplacement', style({ marginLeft: "{{marginFinal}}px" }), { params: { marginFinal: 0 } }),
+            state('0', style({ marginLeft: "0%" })),
+            state('1', style({ marginLeft: "-100%" })),
+            state('2', style({ marginLeft: "-200%" })),
+            transition("0 <=> 1", [animate("0.2s")]),
+            transition("0 <=> 2", [animate("0.2s")]),
+            transition("1 <=> 2", [animate("0.2s")]),
+            transition("deplacement => *", [animate("0.2s")])
+        ]),
+        trigger("partieInfo", [
+            state('deplacement', style({ marginLeft: "{{marginFinal}}px" }), { params: { marginFinal: 0 } }),
+            state('0', style({ marginLeft: "100%" })),
+            state('1', style({ marginLeft: "0%" })),
+            state('2', style({ marginLeft: "-100%" })),
+            transition("0 <=> 1", [animate("0.2s")]),
+            transition("0 <=> 2", [animate("0.2s")]),
+            transition("1 <=> 2", [animate("0.2s")]),
+            transition("deplacement => *", [animate("0.2s")])
+        ]),
+        trigger("pointageInfo", [
+            state('deplacement', style({ marginLeft: "{{marginFinal}}px" }), { params: { marginFinal: 0 } }),
+            state('0', style({ marginLeft: "200%" })),
+            state('1', style({ marginLeft: "100%" })),
+            state('2', style({ marginLeft: "0%" })),
+            transition("0 <=> 1", [animate("0.2s")]),
+            transition("0 <=> 2", [animate("0.2s")]),
+            transition("1 <=> 2", [animate("0.2s")]),
+            transition("deplacement => *", [animate("0.2s")])
+        ])
+    ],
+    changeDetection: ChangeDetectionStrategy.Eager,
+    standalone: false
 })
 export class CreationComponent implements OnInit {
 

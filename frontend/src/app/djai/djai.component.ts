@@ -1,13 +1,15 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { Calcul, Filtre, FiltrePersonnalise, Toune } from '../../../../common/toune';
 import { AudiodjService } from '../services/audiodj.service';
 import { CommunicationService } from '../services/communication.service';
 import { SnackBarService } from '../services/snack-bar.service';
 
 @Component({
-  selector: 'app-djai',
-  templateUrl: './djai.component.html',
-  styleUrls: ['./djai.component.css']
+    selector: 'app-djai',
+    templateUrl: './djai.component.html',
+    styleUrls: ['./djai.component.css'],
+    changeDetection: ChangeDetectionStrategy.Eager,
+    standalone: false
 })
 export class DjaiComponent implements OnInit {
 

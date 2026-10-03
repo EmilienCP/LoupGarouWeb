@@ -1,12 +1,14 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { Router } from '@angular/router';
 import { Role, RolePublic } from '../../../../common/Joueur';
 import * as utils from '../services/fontionsUtiles';
 
 @Component({
-  selector: 'app-menu-roles',
-  templateUrl: './menu-roles.component.html',
-  styleUrls: ['./menu-roles.component.css']
+    selector: 'app-menu-roles',
+    templateUrl: './menu-roles.component.html',
+    styleUrls: ['./menu-roles.component.css'],
+    changeDetection: ChangeDetectionStrategy.Eager,
+    standalone: false
 })
 export class MenuRolesComponent implements OnInit {
 
