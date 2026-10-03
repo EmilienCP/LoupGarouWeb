@@ -10,7 +10,7 @@ import { AudioService } from '../services/audio.service';
 import { CommunicationService } from '../services/communication.service';
 import * as utils from '../services/fontionsUtiles';
 import * as qrcode from 'qrcode';
-import { environment } from 'src/environments/environment';
+import { environment } from '../../environments/environment';
 
 @Component({
     selector: 'app-creation',

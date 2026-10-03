@@ -12,7 +12,7 @@ import {MomentFort } from '../../../../common/momentFort'
 import { InfoVideo } from '../../../../common/infoVideo'
 import { InfoEvenement } from '../../../../common/infoEvenement'
 import { InfoPointsDeVictoire } from '../../../../common/infoPointsDeVictoire'
-import { environment } from 'src/environments/environment';
+import { environment } from '../../environments/environment';
 import { Toune } from '../../../../common/toune';
 import { InfoAppareil } from '../../../../common/infoAppareil';
 
