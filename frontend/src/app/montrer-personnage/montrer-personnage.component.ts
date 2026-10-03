@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnInit, ViewChild, ChangeDetectionStrategy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Joueur, Role, RolePublic } from '../../../../common/Joueur';
 import { EvenementIndividuel } from '../../../../common/evenements';
@@ -29,6 +29,7 @@ import { animate, sequence, style, transition, trigger } from '@angular/animatio
             ])
         ])
     ],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class MontrerPersonnageComponent implements OnInit {

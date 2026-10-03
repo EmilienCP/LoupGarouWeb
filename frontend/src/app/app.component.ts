@@ -1,4 +1,4 @@
-import { Component, Injectable, OnDestroy, OnInit } from '@angular/core';
+import { Component, Injectable, OnDestroy, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { CommunicationService } from './services/communication.service';
 
 
@@ -6,6 +6,7 @@ import { CommunicationService } from './services/communication.service';
     selector: 'app-root',
     templateUrl: './app.component.html',
     styleUrls: ['./app.component.css'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 @Injectable({

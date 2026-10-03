@@ -1,10 +1,11 @@
-import { Component, HostListener, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { delay } from 'rxjs';
 
 @Component({
     selector: 'app-jeu-ai',
     templateUrl: './jeu-ai.component.html',
     styleUrls: ['./jeu-ai.component.css'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class JeuAIComponent implements OnInit {

@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, ChangeDetectionStrategy } from '@angular/core';
 import { Role } from '../../../../common/Joueur';
 import { Socket } from 'socket.io-client';
 import { CommunicationService } from '../services/communication.service';
@@ -8,6 +8,7 @@ import * as utils from '../services/fontionsUtiles';
     selector: 'app-creation-info-partie',
     templateUrl: './creation-info-partie.component.html',
     styleUrls: ['./creation-info-partie.component.css'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class CreationInfoPartieComponent implements OnInit {

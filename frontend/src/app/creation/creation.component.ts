@@ -1,5 +1,5 @@
 import { animate, state, style, transition, trigger } from '@angular/animations';
-import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild, ChangeDetectionStrategy } from '@angular/core';
 import { Router } from '@angular/router';
 import { catchError, timeout } from 'rxjs/operators';
 import { Socket } from 'socket.io-client';
@@ -61,6 +61,7 @@ import { environment } from 'src/environments/environment';
             transition("deplacement => *", [animate("0.2s")])
         ])
     ],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class CreationComponent implements OnInit {

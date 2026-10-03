@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Socket } from 'socket.io-client';
 import { Equipe, Joueur, Role } from '../../../../common/Joueur';
@@ -24,6 +24,7 @@ import { animate, state, style, transition, trigger } from '@angular/animations'
             ])
         ])
     ],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class InformationsComponent implements OnInit {

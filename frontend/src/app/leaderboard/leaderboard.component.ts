@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { Component, Input, OnChanges, OnInit, SimpleChanges, ChangeDetectionStrategy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { InfoPointsDeVictoire } from '../../../../common/infoPointsDeVictoire';
 import { CommunicationService } from '../services/communication.service';
@@ -11,6 +11,7 @@ import { EvenementDeGroupe } from '../../../../common/evenements';
     selector: 'app-leaderboard',
     templateUrl: './leaderboard.component.html',
     styleUrls: ['./leaderboard.component.css'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class LeaderboardComponent implements OnInit,OnChanges {

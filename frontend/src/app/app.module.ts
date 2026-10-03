@@ -4,7 +4,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi, withXhr } from '@angular/common/http';
 
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
@@ -111,5 +111,5 @@ import { JoindreJoueurComponent } from './joindre-joueur/joindre-joueur.componen
         MatTabsModule,
         MatCheckboxModule,
         MatSlideToggleModule,
-        ScrollingModule], providers: [provideHttpClient(withInterceptorsFromDi())] })
+        ScrollingModule], providers: [provideHttpClient(withXhr(), withInterceptorsFromDi())] })
 export class AppModule { }

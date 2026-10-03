@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Socket } from 'socket.io-client';
 import { JoueurExtensionLoups } from '../../../../common/Joueur';
@@ -10,6 +10,7 @@ import { InfoEvenement } from '../../../../common/infoEvenement';
     selector: 'app-selecteur',
     templateUrl: './selecteur.component.html',
     styleUrls: ['./selecteur.component.css'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class SelecteurComponent implements OnInit {

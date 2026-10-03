@@ -1,5 +1,5 @@
 import { animate, state, style, transition, trigger } from '@angular/animations';
-import { Component, ElementRef, HostListener, NgZone, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, HostListener, NgZone, OnInit, ViewChild, ChangeDetectionStrategy } from '@angular/core';
 import { CommunicationService } from '../services/communication.service';
 import { SelecteurComponent } from '../selecteur/selecteur.component';
 import { Joueur, Role } from '../../../../common/Joueur';
@@ -50,6 +50,7 @@ import { Subscription } from 'rxjs';
             transition("deplacement => *", [animate("0.2s")])
         ])
     ],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class JeuComponent implements OnInit {

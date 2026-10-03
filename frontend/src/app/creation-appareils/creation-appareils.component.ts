@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, ChangeDetectionStrategy } from '@angular/core';
 import { Socket } from 'socket.io-client';
 import { CommunicationService } from '../services/communication.service';
 import { Router } from '@angular/router';
@@ -8,6 +8,7 @@ import { InfoAppareil } from '../../../../common/infoAppareil';
     selector: 'app-creation-appareils',
     templateUrl: './creation-appareils.component.html',
     styleUrls: ['./creation-appareils.component.css'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class CreationAppareilsComponent implements OnInit {

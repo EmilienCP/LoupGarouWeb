@@ -1,5 +1,5 @@
 import { animate, style, transition, trigger } from '@angular/animations';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Socket } from 'socket.io-client';
 import { AudioService } from '../services/audio.service';
@@ -17,6 +17,7 @@ import { CommunicationService } from '../services/communication.service';
             ])
         ])
     ],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class CreditsComponent implements OnInit {

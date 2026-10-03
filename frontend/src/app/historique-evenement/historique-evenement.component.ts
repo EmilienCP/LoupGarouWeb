@@ -1,9 +1,10 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, ChangeDetectionStrategy } from '@angular/core';
 
 @Component({
     selector: 'app-historique-evenement',
     templateUrl: './historique-evenement.component.html',
     styleUrls: ['./historique-evenement.component.css'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class HistoriqueEvenementComponent implements OnInit {

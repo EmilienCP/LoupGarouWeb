@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { EtatsSpeciaux, Joueur, Role } from '../../../../common/Joueur';
 import { CommunicationService } from '../services/communication.service';
 import * as utils from "../services/fontionsUtiles";
@@ -7,6 +7,7 @@ import * as utils from "../services/fontionsUtiles";
     selector: 'app-village-onglet',
     templateUrl: './village-onglet.component.html',
     styleUrls: ['./village-onglet.component.css'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class VillageOngletComponent implements OnInit {

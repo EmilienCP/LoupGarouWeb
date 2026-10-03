@@ -1,5 +1,5 @@
 import { animate, animation, keyframes, query, sequence, stagger, state, style, transition, trigger, useAnimation, AnimationEvent } from '@angular/animations';
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Socket } from 'socket.io-client';
 import { AudioService } from '../services/audio.service';
@@ -23,6 +23,7 @@ import { InfoEvenement } from '../../../../common/infoEvenement';
             ])
         ])
     ],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class JourSeLeveComponent implements OnInit {

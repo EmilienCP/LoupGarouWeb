@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output, ChangeDetectionStrategy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Joueur, Role } from '../../../../common/Joueur';
 import { CommunicationService } from '../services/communication.service';
@@ -8,6 +8,7 @@ import { convertirRoleTexte, descriptionRole } from '../services/fontionsUtiles'
     selector: 'app-info-village',
     templateUrl: './info-village.component.html',
     styleUrls: ['./info-village.component.css'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class InfoVillageComponent implements OnInit {

@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import { Component, ElementRef, OnInit, ViewChild, AfterViewInit, HostListener } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild, AfterViewInit, HostListener, ChangeDetectionStrategy } from '@angular/core';
 import { Socket } from 'socket.io-client';
 import { AudioService } from '../services/audio.service';
 import { CommunicationService } from '../services/communication.service';
@@ -40,6 +40,7 @@ import { animate, query, stagger, style, transition, trigger } from '@angular/an
             ])
         ])
     ],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class VideoMatinComponent implements OnInit, AfterViewInit {

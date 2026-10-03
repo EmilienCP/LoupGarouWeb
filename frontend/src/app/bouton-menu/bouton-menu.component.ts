@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output, ChangeDetectionStrategy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Socket } from 'socket.io-client';
 import { AudioService } from '../services/audio.service';
@@ -8,6 +8,7 @@ import { CommunicationService } from '../services/communication.service';
     selector: 'app-bouton-menu',
     templateUrl: './bouton-menu.component.html',
     styleUrls: ['./bouton-menu.component.css'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class BoutonMenuComponent implements OnInit {

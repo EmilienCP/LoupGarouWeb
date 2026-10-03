@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, ChangeDetectionStrategy } from '@angular/core';
 import { Role, RolePublic } from '../../../../common/Joueur';
 import * as utils from '../services/fontionsUtiles';
 
@@ -6,6 +6,7 @@ import * as utils from '../services/fontionsUtiles';
     selector: 'app-description-role',
     templateUrl: './description-role.component.html',
     styleUrls: ['./description-role.component.css'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class DescriptionRoleComponent implements OnInit {

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { Router } from '@angular/router';
 import { Socket } from 'socket.io-client';
 import { JoindrePartieInfo} from '../../../../common/joindrePartieInfo';
@@ -8,6 +8,7 @@ import { CommunicationService } from '../services/communication.service';
     selector: 'app-joindre',
     templateUrl: './joindre.component.html',
     styleUrls: ['./joindre.component.css'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class JoindreComponent implements OnInit {
