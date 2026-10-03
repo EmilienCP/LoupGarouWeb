@@ -5,9 +5,10 @@ import { EvenementDeGroupe, EvenementIndividuel } from '../../../../common/evene
 import { CommunicationService } from '../services/communication.service';
 
 @Component({
-  selector: 'app-accusations',
-  templateUrl: './accusations.component.html',
-  styleUrls: ['./accusations.component.css']
+    selector: 'app-accusations',
+    templateUrl: './accusations.component.html',
+    styleUrls: ['./accusations.component.css'],
+    standalone: false
 })
 export class AccusationsComponent implements OnInit {
 

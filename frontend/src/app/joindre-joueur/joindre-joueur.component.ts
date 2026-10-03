@@ -6,9 +6,10 @@ import { InfoAppareil } from '../../../../common/infoAppareil';
 import { EtatPartie } from '../../../../common/joindrePartieInfo';
 
 @Component({
-  selector: 'app-joindre-joueur',
-  templateUrl: './joindre-joueur.component.html',
-  styleUrls: ['./joindre-joueur.component.css']
+    selector: 'app-joindre-joueur',
+    templateUrl: './joindre-joueur.component.html',
+    styleUrls: ['./joindre-joueur.component.css'],
+    standalone: false
 })
 export class JoindreJoueurComponent implements OnInit {
 

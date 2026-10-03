@@ -5,9 +5,10 @@ import { Router } from '@angular/router';
 import { InfoAppareil } from '../../../../common/infoAppareil';
 
 @Component({
-  selector: 'app-creation-appareils',
-  templateUrl: './creation-appareils.component.html',
-  styleUrls: ['./creation-appareils.component.css']
+    selector: 'app-creation-appareils',
+    templateUrl: './creation-appareils.component.html',
+    styleUrls: ['./creation-appareils.component.css'],
+    standalone: false
 })
 export class CreationAppareilsComponent implements OnInit {
 

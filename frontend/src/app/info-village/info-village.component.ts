@@ -5,9 +5,10 @@ import { CommunicationService } from '../services/communication.service';
 import { convertirRoleTexte, descriptionRole } from '../services/fontionsUtiles';
 
 @Component({
-  selector: 'app-info-village',
-  templateUrl: './info-village.component.html',
-  styleUrls: ['./info-village.component.css']
+    selector: 'app-info-village',
+    templateUrl: './info-village.component.html',
+    styleUrls: ['./info-village.component.css'],
+    standalone: false
 })
 export class InfoVillageComponent implements OnInit {
   

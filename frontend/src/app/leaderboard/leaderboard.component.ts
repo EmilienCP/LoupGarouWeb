@@ -8,9 +8,10 @@ import { InfoEvenement } from '../../../../common/infoEvenement';
 import { EvenementDeGroupe } from '../../../../common/evenements';
 
 @Component({
-  selector: 'app-leaderboard',
-  templateUrl: './leaderboard.component.html',
-  styleUrls: ['./leaderboard.component.css']
+    selector: 'app-leaderboard',
+    templateUrl: './leaderboard.component.html',
+    styleUrls: ['./leaderboard.component.css'],
+    standalone: false
 })
 export class LeaderboardComponent implements OnInit,OnChanges {
 

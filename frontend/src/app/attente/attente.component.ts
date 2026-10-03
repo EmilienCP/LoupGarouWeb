@@ -6,9 +6,10 @@ import { CommunicationService } from '../services/communication.service';
 import { InfoEvenement } from '../../../../common/infoEvenement';
 
 @Component({
-  selector: 'app-attente',
-  templateUrl: './attente.component.html',
-  styleUrls: ['./attente.component.css']
+    selector: 'app-attente',
+    templateUrl: './attente.component.html',
+    styleUrls: ['./attente.component.css'],
+    standalone: false
 })
 export class AttenteComponent implements OnInit {
 

@@ -6,17 +6,18 @@ import { AudioService } from '../services/audio.service';
 import { CommunicationService } from '../services/communication.service';
 
 @Component({
-  selector: 'app-credits',
-  templateUrl: './credits.component.html',
-  styleUrls: ['./credits.component.css'],
-  animations:[
-    trigger("texte", [
-      transition(":enter", [
-        style({marginTop: '100%', visibility: 'visible'}),
-        animate("70s", style({marginTop: '-600%', visibility: 'visible'}))
-      ])
-    ])
-  ]
+    selector: 'app-credits',
+    templateUrl: './credits.component.html',
+    styleUrls: ['./credits.component.css'],
+    animations: [
+        trigger("texte", [
+            transition(":enter", [
+                style({ marginTop: '100%', visibility: 'visible' }),
+                animate("70s", style({ marginTop: '-600%', visibility: 'visible' }))
+            ])
+        ])
+    ],
+    standalone: false
 })
 export class CreditsComponent implements OnInit {
 

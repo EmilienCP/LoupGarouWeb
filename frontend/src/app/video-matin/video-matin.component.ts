@@ -9,38 +9,38 @@ import { InfoVideo } from '../../../../common/infoVideo';
 import { animate, query, stagger, style, transition, trigger } from '@angular/animations';
 
 @Component({
-  selector: 'app-video-matin',
-  templateUrl: `./video-matin.component.html`,
-  styleUrls: ['./video-matin.component.css'],
-  animations: [ 
-    trigger('Fond', [ 
-      transition(':enter', [ 
-        query('.image', [ 
-          style({ opacity: 0 }), 
-          stagger(1200, [ 
-            animate('2300ms ease', 
-              style({ opacity: 1 })) 
-            ]) 
-          ]) 
-        ]) 
-      ]) ,
-    trigger("PendantLaNuit", [
-      transition(":leave",[
-        style({opacity: 1, visibility: 'visible'}),
-        animate("2s ease-in", style({opacity: 0, visibility: 'visible'}))
-      ])
-    ]),
-    trigger("JourSeLeve", [
-      transition(":enter",[
-        style({opacity: 0, visibility: 'visible'}),
-        animate("2s ease-in", style({opacity: 1, visibility: 'visible'}))
-      ]),
-      transition(":leave",[
-        style({opacity: 1, visibility: 'visible'}),
-        animate("2s ease-in", style({opacity: 0, visibility: 'visible'}))
-      ])
-    ])
-    ]
+    selector: 'app-video-matin',
+    templateUrl: `./video-matin.component.html`,
+    styleUrls: ['./video-matin.component.css'],
+    animations: [
+        trigger('Fond', [
+            transition(':enter', [
+                query('.image', [
+                    style({ opacity: 0 }),
+                    stagger(1200, [
+                        animate('2300ms ease', style({ opacity: 1 }))
+                    ])
+                ])
+            ])
+        ]),
+        trigger("PendantLaNuit", [
+            transition(":leave", [
+                style({ opacity: 1, visibility: 'visible' }),
+                animate("2s ease-in", style({ opacity: 0, visibility: 'visible' }))
+            ])
+        ]),
+        trigger("JourSeLeve", [
+            transition(":enter", [
+                style({ opacity: 0, visibility: 'visible' }),
+                animate("2s ease-in", style({ opacity: 1, visibility: 'visible' }))
+            ]),
+            transition(":leave", [
+                style({ opacity: 1, visibility: 'visible' }),
+                animate("2s ease-in", style({ opacity: 0, visibility: 'visible' }))
+            ])
+        ])
+    ],
+    standalone: false
 })
 export class VideoMatinComponent implements OnInit, AfterViewInit {
   @ViewChild('rendererContainerContainer') container!: ElementRef;

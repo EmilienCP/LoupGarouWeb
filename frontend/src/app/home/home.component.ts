@@ -5,9 +5,10 @@ import { Socket } from 'socket.io-client';
 import { CommunicationService } from '../services/communication.service';
 
 @Component({
-  selector: 'app-home',
-  templateUrl: './home.component.html',
-  styleUrls: ['./home.component.css']
+    selector: 'app-home',
+    templateUrl: './home.component.html',
+    styleUrls: ['./home.component.css'],
+    standalone: false
 })
 @Injectable()
 export class HomeComponent implements OnInit {

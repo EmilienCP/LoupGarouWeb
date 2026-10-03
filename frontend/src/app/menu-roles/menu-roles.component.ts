@@ -4,9 +4,10 @@ import { Role, RolePublic } from '../../../../common/Joueur';
 import * as utils from '../services/fontionsUtiles';
 
 @Component({
-  selector: 'app-menu-roles',
-  templateUrl: './menu-roles.component.html',
-  styleUrls: ['./menu-roles.component.css']
+    selector: 'app-menu-roles',
+    templateUrl: './menu-roles.component.html',
+    styleUrls: ['./menu-roles.component.css'],
+    standalone: false
 })
 export class MenuRolesComponent implements OnInit {
 

@@ -2,9 +2,10 @@ import { Component, HostListener, OnInit } from '@angular/core';
 import { delay } from 'rxjs';
 
 @Component({
-  selector: 'app-jeu-ai',
-  templateUrl: './jeu-ai.component.html',
-  styleUrls: ['./jeu-ai.component.css']
+    selector: 'app-jeu-ai',
+    templateUrl: './jeu-ai.component.html',
+    styleUrls: ['./jeu-ai.component.css'],
+    standalone: false
 })
 export class JeuAIComponent implements OnInit {
 

@@ -5,9 +5,10 @@ import { JoindrePartieInfo} from '../../../../common/joindrePartieInfo';
 import { CommunicationService } from '../services/communication.service';
 
 @Component({
-  selector: 'app-joindre',
-  templateUrl: './joindre.component.html',
-  styleUrls: ['./joindre.component.css']
+    selector: 'app-joindre',
+    templateUrl: './joindre.component.html',
+    styleUrls: ['./joindre.component.css'],
+    standalone: false
 })
 export class JoindreComponent implements OnInit {
 

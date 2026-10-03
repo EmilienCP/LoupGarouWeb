@@ -7,27 +7,29 @@ import * as utils from '../services/fontionsUtiles';
 import { animate, sequence, style, transition, trigger } from '@angular/animations';
 
 @Component({
-  selector: 'app-montrer-personnage',
-  templateUrl: './montrer-personnage.component.html',
-  styleUrls: ['./montrer-personnage.component.css'],
-  animations:[
-    trigger("carte", [
-    transition(":enter",[
-      sequence([
-        style({transform: "rotate(0) scale(0.5)"}),
-        animate("1.5s", style({transform: "rotate(1440deg) scale(1)"}))
-      ])
-    ])
-  ]),
-    trigger("texte", [
-      transition(":enter",[
-        sequence([
-          style({transform: "translateY(-500px)"}),
-          animate("1.5s", style({transform: "translateY(-500px)"})),
-          animate("0.5s", style({transform: "translateY(0)"}))
+    selector: 'app-montrer-personnage',
+    templateUrl: './montrer-personnage.component.html',
+    styleUrls: ['./montrer-personnage.component.css'],
+    animations: [
+        trigger("carte", [
+            transition(":enter", [
+                sequence([
+                    style({ transform: "rotate(0) scale(0.5)" }),
+                    animate("1.5s", style({ transform: "rotate(1440deg) scale(1)" }))
+                ])
+            ])
+        ]),
+        trigger("texte", [
+            transition(":enter", [
+                sequence([
+                    style({ transform: "translateY(-500px)" }),
+                    animate("1.5s", style({ transform: "translateY(-500px)" })),
+                    animate("0.5s", style({ transform: "translateY(0)" }))
+                ])
+            ])
         ])
-      ])
-  ])]
+    ],
+    standalone: false
 })
 export class MontrerPersonnageComponent implements OnInit {
 

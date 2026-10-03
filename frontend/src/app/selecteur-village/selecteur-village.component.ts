@@ -6,9 +6,10 @@ import { Socket } from 'socket.io-client';
 import { CommunicationService } from '../services/communication.service';
 
 @Component({
-  selector: 'app-selecteur-village',
-  templateUrl: './selecteur-village.component.html',
-  styleUrls: ['./selecteur-village.component.css']
+    selector: 'app-selecteur-village',
+    templateUrl: './selecteur-village.component.html',
+    styleUrls: ['./selecteur-village.component.css'],
+    standalone: false
 })
 export class SelecteurVillageComponent implements OnInit {
 

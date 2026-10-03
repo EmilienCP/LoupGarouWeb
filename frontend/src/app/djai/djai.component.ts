@@ -5,9 +5,10 @@ import { CommunicationService } from '../services/communication.service';
 import { SnackBarService } from '../services/snack-bar.service';
 
 @Component({
-  selector: 'app-djai',
-  templateUrl: './djai.component.html',
-  styleUrls: ['./djai.component.css']
+    selector: 'app-djai',
+    templateUrl: './djai.component.html',
+    styleUrls: ['./djai.component.css'],
+    standalone: false
 })
 export class DjaiComponent implements OnInit {
 

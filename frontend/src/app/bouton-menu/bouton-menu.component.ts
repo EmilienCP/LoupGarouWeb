@@ -5,9 +5,10 @@ import { AudioService } from '../services/audio.service';
 import { CommunicationService } from '../services/communication.service';
 
 @Component({
-  selector: 'app-bouton-menu',
-  templateUrl: './bouton-menu.component.html',
-  styleUrls: ['./bouton-menu.component.css']
+    selector: 'app-bouton-menu',
+    templateUrl: './bouton-menu.component.html',
+    styleUrls: ['./bouton-menu.component.css'],
+    standalone: false
 })
 export class BoutonMenuComponent implements OnInit {
 

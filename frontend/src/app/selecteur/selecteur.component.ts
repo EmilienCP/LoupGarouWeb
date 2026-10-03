@@ -7,9 +7,10 @@ import { CommunicationService } from '../services/communication.service';
 import { InfoEvenement } from '../../../../common/infoEvenement';
 
 @Component({
-  selector: 'app-selecteur',
-  templateUrl: './selecteur.component.html',
-  styleUrls: ['./selecteur.component.css']
+    selector: 'app-selecteur',
+    templateUrl: './selecteur.component.html',
+    styleUrls: ['./selecteur.component.css'],
+    standalone: false
 })
 export class SelecteurComponent implements OnInit {
 

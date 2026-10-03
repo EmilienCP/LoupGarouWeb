@@ -3,9 +3,10 @@ import { Role, RolePublic } from '../../../../common/Joueur';
 import * as utils from '../services/fontionsUtiles';
 
 @Component({
-  selector: 'app-description-role',
-  templateUrl: './description-role.component.html',
-  styleUrls: ['./description-role.component.css']
+    selector: 'app-description-role',
+    templateUrl: './description-role.component.html',
+    styleUrls: ['./description-role.component.css'],
+    standalone: false
 })
 export class DescriptionRoleComponent implements OnInit {
 

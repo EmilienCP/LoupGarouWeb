@@ -4,9 +4,10 @@ import { CommunicationService } from '../services/communication.service';
 import * as utils from "../services/fontionsUtiles";
 
 @Component({
-  selector: 'app-village-onglet',
-  templateUrl: './village-onglet.component.html',
-  styleUrls: ['./village-onglet.component.css']
+    selector: 'app-village-onglet',
+    templateUrl: './village-onglet.component.html',
+    styleUrls: ['./village-onglet.component.css'],
+    standalone: false
 })
 export class VillageOngletComponent implements OnInit {
 

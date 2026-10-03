@@ -12,18 +12,19 @@ import { MomentFort, MomentFortType } from '../../../../common/momentFort';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 
 @Component({
-  selector: 'app-informations',
-  templateUrl: './informations.component.html',
-  styleUrls: ['./informations.component.css'],
-  animations: [
-    trigger("progressBar", [
-      state("false",style({width: "0%"})),
-      transition("false=>true",[
-        style({width: "100%"}),
-        animate("{{time}}s", style({width: "0%"}))
-      ])
-    ])
-  ]
+    selector: 'app-informations',
+    templateUrl: './informations.component.html',
+    styleUrls: ['./informations.component.css'],
+    animations: [
+        trigger("progressBar", [
+            state("false", style({ width: "0%" })),
+            transition("false=>true", [
+                style({ width: "100%" }),
+                animate("{{time}}s", style({ width: "0%" }))
+            ])
+        ])
+    ],
+    standalone: false
 })
 export class InformationsComponent implements OnInit {
 

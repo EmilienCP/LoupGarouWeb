@@ -8,24 +8,22 @@ import { InfoEvenement } from '../../../../common/infoEvenement';
 
 
 @Component({
-  selector: 'app-jour-se-leve',
-  templateUrl: './jour-se-leve.component.html',
-  styleUrls: ['./jour-se-leve.component.css'],
-  animations:[
-    trigger("divAnimation", [
-      transition(":leave",[
-            query("div", [
-              style({ opacity: 1}),
-              stagger(-800, [
-                animate(
-                  "2000ms",
-                  style({ opacity: 0})
-                )
-              ])
+    selector: 'app-jour-se-leve',
+    templateUrl: './jour-se-leve.component.html',
+    styleUrls: ['./jour-se-leve.component.css'],
+    animations: [
+        trigger("divAnimation", [
+            transition(":leave", [
+                query("div", [
+                    style({ opacity: 1 }),
+                    stagger(-800, [
+                        animate("2000ms", style({ opacity: 0 }))
+                    ])
+                ])
             ])
-          ])
-      ])
-  ]
+        ])
+    ],
+    standalone: false
 })
 export class JourSeLeveComponent implements OnInit {
 
