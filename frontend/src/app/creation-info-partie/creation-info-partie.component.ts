@@ -7,7 +7,7 @@ import * as utils from '../services/fontionsUtiles';
 @Component({
     selector: 'app-creation-info-partie',
     templateUrl: './creation-info-partie.component.html',
-    styleUrls: ['./creation-info-partie.component.css'],
+a    styleUrls: ['./creation-info-partie.component.css'],
     standalone: false
 })
 export class CreationInfoPartieComponent implements OnInit {
