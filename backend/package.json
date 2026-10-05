@@ -76,7 +76,7 @@
     "nodemon": "latest",
     "npm": "^10.8.1",
     "nvm": "0.0.4",
-    "openai": "^4.52.2",
+    "openai": "^7.28.0",
     "reflect-metadata": "^0.2.2",
     "serve-favicon": "latest",
     "server": "^1.0.27",

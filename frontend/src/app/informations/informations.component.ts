@@ -135,6 +135,7 @@ export class InformationsComponent implements OnInit {
        +this.infoEvenement!.evenement !== EvenementIndividuel.INFO_INFECTE &&
        +this.infoEvenement!.evenement !== EvenementIndividuel.INFO_HYPNOTISER &&
        +this.infoEvenement!.evenement !== EvenementIndividuel.RECUPERER_SORT_MORTEL_SORCIERE &&
+       +this.infoEvenement!.evenement !== EvenementIndividuel.INFECT_PERE_RECUPERER_POUVOIR &&
        +this.infoEvenement!.evenement !== EvenementIndividuel.INFO_CHARMER &&
        +this.infoEvenement!.evenement !== EvenementIndividuel.INFO_ASSOCIER_MORT &&
        +this.infoEvenement!.evenement !== EvenementIndividuel.JOUER_RENARD &&

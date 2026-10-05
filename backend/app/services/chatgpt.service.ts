@@ -27,65 +27,64 @@ export class ChatgptService {
     }
 
     async genererSpeech(texte: string): Promise<Buffer>{
-        console.log("alloooo");
-    //     const speech = await this.openai.audio.speech.create({
-    //     model: "gpt-4o-mini-tts",
-    //     voice: "onyx",
-    //     input: texte,
-    //     instructions: `
-    //     Perform this narration as a real human voice actor in a cinematic dark-fantasy film.
-
-    // VOICE:
-    // - Very deep, resonant, mature male baritone
-    // - Extremely low and rich vocal register
-    // - Strong chest resonance
-    // - Dark, warm and powerful timbre
-    // - Authoritative but natural
-    // - Never artificially deepen or exaggerate the voice
-
-    // PERFORMANCE:
-    // - Do not simply read the words.
-    // - ACT the text and emotionally experience what you are saying.
-    // - Every sentence should have a clear intention and emotion.
-    // - React emotionally to the meaning of each sentence.
-    // - Build tension progressively when the story becomes darker.
-    // - Sound genuinely intrigued, concerned, mysterious, threatening or solemn
-    //   depending on what the text says.
-    // - Use natural variations in pitch, volume, rhythm and intensity.
-    // - Let important words carry emotional weight.
-    // - Use subtle breaths and natural pauses where appropriate.
-    // - Do not give every sentence the same intonation.
-    // - Avoid repetitive speech patterns.
-
-    // DELIVERY:
-    // - Slow and deliberate, but NOT unnaturally slow.
-    // - Natural human phrasing.
-    // - Dramatic pauses before important revelations.
-    // - Vary the rhythm from sentence to sentence.
-    // - Sometimes whisper slightly when the story calls for secrecy.
-    // - Become more powerful when announcing something important.
-    // - Become quieter and more intimate during mysterious moments.
-    // - Never sound like an AI assistant.
-    // - Never sound like a GPS, audiobook robot or automated announcement.
-
-    // CINEMATIC STYLE:
-    // - Premium cinematic movie trailer / television commercial narration.
-    // - Dark fantasy atmosphere.
-    // - Ancient storyteller who has witnessed centuries of history.
-    // - Wise, imposing and mysterious.
-    // - The listener should feel that something important and dangerous is about to happen.
-
-    // Most importantly:
-    // FEEL THE STORY.
-    // Do not mechanically pronounce the text.
-    // Perform it as an experienced human actor would.
-    // `
-    //     });
         const speech = await this.openai.audio.speech.create({
-            model: "tts-1",
-            voice: "alloy",
-            input: texte
+        model: "gpt-4o-mini-tts",
+        voice: "onyx",
+        input: texte,
+        instructions: `
+        Perform this narration as a real human voice actor in a cinematic dark-fantasy film.
+
+    VOICE:
+    - Very deep, resonant, mature male baritone
+    - Extremely low and rich vocal register
+    - Strong chest resonance
+    - Dark, warm and powerful timbre
+    - Authoritative but natural
+    - Never artificially deepen or exaggerate the voice
+
+    PERFORMANCE:
+    - Do not simply read the words.
+    - ACT the text and emotionally experience what you are saying.
+    - Every sentence should have a clear intention and emotion.
+    - React emotionally to the meaning of each sentence.
+    - Build tension progressively when the story becomes darker.
+    - Sound genuinely intrigued, concerned, mysterious, threatening or solemn
+      depending on what the text says.
+    - Use natural variations in pitch, volume, rhythm and intensity.
+    - Let important words carry emotional weight.
+    - Use subtle breaths and natural pauses where appropriate.
+    - Do not give every sentence the same intonation.
+    - Avoid repetitive speech patterns.
+
+    DELIVERY:
+    - Slow and deliberate, but NOT unnaturally slow.
+    - Natural human phrasing.
+    - Dramatic pauses before important revelations.
+    - Vary the rhythm from sentence to sentence.
+    - Sometimes whisper slightly when the story calls for secrecy.
+    - Become more powerful when announcing something important.
+    - Become quieter and more intimate during mysterious moments.
+    - Never sound like an AI assistant.
+    - Never sound like a GPS, audiobook robot or automated announcement.
+
+    CINEMATIC STYLE:
+    - Premium cinematic movie trailer / television commercial narration.
+    - Dark fantasy atmosphere.
+    - Ancient storyteller who has witnessed centuries of history.
+    - Wise, imposing and mysterious.
+    - The listener should feel that something important and dangerous is about to happen.
+
+    Most importantly:
+    FEEL THE STORY.
+    Do not mechanically pronounce the text.
+    Perform it as an experienced human actor would.
+    `
         });
+        // const speech = await this.openai.audio.speech.create({
+        //     model: "tts-1",
+        //     voice: "alloy",
+        //     input: texte
+        // });
         const buffer = Buffer.from(await speech.arrayBuffer());
 
 

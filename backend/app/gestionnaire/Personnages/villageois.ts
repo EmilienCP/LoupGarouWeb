@@ -20,7 +20,7 @@ export class Villageois{
     patateChaude: boolean;
     joueurPunit?: Villageois;
     backupRaisonPasVoter?: RaisonPasVoter[];
-    rolePublic: RolePublic;
+    rolePublic?: RolePublic;
     totalBonnesReponsesPrecisions: number;
     totalReponsesPrecisions: number;
 
@@ -37,7 +37,6 @@ export class Villageois{
         this.patateChaude = false;
         this.totalBonnesReponsesPrecisions = 0;
         this.totalReponsesPrecisions = 0;
-        this.rolePublic = RolePublic.VAGABOND;
     }
 
     copier(villageois: Villageois): Villageois{
