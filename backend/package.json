@@ -62,7 +62,7 @@
     "bcrypt": "^5.0.1",
     "body-parser": "^1.20.2",
     "cheerio": "^1.0.0-rc.5",
-    "config": "^3.3.4",
+    "config": "^4.4.2",
     "cookie-parser": "latest",
     "cors": "^2.8.5",
     "cross-env": "^7.0.3",
@@ -76,7 +76,7 @@
     "nodemon": "latest",
     "npm": "^10.8.1",
     "nvm": "0.0.4",
-    "openai": "^4.52.2",
+    "openai": "^7.28.0",
     "reflect-metadata": "^0.2.2",
     "serve-favicon": "latest",
     "server": "^1.0.27",
@@ -125,7 +125,7 @@
     "random-seed": "^0.3.0",
     "rimraf": "latest",
     "sinon": "latest",
-    "typescript": "^5.8.3"
+    "typescript": "6.0.3"
   },
   "nodemonConfig": {
     "ignore": [

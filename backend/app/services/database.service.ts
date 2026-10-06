@@ -1,6 +1,6 @@
 import { injectable } from 'inversify'
 import * as mysql from 'mysql'
-import * as config from 'config'
+import config = require('config')
 import * as util from 'util'
 
 @injectable()
