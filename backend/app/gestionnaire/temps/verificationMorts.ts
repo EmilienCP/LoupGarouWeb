@@ -147,6 +147,9 @@ export class VerificationMorts extends GestionnaireDeTemps{
                 if(joueurCible){
                     joueurCible.estInfecte = false;
                     joueurCible.equipeApparente = Equipe.VILLAGEOIS;
+                    if(joueurCible.equipeReelle == Equipe.LOUPS){
+                        joueurCible.equipeReelle = Equipe.VILLAGEOIS;
+                    }
                     joueurCible.evenementsIndividuels.splice(joueurCible.evenementsIndividuels.indexOf(EvenementIndividuel.INFO_INFECTE), 1);
                     if((this.servanteDevoueeVivante as ServanteDevouee)?.cible !== joueurCible){
                         if(this.partie.seed){
