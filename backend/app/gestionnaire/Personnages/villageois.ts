@@ -23,6 +23,10 @@ export class Villageois{
     rolePublic: RolePublic;
     totalBonnesReponsesPrecisions: number;
     totalReponsesPrecisions: number;
+    estVivant: boolean;
+    estMort: boolean;
+    estDejaMort: boolean;
+    ancienRole?: Role;
 
     constructor(estLoup: boolean, partie: Partie) {
         this.nom = "";
@@ -38,6 +42,9 @@ export class Villageois{
         this.totalBonnesReponsesPrecisions = 0;
         this.totalReponsesPrecisions = 0;
         this.rolePublic = RolePublic.VAGABOND;
+        this.estVivant = true;
+        this.estMort = false;
+        this.estDejaMort = false;
     }
 
     copier(villageois: Villageois): Villageois{
@@ -72,12 +79,12 @@ export class Villageois{
     }
 
     actionJour(): void {
-        if(!this.partie.joueursVivants.some(j=>j.joueurPunit==this)){
+        if(!this.partie.getJoueursVivants().some(j=>j.joueurPunit==this)){
             this.evenementsIndividuels.push(EvenementIndividuel.VOTER);
             // un joueur peut voter pour lui meme le jour
             this.raisonsPasVoter.push(this.getRaisonsPasVoter([RaisonPasVoter.PAS_ACCUSE]));
         } else {
-            this.partie.joueursVivants.filter(j=>j.joueurPunit==this).forEach((j=>{
+            this.partie.getJoueursVivants().filter(j=>j.joueurPunit==this).forEach((j=>{
                 j.joueurPunit = undefined;
             }))
         }
@@ -125,7 +132,7 @@ export class Villageois{
 
     choisirSuccesseurPreparer(): void{
         this.evenementsIndividuels.push(EvenementIndividuel.CHOISIR_SUCCESSEUR);
-        if(this.partie.modeExtensionVillage && this.partie.joueursVivants.filter(j=>!this.partie.joueursMorts.includes(j)).some((joueur: Villageois)=>{return joueur.rolePublic == RolePublic.FERMIER})){
+        if(this.partie.modeExtensionVillage && this.partie.getJoueursVivants().filter(j=>!this.partie.getJoueursMorts().includes(j)).some((joueur: Villageois)=>{return joueur.rolePublic == RolePublic.FERMIER})){
             this.raisonsPasVoter.push(this.getRaisonsPasVoter([RaisonPasVoter.SOI_MEME, RaisonPasVoter.DEJA_MORT, RaisonPasVoter.PAS_FERMIER]));
         } else {
             this.raisonsPasVoter.push(this.getRaisonsPasVoter([RaisonPasVoter.SOI_MEME, RaisonPasVoter.DEJA_MORT]));
@@ -155,7 +162,7 @@ export class Villageois{
 
     protected getRaisonsPasVoter(listeRaisons: RaisonPasVoter[]): RaisonPasVoter[]{
         let raisons: RaisonPasVoter[] = [];
-        this.partie.joueursVivants.forEach((villageois: Villageois)=>{
+        this.partie.getJoueursVivants().forEach((villageois: Villageois)=>{
             if(listeRaisons.includes(RaisonPasVoter.SOI_MEME) && villageois == this){
                 raisons.push(RaisonPasVoter.SOI_MEME);
             } else if(listeRaisons.includes(RaisonPasVoter.AMI_LOUP) && this.equipeApparente == Equipe.LOUPS && villageois.equipeApparente == Equipe.LOUPS){
@@ -166,9 +173,9 @@ export class Villageois{
                 raisons.push(RaisonPasVoter.PAS_ACCUSE);
             } else if(listeRaisons.includes(RaisonPasVoter.DEJA_ACCUSE) && this.partie.voteCourant.estAccuser(villageois)){
                 raisons.push(RaisonPasVoter.DEJA_ACCUSE);
-            } else if(listeRaisons.includes(RaisonPasVoter.PAS_MORT) && !this.partie.joueursMorts.includes(villageois)){
+            } else if(listeRaisons.includes(RaisonPasVoter.PAS_MORT) && !this.partie.getJoueursMorts().includes(villageois)){
                 raisons.push(RaisonPasVoter.PAS_MORT);
-            } else if(listeRaisons.includes(RaisonPasVoter.DEJA_MORT) && this.partie.joueursMorts.includes(villageois)){
+            } else if(listeRaisons.includes(RaisonPasVoter.DEJA_MORT) && this.partie.getJoueursMorts().includes(villageois)){
                 raisons.push(RaisonPasVoter.DEJA_MORT);
             } else if(listeRaisons.includes(RaisonPasVoter.PAS_LOUP) && (villageois.equipeApparente != Equipe.LOUPS)){
                 raisons.push(RaisonPasVoter.PAS_LOUP);
@@ -214,7 +221,11 @@ export class Villageois{
         if(!this.estCapitaine){
             throw new Error(this.nom + " tente de trancher mais nest pas capitaine")
         }
-        this.partie.joueursMorts = [cible];
+        this.partie.getJoueursMorts().forEach((joueur: Villageois)=>{
+            if (joueur !== cible){
+                joueur.estMort = false;
+            }
+        });
     }
 
     private switchPatateChaude(cible: Villageois): void{

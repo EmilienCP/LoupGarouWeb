@@ -112,7 +112,7 @@ export class Appareil {
 
     setJoueurPresentPourAccusation(joueur: Villageois, partie: Partie): void{
         if(this.meneurDeJeu){
-            this.indexJoueurPresent = partie.joueursVivants.indexOf(joueur);
+            this.indexJoueurPresent = partie.joueursVillage.indexOf(joueur);
         } else {
             this.joueurs.forEach((villageois: Villageois, index: number)=>{
                 if(villageois == joueur){
@@ -139,7 +139,7 @@ export class Appareil {
 
     getRaisonsPasVoterAccusation(partie: Partie): RaisonPasVoter[]{
         if(this.meneurDeJeu){
-            return partie.joueursVivants[this.indexJoueurPresent].getRaisonsPasVoterAccusation();
+            return partie.joueursVillage[this.indexJoueurPresent].getRaisonsPasVoterAccusation();
         }
         return this.getJoueurPresent().getRaisonsPasVoterAccusation();
     }
@@ -159,7 +159,7 @@ export class Appareil {
     }
 
     private getJoueursRestantPasAccuser(partie: Partie): Villageois[]{
-        return this.getJoueursRestants(partie.joueursVivants).filter((villageois: Villageois)=>{
+        return this.getJoueursRestants(partie.getJoueursVivants()).filter((villageois: Villageois)=>{
             return !partie.voteCourant.aAccuser(villageois);
         })
     }

@@ -42,6 +42,7 @@ export enum Equipe{
 export interface Joueur{
     nom: string;
     role?: Role;
+    ancienRole?: Role;
     rolePublic?: RolePublic;
     equipeApparente: Equipe;
     equipeReelle: Equipe;

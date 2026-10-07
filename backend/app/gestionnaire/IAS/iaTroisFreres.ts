@@ -25,7 +25,7 @@ export class IATroisFreres extends IA{
         super.mettreAJourNouveauVillage();
         if(this.villageois.equipeReelle == Equipe.VILLAGEOIS){
             (this.villageois as TroisFreres).deuxFreres.forEach((frere: Villageois)=>{
-                if(this.partie.joueursVivants.includes(frere) && this.siJoueurSafe(frere, true, false, false, false, true)){
+                if(this.partie.getJoueursVivants().includes(frere) && this.siJoueurSafe(frere, true, false, false, false, true)){
                     this.ajouterJoueursMemeEquipeAssuree(frere)
                 }
             });

@@ -18,7 +18,7 @@ export class IASorciere extends IA{
         if(+evenement == EvenementIndividuel.JOUER_SORCIERE_TUER){
             let joueursVotePotentiel: Villageois[] = this.joueursAucuneRaisonPasVoterSortMortel();
             const pireCote: number = this.getValeurMinMax(false, this.getValeursCotes(this.conjonction([joueursVotePotentiel], [this.getJoueursMemeEquipeAssuree(), this.getJoueursPasMemeEquipeAssuree()])));
-            if(pireCote < -4 || this.conjonction([this.getJoueursPasMemeEquipeAssuree(), joueursVotePotentiel]).length>0  || this.partie.joueursVivants.length <= 4) {
+            if(pireCote < -4 || this.conjonction([this.getJoueursPasMemeEquipeAssuree(), joueursVotePotentiel]).length>0  || this.partie.getJoueursVivants().length <= 4) {
                 //va choisir naturellement dans la liste des joueurs pas meme equipe si ca en contient
                 const cible: Villageois = this.getMaxOuMinCote(false, joueursVotePotentiel);
                 this.villageois.choisirJoueur(cible, EvenementIndividuel.JOUER_SORCIERE_TUER, false);
@@ -28,6 +28,6 @@ export class IASorciere extends IA{
 
     protected joueursAucuneRaisonPasVoterSortMortel(): Villageois[]{
         let raisons: RaisonPasVoter[] = (this.villageois as Sorciere).getRaisonsPasVoterSortMortel();
-        return this.obtenirJoueursAucuneRaisonPasVoter(this.partie.joueursVivants, raisons, true);
+        return this.obtenirJoueursAucuneRaisonPasVoter(this.partie.getJoueursVivants(), raisons, true);
     } 
 }

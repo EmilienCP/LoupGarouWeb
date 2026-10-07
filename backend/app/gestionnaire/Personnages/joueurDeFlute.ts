@@ -53,7 +53,7 @@ export class JoueurDeFlute extends Villageois{
     getRaisonsPasVoterJoueurDeFlute(): RaisonPasVoter[] {
         let raisons: RaisonPasVoter[] = this.getRaisonsPasVoter([RaisonPasVoter.SOI_MEME, RaisonPasVoter.DEJA_CHARMER, RaisonPasVoter.AMOUREUX]);
         if(this.choix1){
-            let indexChoix1: number = this.partie.joueursVivants.indexOf(this.choix1);
+            let indexChoix1: number = this.partie.getJoueursVivants().indexOf(this.choix1);
             raisons[indexChoix1] = RaisonPasVoter.DEJA_CHARMER;
         }
         return raisons;
@@ -62,7 +62,7 @@ export class JoueurDeFlute extends Villageois{
     annulerRole(servanteAPrisSonRole: boolean): void {
         super.annulerRole(servanteAPrisSonRole);
         if(!servanteAPrisSonRole){
-            this.partie.joueursVivants.forEach((joueur: Villageois)=>{
+            this.partie.getJoueursVivants().forEach((joueur: Villageois)=>{
                 joueur.estCharmer = false;
                 if(joueur.evenementsIndividuels.includes(EvenementIndividuel.INFO_CHARMER)){
                     joueur.evenementsIndividuels.splice(joueur.evenementsIndividuels.indexOf(EvenementIndividuel.INFO_CHARMER), 1);

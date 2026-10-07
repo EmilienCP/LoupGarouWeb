@@ -51,10 +51,7 @@ import { Intro } from "./temps/intro";
 
 export class Partie {
     etat: EtatPartie;
-    joueursVivants: Villageois[] = [];
-    joueursMorts: Villageois[] = [];
-    joueursDejaMorts: Villageois[] = [];
-    joueursDejaMortsPointeurs: Villageois[] = [];
+    joueursVillage: Villageois[] = [];
     private nbJoueurs: number;
     private nbLoups: number;
     victoire: Victoire =  Victoire.AUCUN;
@@ -139,10 +136,7 @@ export class Partie {
     }
 
     recommencer() {
-        this.joueursVivants = [];
-        this.joueursMorts = [];
-        this.joueursDejaMorts = [];
-        this.joueursDejaMortsPointeurs = [];
+        this.joueursVillage = [];
         this.voteCourant.clean();
         this.ias = [];
         this.momentsForts = [];
@@ -226,7 +220,7 @@ export class Partie {
                         break;
                     }
                     case Action.VOTER_VILLAGEOIS:{
-                        this.joueursVivants[action[2]].choisirJoueur(this.joueursVivants[action[3]], +action[1], false);
+                        this.getJoueursVivants()[action[2]].choisirJoueur(this.getJoueursVivants()[action[3]], +action[1], false);
                         break;
                     }
                     case Action.PASSER:{
@@ -238,7 +232,7 @@ export class Partie {
                         break;
                     }
                     case Action.POP_RAISON_PAS_VOTER:{
-                        this.joueursVivants[action[1]].popRaisonsPasVoter();
+                        this.getJoueursVivants()[action[1]].popRaisonsPasVoter();
                         break;
                     }
                     case Action.GET_UN_EVENEMENT:{
@@ -319,7 +313,7 @@ export class Partie {
                 const villageois: Villageois = this.creerVillageois(roles[indexCourant]);
                 villageois.nom = joueur;
                 if(this.modeExtensionVillage) villageois.rolePublic = rolesPublics[indexCourant];
-                this.joueursVivants.push(villageois);
+                this.joueursVillage.push(villageois);
                 appareil.joueurs.push(villageois)
                 indexCourant++;
             })
@@ -327,11 +321,10 @@ export class Partie {
 
         for(indexCourant; indexCourant < this.nbJoueurs; indexCourant++) {
             const villageois: Villageois = this.creerVillageois(roles[indexCourant]);
-            //villageois.nom = "Joueur " + (indexCourant);
             villageois.nom = this.getNomRandom();
             if(this.modeExtensionVillage) villageois.rolePublic = rolesPublics[indexCourant];
             const ia: IA = this.creerIA(roles[indexCourant], villageois)
-            this.joueursVivants.push(villageois);
+            this.joueursVillage.push(villageois);
             this.ias.push(ia);
         }
 
@@ -342,7 +335,7 @@ export class Partie {
         this.historiquePartie = {
             actions:this.historiquePartie.actions,
             choixPersonnages: this.choixPersonnages,
-            nbAppareils: this.joueursVivants.length-this.ias.length,
+            nbAppareils: this.getJoueursVivants().length-this.ias.length,
             nbJoueurs: this.nbJoueurs,
             nbLoups: this.nbLoups,
             seed: this.historiquePartie.seed,
@@ -355,7 +348,7 @@ export class Partie {
             points: this.appareils.map((appareil: Appareil)=>{return appareil.pointsJoueurs})
         }
 
-        let ordreDuVillage: string[] = this.joueursVivants.map((joueur: Villageois)=>{return joueur.nom});
+        let ordreDuVillage: string[] = this.getJoueursVivants().map((joueur: Villageois)=>{return joueur.nom});
         ordreDuVillage.unshift("Ordre du village:");
         this.historiqueEvenements.push(ordreDuVillage);
 
@@ -578,22 +571,22 @@ export class Partie {
         let matin: boolean = this.numeroJour%2==1;
 
         //nuit a 1 villageois
-        if(!matin && this.joueursVivants.filter((j)=>j.equipeApparente == Equipe.VILLAGEOIS).length == 1){
-            let villageois: Villageois = this.joueursVivants.filter((j)=>j.equipeApparente == Equipe.VILLAGEOIS)[0];
+        if(!matin && this.getJoueursVivants().filter((j)=>j.equipeApparente == Equipe.VILLAGEOIS).length == 1){
+            let villageois: Villageois = this.getJoueursVivants().filter((j)=>j.equipeApparente == Equipe.VILLAGEOIS)[0];
             if(villageois.role != Role.SORCIERE && villageois.role != Role.FEMME_DE_MENAGE){
-                if(villageois.role == Role.CHASSEUR && this.joueursVivants.length == 2){
+                if(villageois.role == Role.CHASSEUR && this.getJoueursVivants().length == 2){
                     if(this.seed){console.log("Personne ne gagne")};
                     this.victoire = Victoire.PERSONNE;
                     return true;
                 }
-                if(this.joueursVivants.length == 2 && this.joueursVivants.some(j=>j.role == Role.LOUP_BLANC)){
+                if(this.getJoueursVivants().length == 2 && this.getJoueursVivants().some(j=>j.role == Role.LOUP_BLANC)){
                     if(this.seed){console.log("Le loup garou blanc gagne")};
                     this.victoire = Victoire.LOUP_BLANC;
                     return true;
                 }
                 // ne peut pas etre le chasseur parce que si cest 3 joueurs, loup blanc, loup et chasseur, on sait pas qui gagne.
                 // si cest plus que 3 joueurs, les loups gagnent peut importe
-                if(villageois.role != Role.CHASSEUR || this.joueursVivants.length > 3){
+                if(villageois.role != Role.CHASSEUR || this.getJoueursVivants().length > 3){
                     if(this.seed){console.log("Les loups gagnent")};
                     this.victoire = Victoire.LOUP_GAROU;
                     return true;
@@ -603,8 +596,8 @@ export class Partie {
         }
 
         //jour a 2 joueurs
-        if(matin && this.joueursVivants.length == 2 && !this.joueursVivants.some(j=>j.rolePublic==RolePublic.INSTITUTRICE || j.role == Role.CORBEAU || j.role == Role.CHASSEUR)){
-            this.victoire = this.joueursVivants.find((joueur)=>joueur.estCapitaine)!.getSorteVictoireSilGagne();
+        if(matin && this.getJoueursVivants().length == 2 && !this.getJoueursVivants().some(j=>j.rolePublic==RolePublic.INSTITUTRICE || j.role == Role.CORBEAU || j.role == Role.CHASSEUR)){
+            this.victoire = this.getJoueursVivants().find((joueur)=>joueur.estCapitaine)!.getSorteVictoireSilGagne();
             return true;
         }
 
@@ -612,7 +605,7 @@ export class Partie {
     }
 
     verifierVictoireAssumantMorts(): boolean{
-        let joueursRestants: Villageois[] = this.joueursVivants.filter((joueur)=>!this.joueursMorts.includes(joueur));
+        let joueursRestants: Villageois[] = this.getJoueursVivants().filter((joueur)=>!this.getJoueursMorts().includes(joueur));
         if(this.verifierVictoire(joueursRestants, false)){
             return true;
         }
@@ -638,7 +631,7 @@ export class Partie {
 
     preparerEvenementsIndividuels(evenementPourLeMeneur?: EvenementDeGroupe, listeVillageois: Villageois[] = []){
         this.appareils.forEach((appareil: Appareil)=>{
-            appareil.preparerEvenementsIndividuels(listeVillageois, this.joueursVivants, evenementPourLeMeneur);
+            appareil.preparerEvenementsIndividuels(listeVillageois, this.getJoueursVivants(), evenementPourLeMeneur);
         })
         this.ias.forEach((ia: IA)=>{
             ia.preparerEvenementsIndividuels(listeVillageois);
@@ -693,33 +686,34 @@ export class Partie {
 
     tuerDefinitivementMorts(): void{
         this.getPersonnages(Role.ENFANT_SAUVAGE).forEach((enfantSauvage: Villageois)=>{
-            (enfantSauvage as EnfantSauvage).nouveauMort(this.joueursMorts);
+            (enfantSauvage as EnfantSauvage).nouveauMort(this.getJoueursMorts());
         })
-        this.joueursMorts.forEach((villagois: Villageois)=>{
+        this.getJoueursMorts().forEach((villageois: Villageois)=>{
             this.ias.forEach((ia: IA)=>{
-                ia.retirerJoueur(villagois);
+                ia.retirerJoueur(villageois);
             })
-            this.joueursVivants.splice(this.joueursVivants.indexOf(villagois), 1);
+            villageois.estVivant = false;
         })
         this.ias = this.ias.filter((ia: IA)=>{
-            return !this.joueursMorts.includes(ia.villageois);
+            return !this.getJoueursMorts().includes(ia.villageois);
         })
-        if(this.seed && this.joueursMorts.length>0){
-            console.log("tuer definitivement "+this.joueursMorts.map((joueur: Villageois)=>{return joueur.nom}))
+        if(this.seed && this.getJoueursMorts().length>0){
+            console.log("tuer definitivement "+this.getJoueursMorts().map((joueur: Villageois)=>{return joueur.nom}))
         } else if(this.seed){
             console.log("tuer personne")
         }
-        if(this.joueursMorts.length >0){
-            this.joueursDejaMorts = this.joueursDejaMorts.concat(this.joueursMorts.splice(0, this.joueursMorts.length));
-        }
-        if(this.joueursVivants.length>0){
-            if(this.joueursVivants.filter((joueur) => {return joueur.estCapitaine;}).length == 0) {
+        this.getJoueursMorts().forEach((joueur: Villageois)=>{
+            joueur.estMort = false;
+            joueur.estDejaMort = true;
+        });
+        if(this.getJoueursVivants().length>0){
+            if(this.getJoueursVivants().filter((joueur) => {return joueur.estCapitaine;}).length == 0) {
                 throw new Error("Il n'y a pas de capitaine! No good.")
             }
-            if(this.joueursVivants.filter((joueur) => {return joueur == undefined;}).length > 0) {
+            if(this.getJoueursVivants().filter((joueur) => {return joueur == undefined;}).length > 0) {
                 throw new Error("Il y a un joueur undefined! No good.")
             }
-            if(this.joueursVivants.filter((joueur)=>{return joueur.amoureux && this.joueursDejaMorts.includes(joueur.amoureux)}).length>0){
+            if(this.getJoueursVivants().filter((joueur)=>{return joueur.amoureux && this.getJoueursDejaMorts().includes(joueur.amoureux)}).length>0){
                 throw new Error("Il y a un joueur vivant que son amoureux est mort! No good.")
             }
         }
@@ -770,7 +764,7 @@ export class Partie {
     }
 
     getPersonnages(role: Role): Villageois[] {
-        return this.joueursVivants.filter((joueur: Villageois)=>{return joueur.role == role});
+        return this.getJoueursVivants().filter((joueur: Villageois)=>{return joueur.role == role});
     }
 
     getNbJoueurs(): number{
@@ -877,12 +871,12 @@ export class Partie {
     }
 
     joueurVoisin(isGauche:boolean,joueurCourant:Villageois): number {
-        let index: number = this.joueursVivants.indexOf(joueurCourant);
+        let index: number = this.getJoueursVivants().indexOf(joueurCourant);
         index += (isGauche ? -1 : 1);
-        if(index == this.joueursVivants.length){
+        if(index == this.getJoueursVivants().length){
             index = 0;
         } else if(index == -1){
-            index = this.joueursVivants.length-1;
+            index = this.getJoueursVivants().length-1;
         }
         return index;
     }
@@ -923,7 +917,7 @@ export class Partie {
     }
 
     changerPointeur(ancienJoueur: Villageois, nouveauJoueur: Villageois): void{
-        this.joueursVivants[this.joueursVivants.indexOf(ancienJoueur)] = nouveauJoueur;
+        this.joueursVillage[this.joueursVillage.indexOf(ancienJoueur)] = nouveauJoueur;
         this.ias.forEach((ia: IA, index: number)=>{
             ia.changerPointeur(ancienJoueur, nouveauJoueur);
             //changer lia au complet
@@ -941,13 +935,13 @@ export class Partie {
                 appareil.joueurs[appareil.joueurs.indexOf(ancienJoueur)] = nouveauJoueur;
             }
         })
-        this.joueursVivants.forEach((joueur: Villageois)=>{
+        this.getJoueursVivants().forEach((joueur: Villageois)=>{
             joueur.changerPointeur(ancienJoueur, nouveauJoueur);
         })
     }
 
     getJoueursReelsEncoreVivants(): Villageois[]{
-        return this.joueursVivants.filter((joueur: Villageois)=>{
+        return this.getJoueursVivants().filter((joueur: Villageois)=>{
             return this.appareils.some((appareil: Appareil)=>{return appareil.joueurs.includes(joueur)});
         })
     }
@@ -1012,7 +1006,7 @@ export class Partie {
     getNbJoueursConnectesVivants(): number{
         let compteur: number = 0;
         this.appareils.forEach((appareil: Appareil)=>{
-            compteur +=appareil.getJoueursRestants(this.joueursVivants).length;
+            compteur +=appareil.getJoueursRestants(this.getJoueursVivants()).length;
         });
         return compteur;
     }
@@ -1028,7 +1022,7 @@ export class Partie {
     getNomRandom(): string{
         const noms: string[] = ["Alaric", "Bastien", "Corentin", "Gaspard", "Théodore", "Isidore", "Léandre", "Octave", "Séraphin", "Alban", "Célestin", "Éloi", "Firmin", "Gervais", "Hector", "Lazare", "Marius", "Norbert", "Odon", "Prosper", "Arsène", "Bérenger", "Clovis", "Désiré", "Eustache", "Florent", "Gautier", "Honoré", "Isabeau", "Aliénor", "Berthe", "Cunégonde", "Eulalie", "Flavie", "Héloïse", "Joséphine", "Léonie", "Marguerite", "Odette", "Pétronille", "Rosalie", "Sidonie", "Thérèse", "Victoire", "Ysabeau", "Adélaïde", "Blanche", "Constance", "Églantine", "Philomène"];
         let nomChoisi: string = noms[this.random(noms.length)];
-        while(this.joueursVivants.some((joueur: Villageois)=>{return joueur.nom == nomChoisi})){
+        while(this.getJoueursVivants().some((joueur: Villageois)=>{return joueur.nom == nomChoisi})){
             nomChoisi = noms[this.random(noms.length)];
         }
         return nomChoisi;
@@ -1036,12 +1030,13 @@ export class Partie {
 
     getInfosVillageParRapportA(joueur: Villageois): Joueur[]{
         const infoVillage: Joueur[] = [];
-        this.joueursVivants.concat(this.joueursDejaMorts).forEach((villageois: Villageois)=>{
+        this.joueursVillage.forEach((villageois: Villageois)=>{
             infoVillage.push({
                 nom: villageois.nom,
                 estCapitaine: villageois.estCapitaine,
-                role: (this.joueursDejaMorts.includes(villageois) ||villageois == joueur || villageois.role == Role.VILLAGEOIS_VILLAGEOIS || (joueur.role == Role.VOYANTE && (joueur as Voyante).villageoisRolesConnus.includes(villageois)))?villageois.role:undefined,
+                role: (this.getJoueursDejaMorts().includes(villageois) ||villageois == joueur || villageois.role == Role.VILLAGEOIS_VILLAGEOIS || (joueur.role == Role.VOYANTE && (joueur as Voyante).villageoisRolesConnus.includes(villageois)))?villageois.role:undefined,
                 rolePublic: villageois.rolePublic,
+                ancienRole: villageois.ancienRole,
                 //Si le loup garou du village ne sait pas encore quil est infecte, alors les autres loups ne doivent pas le voir non plus dans leur liste
                 equipeApparente: villageois.equipeApparente == Equipe.LOUPS && !villageois.evenementsIndividuels.includes(EvenementIndividuel.INFO_INFECTE) && joueur.equipeApparente == Equipe.LOUPS && !(this.gestionnaireEtape.gestionnaireDeTemps instanceof Intro) && !joueur.evenementsIndividuels.includes(EvenementIndividuel.INFO_INFECTE) && !joueur.evenementsIndividuels.includes(EvenementIndividuel.INFO_ASSOCIER_MORT)? Equipe.LOUPS:Equipe.VILLAGEOIS,
                 equipeReelle: villageois.equipeReelle,
@@ -1052,9 +1047,27 @@ export class Partie {
                 estAssocier: (joueur.role == Role.ENFANT_SAUVAGE && (joueur as EnfantSauvage).joueurAssocie == villageois),
                 estSoeur: (joueur.role == Role.DEUX_SOEURS && (joueur as DeuxSoeurs).deuxiemeSoeur == villageois && !(this.gestionnaireEtape.gestionnaireDeTemps instanceof Intro)),
                 estFrere: (joueur.role == Role.TROIS_FRERES && (joueur as TroisFreres).deuxFreres.includes(villageois) && !(this.gestionnaireEtape.gestionnaireDeTemps instanceof Intro)),
-                estMort: this.joueursDejaMorts.includes(villageois)
+                estMort: villageois.estDejaMort
             })
         })
         return infoVillage;
+    }
+
+    getJoueursVivants(): Villageois[]{
+        return this.joueursVillage.filter((joueur: Villageois)=>{
+            return joueur.estVivant;
+        });
+    }
+
+    getJoueursMorts(): Villageois[]{
+        return this.joueursVillage.filter((joueur: Villageois)=>{
+            return joueur.estMort;
+        });
+    }
+
+    getJoueursDejaMorts(): Villageois[]{
+        return this.joueursVillage.filter((joueur: Villageois)=>{
+            return joueur.estDejaMort;
+        });
     }
 }

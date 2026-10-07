@@ -29,8 +29,8 @@ export class ServanteDevouee extends Villageois{
     }
 
     jouerServante(): boolean{
-        if(this.partie.joueursMorts.length == 1){
-            this.choisirJoueur(this.partie.joueursMorts[0], EvenementIndividuel.JOUER_SERVANTE_DEVOUEE, false);
+        if(this.partie.getJoueursMorts().length == 1){
+            this.choisirJoueur(this.partie.getJoueursMorts()[0], EvenementIndividuel.JOUER_SERVANTE_DEVOUEE, false);
             return true;
         }
         this.ajouterEvenementIndividuelSansRaisons(EvenementIndividuel.JOUER_SERVANTE_DEVOUEE);

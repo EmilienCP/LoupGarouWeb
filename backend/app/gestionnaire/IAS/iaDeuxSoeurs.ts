@@ -23,7 +23,7 @@ export class IADeuxSoeurs extends IA{
         super.mettreAJourNouveauVillage();
         if(this.villageois.equipeReelle == Equipe.VILLAGEOIS){
             const deuxiemeSoeur: Villageois = (this.villageois as DeuxSoeurs).deuxiemeSoeur;
-            if(this.partie.joueursVivants.includes(deuxiemeSoeur) && this.siJoueurSafe(deuxiemeSoeur, true, false, false, false, true)){
+            if(this.partie.getJoueursVivants().includes(deuxiemeSoeur) && this.siJoueurSafe(deuxiemeSoeur, true, false, false, false, true)){
                 this.ajouterJoueursMemeEquipeAssuree(deuxiemeSoeur);
             }
         }

@@ -353,12 +353,12 @@ export class SocketController{
                     let appareil: Appareil = this.partiesService.getAppareil(socket.id);
                     let accuseur;
                     if(appareil.siMeneurDeJeu()){
-                        accuseur = this.partiesService.getPartie(socket.id).joueursVivants[appareil.indexJoueurPresent];
+                        accuseur = this.partiesService.getPartie(socket.id).joueursVillage[appareil.indexJoueurPresent];
                     } else {
                         accuseur = appareil.getJoueurPresent();
                     }
-                    accuseur.choisirJoueur(this.partiesService.getPartie(socket.id).joueursVivants[index], EvenementDeGroupe.ACCUSER, false);
-                    this.partiesService.getPartie(socket.id).ajouterActionHistorique([Action.VOTER_VILLAGEOIS, EvenementDeGroupe.ACCUSER, this.partiesService.getPartie(socket.id).joueursVivants.indexOf(accuseur),index]);
+                    accuseur.choisirJoueur(this.partiesService.getPartie(socket.id).joueursVillage[index], EvenementDeGroupe.ACCUSER, false);
+                    this.partiesService.getPartie(socket.id).ajouterActionHistorique([Action.VOTER_VILLAGEOIS, EvenementDeGroupe.ACCUSER, this.partiesService.getPartie(socket.id).joueursVillage.indexOf(accuseur),index]);
                     if(!this.partiesService.getPartie(socket.id).siqqnPeutAccuser()){
                         sio.to(this.partiesService.getNomRoom(socket.id)).emit("derniereAccusation")
                     }
@@ -380,7 +380,7 @@ export class SocketController{
 
             socket.on("pointer", (index: number) => {
                 try{
-                    this.partiesService.getPartie(socket.id).voteCourant.pointer(this.partiesService.getAppareil(socket.id).getJoueurPresent(), this.partiesService.getPartie(socket.id).joueursVivants[index]);
+                    this.partiesService.getPartie(socket.id).voteCourant.pointer(this.partiesService.getAppareil(socket.id).getJoueurPresent(), this.partiesService.getPartie(socket.id).getJoueursVivants()[index]);
                     sio.to(this.partiesService.getNomRoom(socket.id)).emit("miseAJourLoups")
                 }
                 catch (err) {

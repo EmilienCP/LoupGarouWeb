@@ -17,7 +17,7 @@ export class LoupBlanc extends Villageois{
     }
 
     protected jouerRole(): void {
-        if((!this.tourPasse) && this.partie.joueursVivants.filter((joueur: Villageois)=>{return joueur.equipeReelle == Equipe.LOUPS && joueur !== this}).length>0) {
+        if((!this.tourPasse) && this.partie.getJoueursVivants().filter((joueur: Villageois)=>{return joueur.equipeReelle == Equipe.LOUPS && joueur !== this}).length>0) {
             this.ajouterEvenementIndividuelSansRaisons(EvenementIndividuel.JOUER_LOUP_BLANC);
             const raisons: RaisonPasVoter[] = this.getRaisonsPasVoter([RaisonPasVoter.SOI_MEME, RaisonPasVoter.PAS_LOUP]);
             this.raisonsPasVoter.push(raisons);
@@ -38,8 +38,8 @@ export class LoupBlanc extends Villageois{
     actionFinNuit(): void {
         super.actionFinNuit();
         if(this.loupATuer) {
-            if(!this.partie.joueursMorts.includes(this.loupATuer)){
-                this.partie.joueursMorts.push(this.loupATuer);
+            if(!this.partie.getJoueursMorts().includes(this.loupATuer)){
+                this.loupATuer.estMort = true;
             }
             this.loupATuer = undefined;
         } else {

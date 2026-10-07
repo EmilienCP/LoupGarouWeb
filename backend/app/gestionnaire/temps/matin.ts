@@ -78,11 +78,11 @@ export class Matin extends GestionnaireDeTemps{
                     if(joueurCible.role !== Role.FEMME_DE_MENAGE || !(joueurCible as FemmeDeMenage).joueurMenage){
                         // si le joueur n'est pas protégé
                         if(sorcieres.length == 0 || !(sorcieres.map((sorciere) => { return (sorciere as Sorciere).joueurProtege}).includes(joueurCible))) {
-                            this.partie.joueursMorts.push(joueurCible);
+                            joueurCible.estMort = true;
                             const femmesDeMenage: Villageois[] = this.partie.getPersonnages(Role.FEMME_DE_MENAGE);
                             femmesDeMenage.forEach((femmeDeMenage: Villageois)=>{
                                 if(joueurCible == (femmeDeMenage as FemmeDeMenage).joueurMenage){
-                                    this.partie.joueursMorts.push(femmeDeMenage);
+                                    femmeDeMenage.estMort = true;
                                 }
                             })
                         } else {
@@ -93,14 +93,14 @@ export class Matin extends GestionnaireDeTemps{
                         this.partie.momentsForts.push({type: MomentFortType.FEMME_DE_MENAGE, params:[joueurCible.nom, (joueurCible as FemmeDeMenage).joueurMenage!.nom]})
                     }
                 })
-                this.partie.joueursVivants.forEach((joueur) => {
+                this.partie.getJoueursVivants().forEach((joueur) => {
                     joueur.actionFinNuit();
                 })
-                this.partie.joueursVivants.forEach((joueur) => {
+                this.partie.getJoueursVivants().forEach((joueur) => {
                     joueur.actionFinNuit2eTour();
                 })
                 // chevalier a lepee rouillee
-                this.partie.joueursDejaMorts.filter((joueur: Villageois)=>{return joueur.role == Role.CHEVALIER_A_LEPEE_ROUILLEE}).forEach((chevalier: Villageois)=>{
+                this.partie.getJoueursDejaMorts().filter((joueur: Villageois)=>{return joueur.role == Role.CHEVALIER_A_LEPEE_ROUILLEE}).forEach((chevalier: Villageois)=>{
                     (chevalier as ChevalierALepeeRouillee).ajouterLoupMort();
                 })
                 return true;
@@ -109,18 +109,18 @@ export class Matin extends GestionnaireDeTemps{
                 let evenementTexte:string[] = [];
                 evenementTexte = ["Tout le monde se réveille sauf:"]
                 let texte2: string = ""
-                if(this.partie.joueursMorts.length == 0){
+                if(this.partie.getJoueursMorts().length == 0){
                     evenementTexte = ["Personne n'est mort cette nuit"]
                 } else{
-                    texte2+= this.getNomsEnListe(this.partie.joueursMorts.map((joueur: Villageois)=>{return joueur.nom}));
+                    texte2+= this.getNomsEnListe(this.partie.getJoueursMorts().map((joueur: Villageois)=>{return joueur.nom}));
                     evenementTexte.push(texte2);
                 }
                 this.partie.historiqueEvenements.push(evenementTexte);
                 if(this.partie.modeVideo && this.partie.appareils.some((appareil: Appareil)=>{return !appareil.passer})){
-                    let nomJoueurQuiMarcheLaNuit: string = this.partie.joueursVivants[this.partie.random(this.partie.joueursVivants.length)].nom;
+                    let nomJoueurQuiMarcheLaNuit: string = this.partie.getJoueursVivants()[this.partie.random(this.partie.getJoueursVivants().length)].nom;
                     let textePendantLaNuit: string;
                     let texteJourSeLeve: string;
-                    let nomsJoueursMorts: string[] = this.partie.joueursMorts.map((villageois: Villageois)=>{
+                    let nomsJoueursMorts: string[] = this.partie.getJoueursMorts().map((villageois: Villageois)=>{
                       return villageois.nom;
                    });
                     textePendantLaNuit = await this.partie.chatgptService.genererTextePendantLaNuit(nomJoueurQuiMarcheLaNuit)

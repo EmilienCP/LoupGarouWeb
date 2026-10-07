@@ -103,7 +103,7 @@ export class IA {
     }
 
     initialiserCotes():void{
-        this.partie.joueursVivants.forEach((villageois: Villageois)=>{
+        this.partie.getJoueursVivants().forEach((villageois: Villageois)=>{
             this.cotes.set(villageois, [0,0]);
         })
         this.ajouterJoueursMemeEquipeAssuree(this.villageois);
@@ -152,7 +152,7 @@ export class IA {
             }
         })
         if(this.villageois.equipeApparente == Equipe.LOUPS){
-            this.partie.joueursVivants.forEach((joueur: Villageois)=>{
+            this.partie.getJoueursVivants().forEach((joueur: Villageois)=>{
                 if(this.siJoueurSafe(joueur, true, false, false, true, false)){
                     if(joueur.equipeApparente == Equipe.LOUPS){
                         this.ajouterJoueursMemeEquipeAssuree(joueur);
@@ -208,7 +208,7 @@ export class IA {
                 //joueur de flute
                 let voteJoueurDeFlute: boolean = false;
                 if(this.villageois.role !== Role.JOUEUR_DE_FLUTE && this.partie.getPersonnages(Role.JOUEUR_DE_FLUTE).length>0 && this.villageois.estCharmer){
-                    let joueursNonCharmer: Villageois[] = this.partie.joueursVivants.filter((joueur: Villageois)=>{
+                    let joueursNonCharmer: Villageois[] = this.partie.getJoueursVivants().filter((joueur: Villageois)=>{
                         return !joueur.estCharmer && joueur.role !== Role.VILLAGEOIS_VILLAGEOIS
                     })
                     if(joueursNonCharmer.length<=3){
@@ -236,7 +236,7 @@ export class IA {
                 break;
             }
             case EvenementIndividuel.CHOISIR_SUCCESSEUR:{
-                if(this.villageois.equipeReelle == Equipe.LOUPS && this.partie.joueursVivants.length > 3){
+                if(this.villageois.equipeReelle == Equipe.LOUPS && this.partie.getJoueursVivants().length > 3){
                     this.villageois.choisirJoueur(this.getVillageoisAuHasard(this.joueursAucuneRaisonPasVoter(false)), evenement, false);
                 } else {
                     this.villageois.choisirJoueur(this.getMaxOuMinCote(true, this.joueursAucuneRaisonPasVoter(false)), evenement, false);
@@ -282,7 +282,7 @@ export class IA {
                         if(this.villageois.equipeReelle == Equipe.VILLAGEOIS && (corbeau as Corbeau).joueurVu! !== this.villageois){
                             //corbeau trop exagerer donc diminuer limpact de 1/3
                             //les joueurs pas villageois ne seront pas affecter par ce changement
-                            if(this.partie.random(Math.floor(this.partie.joueursVivants.length/2)) == 0){
+                            if(this.partie.random(Math.floor(this.partie.getJoueursVivants().length/2)) == 0){
                                 this.augmenterDiminuerCote((corbeau as Corbeau).joueurVu!, -1, false)
                             }
                         }
@@ -314,7 +314,7 @@ export class IA {
             case EvenementDeGroupe.INFO_VILLAGEOIS_VILLAGEOIS:{
                 //se fait en 2 parties: 1 doit augmenter la cote par rapport a tous les joueurs une seule fois. 2 à chaque nouveau mort verifier si le villageois villageois est safe (fait dans une autre section du cote);
                 //quil soit loup ou villageois augmenter la cote au moins pour pas etre super louche a accuser un villlageois villageois
-                this.partie.joueursMorts.forEach((joueur: Villageois)=>{
+                this.partie.getJoueursMorts().forEach((joueur: Villageois)=>{
                     this.augmenterDiminuerCote(joueur, 1, true);
                 })
                 break;
@@ -344,7 +344,7 @@ export class IA {
     }
 
     jouerInstitutrice(){
-        const choixPossibles: Villageois[] = this.obtenirJoueursAucuneRaisonPasVoter(this.partie.joueursVivants, this.villageois.getRaisonsPasVoterInstitutrice(), true);
+        const choixPossibles: Villageois[] = this.obtenirJoueursAucuneRaisonPasVoter(this.partie.getJoueursVivants(), this.villageois.getRaisonsPasVoterInstitutrice(), true);
         if(choixPossibles.length>0){
             this.villageois.institutricePunir(this.getVillageoisAuHasard(choixPossibles));
         }
@@ -372,22 +372,22 @@ export class IA {
         if(!raisons.includes(RaisonPasVoter.AUCUN) && !normalDavoirPersonne){
             throw new Error(this.villageois.nom + " tente de faire un choix du village mais n'a personne pour qui voter")
         }
-        return this.partie.joueursVivants.filter((villageois: Villageois, index: number)=>{
+        return this.partie.getJoueursVivants().filter((villageois: Villageois, index: number)=>{
             return raisons[index] == RaisonPasVoter.AUCUN && village.includes(villageois);
         })
     }
 
     protected joueursAucuneRaisonPasVoter(normalDavoirPersonne: boolean): Villageois[]{
         let raisons: RaisonPasVoter[] = this.villageois.popRaisonsPasVoter();
-        return this.obtenirJoueursAucuneRaisonPasVoter(this.partie.joueursVivants, raisons, normalDavoirPersonne);
+        return this.obtenirJoueursAucuneRaisonPasVoter(this.partie.getJoueursVivants(), raisons, normalDavoirPersonne);
     } 
 
     protected joueursAucuneRaisonPasVoterLoups(normalDavoirPersonne: boolean): Villageois[]{
         let raisons: RaisonPasVoter[] = this.villageois.getRaisonsPasVoterLoups();
-        return this.obtenirJoueursAucuneRaisonPasVoter(this.partie.joueursVivants, raisons, normalDavoirPersonne);
+        return this.obtenirJoueursAucuneRaisonPasVoter(this.partie.getJoueursVivants(), raisons, normalDavoirPersonne);
     } 
 
-    protected joueursAucuneRaisonPasVoterAccuser(village: Villageois[] = this.partie.joueursVivants): Villageois[]{
+    protected joueursAucuneRaisonPasVoterAccuser(village: Villageois[] = this.partie.getJoueursVivants()): Villageois[]{
         let raisons: RaisonPasVoter[] = this.villageois.getRaisonsPasVoterAccusation();
         let joueursFiltres: Villageois[] = this.obtenirJoueursAucuneRaisonPasVoter(village, raisons, true);
 
@@ -435,7 +435,7 @@ export class IA {
 
     protected majCotesMontrerMort(): void{
         // se produit pour un mort le matin ou le soir, meme si cest le matin, cest bon de savoir le role et dajuster la cote du dernier vote du jour
-        this.partie.joueursMorts.forEach((mort: Villageois)=>{
+        this.partie.getJoueursMorts().forEach((mort: Villageois)=>{
             if(this.voteDuJour.estAccuser(mort) && this.villageois.equipeApparente == Equipe.VILLAGEOIS){
                 if(mort.equipeApparente == Equipe.LOUPS){
                     this.voteDuJour.getElecteurs()[this.voteDuJour.getAccuses().indexOf(mort)].forEach((electeur: Villageois)=>{
@@ -448,8 +448,8 @@ export class IA {
                 }
             }
             if(mort.role == Role.MONTREUR_OURS){ // quil soit villageois ou loup garou ca sapplique
-                let joueurDroit: Villageois = this.partie.joueursVivants[this.partie.joueurVoisin(false, mort)];
-                let joueurGauche: Villageois = this.partie.joueursVivants[this.partie.joueurVoisin(true, mort)];
+                let joueurDroit: Villageois = this.partie.getJoueursVivants()[this.partie.joueurVoisin(false, mort)];
+                let joueurGauche: Villageois = this.partie.getJoueursVivants()[this.partie.joueurVoisin(true, mort)];
                 if(!(mort as MontreurOurs).oursGrogne()){
                     this.villageoisPublicPourOurs(joueurDroit);
                     this.villageoisPublicPourOurs(joueurGauche);
@@ -477,7 +477,7 @@ export class IA {
     }
 
     changementRolePretendEtreMontrerMorts(): void{
-        this.partie.joueursMorts.forEach((mort: Villageois)=>{
+        this.partie.getJoueursMorts().forEach((mort: Villageois)=>{
             if(mort.role == this.rolePretendEtre){
                 this.rolePretendEtre = undefined;
             }
@@ -485,7 +485,7 @@ export class IA {
     }
 
     majCotesDevenirLoup(): void{
-        this.partie.joueursVivants.forEach((villageois: Villageois)=>{
+        this.partie.getJoueursVivants().forEach((villageois: Villageois)=>{
             if(villageois.equipeApparente == Equipe.LOUPS){
                 if(this.siJoueurSafe(villageois, true, false, false, true, false) && this.villageois.equipeReelle == Equipe.LOUPS){
                     this.ajouterJoueursMemeEquipeAssuree(villageois)
@@ -538,7 +538,7 @@ export class IA {
         let cotes: number[] = this.getValeursCotes(AConserver);
         const minMax: number = this.getValeurMinMax(max, cotes);
         const nouveauxChoix: (Villageois | undefined)[] = cotes.map((valeurCote: number, indexJoueur: number)=>{
-            return (valeurCote == minMax)?this.partie.joueursVivants[this.partie.joueursVivants.indexOf(AConserver[indexJoueur])]: undefined;
+            return (valeurCote == minMax)?this.partie.getJoueursVivants()[this.partie.getJoueursVivants().indexOf(AConserver[indexJoueur])]: undefined;
         }).filter((valeur: Villageois | undefined)=>{
             return valeur != undefined;
         })
@@ -572,7 +572,7 @@ export class IA {
     }
 
     siJoueurSafe(joueur: Villageois, enAmour: boolean, joueurDeFlute: boolean, enfantSauvage: boolean, loupBlanc: boolean, infecte: boolean):boolean{
-        if(enAmour && this.partie.joueursVivants.some((joueur: Villageois)=>{return joueur.amoureux !== undefined})){
+        if(enAmour && this.partie.getJoueursVivants().some((joueur: Villageois)=>{return joueur.amoureux !== undefined})){
             return false;
         }
         if(joueurDeFlute && this.partie.getPersonnages(Role.JOUEUR_DE_FLUTE).length>0){
@@ -584,7 +584,7 @@ export class IA {
         if(loupBlanc  && this.partie.getPersonnages(Role.LOUP_BLANC).length>0){
             return false;
         }
-        if(infecte && (this.partie.joueursDejaMorts.some((joueur: Villageois)=>{return joueur.estInfecte})|| !this.partie.joueursVivants.concat(this.partie.joueursDejaMorts).some((joueur: Villageois)=>{joueur.role == Role.INFECT_PERE_LOUPS}))){
+        if(infecte && (this.partie.getJoueursDejaMorts().some((joueur: Villageois)=>{return joueur.estInfecte})|| !this.partie.getJoueursVivants().concat(this.partie.getJoueursDejaMorts()).some((joueur: Villageois)=>{joueur.role == Role.INFECT_PERE_LOUPS}))){
             return false;
         }
         return true;
@@ -629,11 +629,11 @@ export class IA {
     }
 
     protected trouverRaisonParDefaut(cible: Villageois): RaisonAccusation{
-        if(this.partie.random(this.partie.joueursVivants.length) == 0){
+        if(this.partie.random(this.partie.getJoueursVivants().length) == 0){
             if(((this.partie.getPersonnages((Role.MONTREUR_OURS)) as MontreurOurs[]).filter((montreur: MontreurOurs)=>{
                 return montreur.oursGrogne();
-            }).length >0) && ((this.partie.joueurVoisin(true, this.villageois)==this.partie.joueursVivants.indexOf(cible) ||
-                this.partie.joueurVoisin(false, this.villageois)==this.partie.joueursVivants.indexOf(cible)))&&
+            }).length >0) && ((this.partie.joueurVoisin(true, this.villageois)==this.partie.getJoueursVivants().indexOf(cible) ||
+                this.partie.joueurVoisin(false, this.villageois)==this.partie.getJoueursVivants().indexOf(cible)))&&
                 (this.rolePretendEtre == undefined || this.rolePretendEtre == Role.MONTREUR_OURS)){
                 this.rolePretendEtre = Role.MONTREUR_OURS;
                 return RaisonAccusation.MONTREUR_OURS;
@@ -659,7 +659,7 @@ export class IA {
     //Phase 2: accuserSiHasard
     accuserSiHasard(): boolean{
         const choix: Villageois[] = this.joueursAucuneRaisonPasVoterAccuser();
-        if(choix.length > 0 && this.partie.random(this.partie.joueursVivants.length+1)==0){
+        if(choix.length > 0 && this.partie.random(this.partie.getJoueursVivants().length+1)==0){
             const cible: Villageois = this.getMaxOuMinCote(false, choix);
             this.villageois.choisirJoueur(cible, EvenementDeGroupe.ACCUSER, false, this.trouverRaisonParDefaut(cible))
             return true;
@@ -672,7 +672,7 @@ export class IA {
         console.log("accusation de "+ this.villageois.nom)
         //joueur de flute
         if(this.villageois.role !== Role.JOUEUR_DE_FLUTE && this.partie.getPersonnages(Role.JOUEUR_DE_FLUTE).length>0 && this.villageois.estCharmer){
-            let joueursNonCharmer: Villageois[] = this.partie.joueursVivants.filter((joueur: Villageois)=>{
+            let joueursNonCharmer: Villageois[] = this.partie.getJoueursVivants().filter((joueur: Villageois)=>{
                 return !joueur.estCharmer
             })
             if(joueursNonCharmer.length<=3){
@@ -709,9 +709,9 @@ export class IA {
 
     afficherCotes(){
         console.log("cotes de "+this.villageois.nom);
-        const cotes: number[] = this.getValeursCotes(this.partie.joueursVivants.filter((joueur: Villageois)=>{return this.cotes.get(joueur) !== undefined}));
+        const cotes: number[] = this.getValeursCotes(this.partie.getJoueursVivants().filter((joueur: Villageois)=>{return this.cotes.get(joueur) !== undefined}));
         this.cotes.forEach((valeur: number[], key: Villageois)=>{
-            let index: number = this.partie.joueursVivants.filter((joueur: Villageois)=>{return this.cotes.has(joueur)}).indexOf(key);
+            let index: number = this.partie.getJoueursVivants().filter((joueur: Villageois)=>{return this.cotes.has(joueur)}).indexOf(key);
             
             console.log(key.nom, valeur,(index == -1? "aucune cote finale":cotes[index]));
         })

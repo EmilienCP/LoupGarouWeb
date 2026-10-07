@@ -19,16 +19,16 @@ export class Voyante extends Villageois {
     protected jouerRole(): void {
         this.ajouterEvenementIndividuelSansRaisons(EvenementIndividuel.JOUER_VOYANTE);
         const raisons: RaisonPasVoter[] = this.getRaisonsPasVoter([RaisonPasVoter.SOI_MEME]);
-        this.partie.joueursVivants.forEach((joueur: Villageois, index: number)=>{
+        this.partie.getJoueursVivants().forEach((joueur: Villageois, index: number)=>{
             if(this.villageoisRolesConnus.includes(joueur)){
                 raisons[index] = RaisonPasVoter.DEJA_CHOISI;
             }
         })
         raisons.forEach((raison: RaisonPasVoter, index: number)=>{
-            if(raison == RaisonPasVoter.AUCUN && this.villageoisRolesConnus.includes(this.partie.joueursVivants[index])){
+            if(raison == RaisonPasVoter.AUCUN && this.villageoisRolesConnus.includes(this.partie.getJoueursVivants()[index])){
                 raison = RaisonPasVoter.DEJA_CHOISI;
             }
-            if(raison == RaisonPasVoter.AUCUN && this.partie.joueursVivants[index].role == Role.VILLAGEOIS_VILLAGEOIS){
+            if(raison == RaisonPasVoter.AUCUN && this.partie.getJoueursVivants()[index].role == Role.VILLAGEOIS_VILLAGEOIS){
                 raison = RaisonPasVoter.DEJA_VILLAGEOIS_VILLAGEOIS;
             }
         })
@@ -62,7 +62,7 @@ export class Voyante extends Villageois {
 
     majVillageoisRolesConnus(): void {
         this.villageoisRolesConnus = this.villageoisRolesConnus.filter((villageois: Villageois) => {
-            return this.partie.joueursVivants.includes(villageois)
+            return this.partie.getJoueursVivants().includes(villageois)
         })
     }
 

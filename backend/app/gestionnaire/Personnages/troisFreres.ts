@@ -14,7 +14,7 @@ export class TroisFreres extends Villageois{
 
     actionIntro(): void {
         super.actionIntro();
-        this.partie.joueursVivants.concat(this.partie.joueursDejaMorts).forEach((joueur: Villageois)=>{
+        this.partie.getJoueursVivants().concat(this.partie.getJoueursDejaMorts()).forEach((joueur: Villageois)=>{
             if(joueur.role == Role.TROIS_FRERES && joueur != this){
                 this.deuxFreres.push(joueur);
             }

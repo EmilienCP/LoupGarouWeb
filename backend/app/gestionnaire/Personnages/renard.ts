@@ -18,8 +18,8 @@ export class Renard extends Villageois {
         const indexVoisinGauche: number= this.partie.joueurVoisin(true, this.cible!);
         const indexVoisinDroite: number= this.partie.joueurVoisin(false, this.cible!);
         
-        return (this.partie.joueursVivants[indexVoisinDroite].equipeApparente == Equipe.LOUPS ||
-                this.partie.joueursVivants[indexVoisinGauche].equipeApparente == Equipe.LOUPS ||
+        return (this.partie.getJoueursVivants()[indexVoisinDroite].equipeApparente == Equipe.LOUPS ||
+                this.partie.getJoueursVivants()[indexVoisinGauche].equipeApparente == Equipe.LOUPS ||
                 this.cible!.equipeApparente == Equipe.LOUPS);   
     }
 

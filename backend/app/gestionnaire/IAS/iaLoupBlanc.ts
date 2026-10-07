@@ -18,7 +18,7 @@ export class IALoupBlanc extends IA{
                 return this.villageois.amoureux !== loup;
             });
             //doit enlever lamoureux pour le calcul, pcq l'amoureux va aider a tuer les autres
-            if(loupsPotentiels.length >= this.partie.joueursVivants.length/3){
+            if(loupsPotentiels.length >= this.partie.getJoueursVivants().length/3){
                 this.villageois.choisirJoueur(this.getMaxOuMinCote(false, loupsPotentiels), evenement, false)
             }
         }
@@ -28,8 +28,8 @@ export class IALoupBlanc extends IA{
         super.mettreAJourNouveauVillage();
 
         // ce code est vraiment pas beau, trouver un moyen pour que le loup blanc puisse voter contre ses amis loups quand ils sont trop nombreux
-        if((this.partie.joueursVivants.length <= 4 ||  this.partie.joueursVivants.length <= 6 && this.partie.joueursVivants.filter((j)=>j.equipeApparente == Equipe.LOUPS).length>2 )&& !this.villageois.amoureux){
-            const loupPasLui: Villageois | undefined = this.partie.joueursVivants.find((j)=>j.equipeApparente == Equipe.LOUPS&&j!=this.villageois);
+        if((this.partie.getJoueursVivants().length <= 4 ||  this.partie.getJoueursVivants().length <= 6 && this.partie.getJoueursVivants().filter((j)=>j.equipeApparente == Equipe.LOUPS).length>2 )&& !this.villageois.amoureux){
+            const loupPasLui: Villageois | undefined = this.partie.getJoueursVivants().find((j)=>j.equipeApparente == Equipe.LOUPS&&j!=this.villageois);
             if(loupPasLui){
                 this.ajouterJoueursPasMemeEquipeAssuree(loupPasLui)
             }

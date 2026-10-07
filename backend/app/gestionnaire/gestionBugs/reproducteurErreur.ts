@@ -49,7 +49,7 @@ async function envoyerDansSwitch(action:number[], index: number){
         }
         case Action.VOTER_VILLAGEOIS:{
             console.log("faire une action: "+ action)
-            partie.joueursVivants[action[2]].choisirJoueur(partie.joueursVivants[action[3]], action[1], false);
+            partie.getJoueursVivants()[action[2]].choisirJoueur(partie.getJoueursVivants()[action[3]], action[1], false);
             break;
         }
         case Action.PASSER:{
@@ -63,7 +63,7 @@ async function envoyerDansSwitch(action:number[], index: number){
         case Action.POP_RAISON_PAS_VOTER:{
             console.log("pop raisons pas voter de index joueur" +action[1])
             try{
-                partie.joueursVivants[action[1]].popRaisonsPasVoter();
+                partie.getJoueursVivants()[action[1]].popRaisonsPasVoter();
             } catch (e){
                 console.log(e);
             }
@@ -75,7 +75,7 @@ async function envoyerDansSwitch(action:number[], index: number){
             break;
         }
         default:
-            console.log(partie.joueursVivants.map((joueur=>joueur.nom)));
+            console.log(partie.getJoueursVivants().map((joueur)=>joueur.nom));
             throw new Error("repere");
     }
     

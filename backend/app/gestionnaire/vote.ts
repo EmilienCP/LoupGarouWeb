@@ -69,7 +69,7 @@ export class Vote {
     }
 
     peutAccuser(electeur: Villageois, partie: Partie): boolean{
-        let joueursPasAccuses: Villageois[] = partie.joueursVivants.filter((joueur)=>!this.accuses.includes(joueur));
+        let joueursPasAccuses: Villageois[] = partie.getJoueursVivants().filter((joueur)=>!this.accuses.includes(joueur));
         return !this.aAccuser(electeur) && (joueursPasAccuses.length>1 || joueursPasAccuses[0] != electeur)
     }
 
