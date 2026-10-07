@@ -116,30 +116,32 @@ export class CreationComponent implements OnInit {
     this.socket.on("reloadPartie" , ()=>{
       this.majInfosJeu()
     })
-    this.socket.on("decompte", ()=>{
+    this.socket.on("decompte", (valeur: number)=>{
       this.audioService.jouerDebutPartie();
       this.decompte = true;
+      this.compteur = valeur;
       this.compteur--;
-      setTimeout( () => { 
-        this.compteur--;
-        setTimeout( () => { 
-          this.compteur--;
-          setTimeout( () => { 
+
+      const decrementerCompteur = () => {
+        if (this.compteur > 0) {
+          setTimeout(() => {
             this.compteur--;
-            setTimeout( () => { 
-              if(this.peutCommencer){
-                this.quitterComponent();
-                if(!this.histoire){
-                  this.communicationService.jour = true;
-                  this.audioService.jouerJour();
-                }
-                this.router.navigate(["jeuComponent"])
-              }
-              this.peutCommencer=true;
-              }, 1000 );
-            }, 1000 );
-         }, 1000 );
-       }, 1000 );
+            decrementerCompteur();
+          }, 1000);
+        } else {
+          if (this.peutCommencer) {
+            this.quitterComponent();
+            if (!this.histoire) {
+              this.communicationService.jour = true;
+              this.audioService.jouerJour();
+            }
+            this.router.navigate(["jeuComponent"]);
+          }
+          this.peutCommencer = true;
+        }
+      };
+
+      decrementerCompteur();
     });
     this.socket.on("partieCommencee", ()=>{
       if(this.peutCommencer){

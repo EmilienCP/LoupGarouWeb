@@ -23,10 +23,12 @@ export class Intro extends GestionnaireDeTemps{
                         noms.push(nom)
                     })
                 })
-                const reponse: string = await this.partie.chatgptService.genererIntro(noms);
-                const buffer: Buffer = await this.partie.chatgptService.genererSpeech(reponse);
-                this.partie.texteCourant = reponse;
-                this.partie.bufferIntro = buffer;
+                if(!this.partie.simulation && !this.partie.seed){
+                    const reponse: string = await this.partie.chatgptService.genererIntro(noms);
+                    const buffer: Buffer = await this.partie.chatgptService.genererSpeech(reponse);
+                    this.partie.texteCourant = reponse;
+                    this.partie.bufferIntro = buffer;
+                }
                 this.partie.preparerEvenementDeGroupe(EvenementDeGroupe.INTRO_HISTOIRE, EvenementDeGroupe.INTRO_HISTOIRE);
                 return false;
             case "Cacher Appareil":

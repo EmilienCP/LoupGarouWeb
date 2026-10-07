@@ -265,7 +265,7 @@ export class SocketController{
             })
 
             socket.on("commencerPartie", () => {
-                    sio.to(this.partiesService.getNomRoom(socket.id)).emit("decompte")
+                    sio.to(this.partiesService.getNomRoom(socket.id)).emit("decompte", this.partiesService.getPartie(socket.id).modeVideo?10:5);
                     this.partiesService.getPartie(socket.id).commencerPartie().then(()=>{
                         sio.to(this.partiesService.getNomRoom(socket.id)).emit("partieCommencee")
                         sio.emit("reloadPartie")
