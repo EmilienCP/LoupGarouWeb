@@ -9,7 +9,7 @@ import Types from './types'
 export class Server {
     private readonly appPort: string|number|boolean = this.normalizePort(process.env.PORT || '5030');
     private readonly baseTen: number = 10;
-    private server: http.Server;
+    private server!: http.Server;
 
     public constructor (@inject(Types.Application) private application: Application) { }
 

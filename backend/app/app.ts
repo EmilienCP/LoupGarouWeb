@@ -1,6 +1,6 @@
 import * as bodyParser from 'body-parser'
-import * as cors from 'cors'
-import * as express from 'express'
+import express from 'express'
+import cors from 'cors'
 import { inject, injectable } from 'inversify'
 import { DatabaseController } from './controllers/database.controller'
 import Types from './types'

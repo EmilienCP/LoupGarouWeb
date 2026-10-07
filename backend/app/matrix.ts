@@ -133,7 +133,7 @@ interface Etat{
 }
 
 class Arbre{
-    prob: number;
+    prob!: number;
     probEnfants?: number[];
     enfants?: Arbre[];
 }
