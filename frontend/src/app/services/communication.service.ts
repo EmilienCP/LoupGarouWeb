@@ -40,6 +40,7 @@ export class CommunicationService {
   }
 
   public connectSocket(): void{
+    console.log("ROOOOOOOOOOOT", this.ROOT_URL);
     this.socket = io.connect(this.ROOT_URL)
     this.socket.on("connect", ()=>{
       if(this.idSocket!=""){

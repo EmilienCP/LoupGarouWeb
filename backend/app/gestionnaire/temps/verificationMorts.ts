@@ -299,9 +299,9 @@ export class VerificationMorts extends GestionnaireDeTemps{
                     this.partie.getJoueursMorts().forEach((mort: Villageois)=>{
                         if(mort.equipeApparente != Equipe.LOUPS) {
                             let villageois: Villageois = this.partie.creerVillageois(Role.VILLAGEOIS);
-                            villageois.ancienRole = villageois.role;
                             villageois.role = Role.VILLAGEOIS_VILLAGEOIS;
                             villageois = mort.copier(villageois);
+                            villageois.ancienRole = mort.role;
                             //le joueur de flute ne doit pas rester independant lorsqu'il devient villageois villageois
                             if(mort.role == Role.JOUEUR_DE_FLUTE && mort.amoureux== undefined){
                                 villageois.equipeReelle = villageois.equipeApparente;

@@ -4,7 +4,7 @@ import { Villageois } from "./villageois";
 
 export class DeuxSoeurs extends Villageois{
 
-    deuxiemeSoeur!: Villageois; // on ne veut jamais quil n'ait pas de deuxieme soeur, meme quand elle est morte
+    deuxiemeSoeur?: Villageois; // elle peut avoir pas de deuxieme soeur, si sa deuxieme soeur devient villageois villageois.
  
     constructor(partie: Partie){
         super(false, partie);
@@ -28,7 +28,10 @@ export class DeuxSoeurs extends Villageois{
                 this.deuxiemeSoeur = joueur;
             }
         });
-        (this.deuxiemeSoeur! as DeuxSoeurs).deuxiemeSoeur = this;
+        //possible que ce soit un villageois villageois la deuxieme soeur, donc elle ne peut pas voir sa deuxieme soeur.
+        if(this.deuxiemeSoeur){
+            (this.deuxiemeSoeur as DeuxSoeurs).deuxiemeSoeur = this;
+        }
     }
 
     changerPointeur(ancienJoueur: Villageois, nouveauJoueur: Villageois): void {

@@ -29,6 +29,12 @@
             <span class = "hoverCapitaine">Ce joueur est {{getNomRole(i)}}</span>
           </div>
         }
+        @if (isAncienRole(i)) {
+          <div class = "iconCapitaine" >
+            <img [src] =  "'../../assets/'+imageAncienRole(i)">
+            <span class = "hoverCapitaine">Ce joueur était anciennement {{getNomAncienRole(i)}}</span>
+          </div>
+        }
         @if (isRolePublic(i)) {
           <div class = "iconCapitaine" >
             <img [src] =  "'../../assets/'+imageRolePublic(i)" >

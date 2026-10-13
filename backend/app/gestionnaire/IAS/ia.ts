@@ -669,7 +669,6 @@ export class IA {
 
     //Phase 3: accuserSiDanger
     accuserSiDanger(): boolean{
-        console.log("accusation de "+ this.villageois.nom)
         //joueur de flute
         if(this.villageois.role !== Role.JOUEUR_DE_FLUTE && this.partie.getPersonnages(Role.JOUEUR_DE_FLUTE).length>0 && this.villageois.estCharmer){
             let joueursNonCharmer: Villageois[] = this.partie.getJoueursVivants().filter((joueur: Villageois)=>{
