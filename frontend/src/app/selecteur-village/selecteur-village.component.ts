@@ -29,7 +29,8 @@ export class SelecteurVillageComponent implements OnInit {
     this.socket = this.communicationService.getSocket();
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+  }
 
   estAmoureux(index: number): boolean{
     return this.communicationService.infoPartie.village[index].amoureux != undefined && this.evenement != EvenementIndividuel.VOTER_CAPITAINE;
@@ -63,8 +64,16 @@ export class SelecteurVillageComponent implements OnInit {
     return utils.convertirRoleTexte(this.communicationService.infoPartie.village[index].role!);
   }
 
+  getNomAncienRole(index: number): string{
+    return utils.convertirRoleTexte(this.communicationService.infoPartie.village[index].ancienRole!);
+  }
+
   imageRole(index: number): string{
     return utils.imageRole(this.communicationService.infoPartie.village[index].role!);
+  }
+
+  imageAncienRole(index: number): string{
+    return utils.imageRole(this.communicationService.infoPartie.village[index].ancienRole!);
   }
 
   getNomRolePublic(index: number): string{
@@ -82,7 +91,11 @@ export class SelecteurVillageComponent implements OnInit {
   isRole(index: number): boolean{
     return this.communicationService.infoPartie.village[index].role != undefined;
   }  
-  
+
+  isAncienRole(index: number): boolean{
+    return this.communicationService.infoPartie.village[index].ancienRole != undefined;
+  }
+
   isRolePublic(index: number): boolean{
     return this.communicationService.infoPartie.village[index].rolePublic != undefined;
   }

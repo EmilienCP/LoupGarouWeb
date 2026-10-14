@@ -52,7 +52,7 @@ export class IAChercheurLoups extends IA{
     majCotesMontrerMort(): void {
         super.majCotesMontrerMort();
         if(this.villageois.equipeReelle == Equipe.VILLAGEOIS) {
-            this.partie.joueursMorts.forEach((mort: Villageois) => {
+            this.partie.getJoueursMorts().forEach((mort: Villageois) => {
                 if(mort !== this.villageois){
                     this.ajusterResultatGroupeDe3(mort.equipeApparente == Equipe.LOUPS, [mort]);
                 }

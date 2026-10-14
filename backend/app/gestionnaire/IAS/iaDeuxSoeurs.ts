@@ -14,7 +14,9 @@ export class IADeuxSoeurs extends IA{
         super.jouerUnEvenement(evenement);
         if(+evenement == EvenementIndividuel.JOUER_VILLAGEOIS){
             if(this.partie.numeroJour < 2){
-                this.augmenterDiminuerCote((this.villageois as DeuxSoeurs).deuxiemeSoeur, 2, true);
+                if((this.villageois as DeuxSoeurs).deuxiemeSoeur){
+                    this.augmenterDiminuerCote((this.villageois as DeuxSoeurs).deuxiemeSoeur!, 2, true);
+                }
             }
         }
     }
@@ -22,8 +24,8 @@ export class IADeuxSoeurs extends IA{
     mettreAJourNouveauVillage(): void {
         super.mettreAJourNouveauVillage();
         if(this.villageois.equipeReelle == Equipe.VILLAGEOIS){
-            const deuxiemeSoeur: Villageois = (this.villageois as DeuxSoeurs).deuxiemeSoeur;
-            if(this.partie.joueursVivants.includes(deuxiemeSoeur) && this.siJoueurSafe(deuxiemeSoeur, true, false, false, false, true)){
+            const deuxiemeSoeur: Villageois | undefined = (this.villageois as DeuxSoeurs).deuxiemeSoeur;
+            if(deuxiemeSoeur &&this.partie.getJoueursVivants().includes(deuxiemeSoeur) && this.siJoueurSafe(deuxiemeSoeur, true, false, false, false, true)){
                 this.ajouterJoueursMemeEquipeAssuree(deuxiemeSoeur);
             }
         }

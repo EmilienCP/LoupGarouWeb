@@ -4,7 +4,7 @@ import { Villageois } from "./villageois";
 
 export class DeuxSoeurs extends Villageois{
 
-    deuxiemeSoeur!: Villageois; // on ne veut jamais quil n'ait pas de deuxieme soeur, meme quand elle est morte
+    deuxiemeSoeur?: Villageois; // elle peut avoir pas de deuxieme soeur, si sa deuxieme soeur devient villageois villageois.
  
     constructor(partie: Partie){
         super(false, partie);
@@ -13,7 +13,7 @@ export class DeuxSoeurs extends Villageois{
 
     actionIntro(): void {
         super.actionIntro();
-        this.partie.joueursVivants.forEach((joueur: Villageois)=>{
+        this.partie.getJoueursVivants().forEach((joueur: Villageois)=>{
             if(joueur.role == Role.DEUX_SOEURS && joueur != this){
                 this.deuxiemeSoeur = joueur;
             }
@@ -22,13 +22,16 @@ export class DeuxSoeurs extends Villageois{
 
     actionExServante(joueurQuelleAPris: Villageois): void {
         super.actionExServante(joueurQuelleAPris);
-        this.partie.joueursVivants.concat(this.partie.joueursDejaMorts).concat(this.partie.joueursDejaMortsPointeurs).forEach((joueur: Villageois)=>{
+        this.partie.getJoueursVivants().concat(this.partie.getJoueursDejaMorts()).forEach((joueur: Villageois)=>{
             //si la servante devouee prend le role dune des deux soeurs et lautre est morte, on veut quand meme la trouver
             if(joueur.role == Role.DEUX_SOEURS && joueur != this && joueur != joueurQuelleAPris){
                 this.deuxiemeSoeur = joueur;
             }
         });
-        (this.deuxiemeSoeur! as DeuxSoeurs).deuxiemeSoeur = this;
+        //possible que ce soit un villageois villageois la deuxieme soeur, donc elle ne peut pas voir sa deuxieme soeur.
+        if(this.deuxiemeSoeur){
+            (this.deuxiemeSoeur as DeuxSoeurs).deuxiemeSoeur = this;
+        }
     }
 
     changerPointeur(ancienJoueur: Villageois, nouveauJoueur: Villageois): void {

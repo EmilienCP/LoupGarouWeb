@@ -133,7 +133,7 @@ export class PartiesService {
             infoVillage = partie.getInfosVillageParRapportA(joueurPresent);
         }
 
-        let rolesVivants: Role[] = partie.joueursVivants.map((villageois: Villageois)=>{
+        let rolesVivants: Role[] = partie.getJoueursVivants().map((villageois: Villageois)=>{
             return villageois.role;
         }).sort((a: Role, b: Role)=>{
             return a-b;
@@ -141,28 +141,32 @@ export class PartiesService {
 
         
 
-        let rolesMorts: Role[] = partie.joueursDejaMorts.map((villageois: Villageois)=>{
-            return villageois.role;
-        }).sort((a: Role, b: Role)=>{
+        let rolesMorts: Role[] = partie.joueursVillage.map((villageois: Villageois)=>{
+            if(villageois.estDejaMort){
+                return villageois.role;
+            } else{
+                return villageois.ancienRole;
+            }
+        }).filter((v: Role | undefined)=> v!== undefined).sort((a: Role, b: Role)=>{
             return a-b;
         });
 
         let rolesVivantsEtatsSpeciaux: (Role|EtatsSpeciaux)[] = rolesVivants;
         let rolesMortsEtatsSpeciaux: (Role|EtatsSpeciaux)[] = rolesMorts;
 
-        if(partie.joueursVivants.some((villageois: Villageois)=>{return villageois.amoureux})){
+        if(partie.getJoueursVivants().some((villageois: Villageois)=>{return villageois.amoureux})){
             rolesVivantsEtatsSpeciaux.push(EtatsSpeciaux.AMOUREUX);
         } 
 
-        if(partie.joueursDejaMorts.some((villageois: Villageois)=>{return villageois.amoureux})){
+        if(partie.getJoueursDejaMorts().some((villageois: Villageois)=>{return villageois.amoureux})){
             rolesMortsEtatsSpeciaux.push(EtatsSpeciaux.AMOUREUX);
         }
 
-        if(!partie.joueursDejaMorts.some((villageois: Villageois)=>{return villageois.estInfecte})&& partie.choixPersonnages.includes(Role.INFECT_PERE_LOUPS)){
+        if(!partie.getJoueursDejaMorts().some((villageois: Villageois)=>{return villageois.estInfecte})&& partie.choixPersonnages.includes(Role.INFECT_PERE_LOUPS)){
             rolesVivantsEtatsSpeciaux.push(EtatsSpeciaux.INFECTE);
         }
 
-        if(partie.joueursDejaMorts.some((villageois: Villageois)=>{return villageois.estInfecte})){
+        if(partie.getJoueursDejaMorts().some((villageois: Villageois)=>{return villageois.estInfecte})){
             rolesMortsEtatsSpeciaux.push(EtatsSpeciaux.INFECTE);
         }
 

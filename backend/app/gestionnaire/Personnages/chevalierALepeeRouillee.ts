@@ -12,9 +12,9 @@ export class ChevalierALepeeRouillee extends Villageois{
     }
 
     trouverLoupTetanos(){
-        let joueurGauche: Villageois = this.partie.joueursVivants[this.partie.joueurVoisin(true, this)];
+        let joueurGauche: Villageois = this.partie.getJoueursVivants()[this.partie.joueurVoisin(true, this)];
         while(joueurGauche.equipeApparente !== Equipe.LOUPS){
-            joueurGauche = this.partie.joueursVivants[this.partie.joueurVoisin(true, joueurGauche)];
+            joueurGauche = this.partie.getJoueursVivants()[this.partie.joueurVoisin(true, joueurGauche)];
             if(joueurGauche == this){
                 throw new Error("Le chevalier a lepee rouillee ne trouve personne a donner le tetanos");
             }
@@ -23,11 +23,11 @@ export class ChevalierALepeeRouillee extends Villageois{
     }
 
     ajouterLoupMort(){
-        if(!this.partie.joueursVivants.includes(this.loupTetanos!)){
+        if(!this.partie.getJoueursVivants().includes(this.loupTetanos!)){
             this.loupTetanos = undefined;
         }
-        if(this.loupTetanos && !this.partie.joueursMorts.includes(this.loupTetanos)){
-            this.partie.joueursMorts.push(this.loupTetanos)
+        if(this.loupTetanos && !this.partie.getJoueursMorts().includes(this.loupTetanos)){
+            this.loupTetanos.estMort = true;
             this.loupTetanos = undefined
         }
     }

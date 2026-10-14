@@ -18,8 +18,8 @@ export class Nuit extends GestionnaireDeTemps{
             case "Jouer role nuit":
                 //faire jouer le role de nuit à tous les joueurs
                 this.partie.voteCourant.clean();
-                this.partie.voteCourant.accuserToutLeMonde(this.partie.joueursVivants);
-                this.partie.joueursVivants.forEach((villageois: Villageois)=>{
+                this.partie.voteCourant.accuserToutLeMonde(this.partie.getJoueursVivants());
+                this.partie.getJoueursVivants().forEach((villageois: Villageois)=>{
                     villageois.actionNuit();
                 })
                 this.partie.preparerEvenementsIndividuels(EvenementDeGroupe.JOUER_NUIT);

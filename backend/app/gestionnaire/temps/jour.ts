@@ -28,13 +28,13 @@ export class Jour extends GestionnaireDeTemps{
                         this.partie.preparerEvenementDeGroupe(EvenementDeGroupe.INFO_ACCUSER, EvenementDeGroupe.INFO_ACCUSER);
                     }
                 } else {
-                    this.partie.preparerEvenementDeGroupe(EvenementDeGroupe.ACCUSER, EvenementDeGroupe.INFO_ACCUSER, this.partie.joueursDejaMorts);
+                    this.partie.preparerEvenementDeGroupe(EvenementDeGroupe.ACCUSER, EvenementDeGroupe.INFO_ACCUSER, this.partie.getJoueursDejaMorts());
                 }
                 this.partie.historiqueEvenements.push([]);
                 
                 //corbeau
                 let corbeaux: Corbeau[] = this.partie.getPersonnages(Role.CORBEAU) as Corbeau[];
-                if(corbeaux.length >0 && corbeaux[0].joueurVu && this.partie.joueursVivants.includes(corbeaux[0].joueurVu)){
+                if(corbeaux.length >0 && corbeaux[0].joueurVu && this.partie.getJoueursVivants().includes(corbeaux[0].joueurVu)){
                     this.partie.voteCourant.voterCorbeau(corbeaux[0].joueurVu);
                     this.partie.appareils.forEach((appareil: Appareil)=>{
                         appareil.ajouterNouvelleAccusation(this.partie);
@@ -45,8 +45,8 @@ export class Jour extends GestionnaireDeTemps{
                 return false;
 
             case "Institutrice":
-                this.institutrice = this.partie.joueursVivants.find((v)=>v.rolePublic == RolePublic.INSTITUTRICE);
-                if(this.institutrice && this.partie.joueursVivants.some((j=>j.rolePublic!=RolePublic.VAGABOND && j!= this.institutrice))){
+                this.institutrice = this.partie.getJoueursVivants().find((v)=>v.rolePublic == RolePublic.INSTITUTRICE);
+                if(this.institutrice && this.partie.getJoueursVivants().some((j=>j.rolePublic!=RolePublic.VAGABOND && j!= this.institutrice))){
                     this.partie.preparerEvenementDeGroupe(EvenementDeGroupe.JOUER_INSTITUTRICE, EvenementDeGroupe.JOUER_INSTITUTRICE, [this.institutrice]);
                     this.institutrice.jouerInstitutrice();
                     this.partie.preparerEvenementsIndividuels(EvenementDeGroupe.JOUER_INSTITUTRICE, [this.institutrice])
@@ -65,11 +65,11 @@ export class Jour extends GestionnaireDeTemps{
                 this.partie.voteCourant.cleanElecteurs();
                 //ajouter laccuse du corbeau
                 let corbeau: Corbeau[] = this.partie.getPersonnages(Role.CORBEAU) as Corbeau[];
-                if(corbeau.length >0 && corbeau[0].joueurVu && this.partie.joueursVivants.includes(corbeau[0].joueurVu)){
+                if(corbeau.length >0 && corbeau[0].joueurVu && this.partie.getJoueursVivants().includes(corbeau[0].joueurVu)){
                     this.partie.voteCourant.ajouterAccuserDuCorbeau(corbeau[0].joueurVu);
                 }
 
-                this.partie.joueursVivants.forEach((villageois: Villageois)=>{
+                this.partie.getJoueursVivants().forEach((villageois: Villageois)=>{
                     villageois.actionJour();
                 });
                 //doit preparer les evenements individuels pour permettre aux ias de jouer

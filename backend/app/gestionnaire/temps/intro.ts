@@ -33,38 +33,38 @@ export class Intro extends GestionnaireDeTemps{
                 return false;
             case "Cacher Appareil":
                 if(this.partie.getJoueursReelsEncoreVivants().length>1){
-                    this.partie.joueursVivants.forEach((villageois: Villageois)=>{
+                    this.partie.getJoueursVivants().forEach((villageois: Villageois)=>{
                         villageois.ajouterEvenementIndividuelSansRaisons(EvenementIndividuel.CACHER_APPAREIL);
                     });
                 }
                 return true;
             case "Montrer Personnage Public":
                 if(this.partie.modeExtensionVillage){
-                    this.partie.joueursVivants.forEach((villageois: Villageois)=>{
+                    this.partie.getJoueursVivants().forEach((villageois: Villageois)=>{
                         villageois.ajouterEvenementIndividuelSansRaisons(EvenementIndividuel.MONTRER_PERSONNAGE_PUBLIC);
                     });
                 }
                 return true;
             case "Montrer Personnage":
-                this.partie.joueursVivants.forEach((villageois: Villageois)=>{
+                this.partie.getJoueursVivants().forEach((villageois: Villageois)=>{
                     villageois.ajouterEvenementIndividuelSansRaisons(EvenementIndividuel.MONTRER_PERSONNAGE);
                 });
                 return true;
             case "Jouer Personnage Intro":
                 if(this.partie.modePatateChaude){
-                    let index: number = this.partie.random(this.partie.joueursVivants.length);
-                    const patateChaudeHasard: Villageois = this.partie.joueursVivants[index];
+                    let index: number = this.partie.random(this.partie.getJoueursVivants().length);
+                    const patateChaudeHasard: Villageois = this.partie.getJoueursVivants()[index];
                     patateChaudeHasard.patateChaude = true;
                     patateChaudeHasard.ajouterEvenementIndividuelSansRaisons(EvenementIndividuel.INFO_PATATE_CHAUDE);
                 }
-                this.partie.joueursVivants.forEach((villageois: Villageois)=>{
+                this.partie.getJoueursVivants().forEach((villageois: Villageois)=>{
                     villageois.actionIntro();
                 });
                 return true;
             case "Vote Capitaine":
-                let joueursImpliquesVote: Villageois[] = this.partie.joueursVivants;
+                let joueursImpliquesVote: Villageois[] = this.partie.getJoueursVivants();
                 if(this.partie.modeExtensionVillage){
-                    joueursImpliquesVote = this.partie.joueursVivants.filter((joueur: Villageois)=>{return joueur.rolePublic == RolePublic.FERMIER})
+                    joueursImpliquesVote = this.partie.getJoueursVivants().filter((joueur: Villageois)=>{return joueur.rolePublic == RolePublic.FERMIER})
                 }
                 this.partie.voteCourant.accuserToutLeMonde(joueursImpliquesVote);
                 joueursImpliquesVote.forEach((villageois: Villageois)=>{

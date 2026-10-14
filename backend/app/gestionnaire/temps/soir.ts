@@ -23,21 +23,21 @@ export class Soir extends GestionnaireDeTemps{
             case "Caluler precisions":
                 let infoVotes: Villageois[][] = this.partie.voteCourant.genererInfoVotesPointeurs();
                 infoVotes.forEach((info: Villageois[])=>{
-                    this.partie.joueursVivants.forEach((joueur: Villageois)=>{
+                    this.partie.getJoueursVivants().forEach((joueur: Villageois)=>{
                         joueur.calculerPrecision(info[0], info[1]);
                     });
                 });
                 return true;
             case "Inserer Morts":
-                this.partie.joueursMorts = this.partie.joueursMorts.concat(this.partie.voteCourant.gagnantsVote());
+                this.partie.voteCourant.gagnantsVote().forEach((mort: Villageois)=>{mort.estMort = true});
                 return true;
             case "Afficher Morts":
                 let listeMeneurs: Appareil[] = this.partie.getMeneursDeJeu();
-                if(this.partie.joueursMorts.length == 1){
-                    this.partie.historiqueEvenements.push([this.partie.joueursMorts[0].nom + " s'est fait éliminer"]);
+                if(this.partie.getJoueursMorts().length == 1){
+                    this.partie.historiqueEvenements.push([this.partie.getJoueursMorts()[0].nom + " s'est fait éliminer"]);
                 } else {
                     let texte: string = "Il y a eu égalité entre";
-                    texte+=this.getNomsEnListe(this.partie.joueursMorts.map((mort: Villageois)=>{return mort.nom}));
+                    texte+=this.getNomsEnListe(this.partie.getJoueursMorts().map((mort: Villageois)=>{return mort.nom}));
                     texte+= ". C'est le capitaine qui va trancher."
                     this.partie.historiqueEvenements.push([texte])
                 }
@@ -57,8 +57,8 @@ export class Soir extends GestionnaireDeTemps{
                 this.partie.preparerEvenementDeGroupe(EvenementDeGroupe.INFO_VOTES, EvenementDeGroupe.MORT_VOTES);
                 return false;
             case "Trancher Capitaine":
-                if(this.partie.joueursMorts.length >= 2){
-                    this.trancherCapitaine = this.partie.joueursVivants.filter((villageois: Villageois)=>{
+                if(this.partie.getJoueursMorts().length >= 2){
+                    this.trancherCapitaine = this.partie.getJoueursVivants().filter((villageois: Villageois)=>{
                         return villageois.estCapitaine;
                     })[0];
                     this.partie.preparerEvenementDeGroupe(EvenementDeGroupe.TRANCHER_CAPITAINE, EvenementDeGroupe.TRANCHER_CAPITAINE, [this.trancherCapitaine]);
@@ -68,7 +68,7 @@ export class Soir extends GestionnaireDeTemps{
                 return false;
             case "Info trancher capitaine":
                 if(this.trancherCapitaine){
-                    this.partie.historiqueEvenements.push(["Le capitaine a décidé d'éliminer "+this.partie.joueursMorts[0].nom]);
+                    this.partie.historiqueEvenements.push(["Le capitaine a décidé d'éliminer "+this.partie.getJoueursMorts()[0].nom]);
                     this.partie.preparerEvenementDeGroupe(EvenementDeGroupe.INFO_TRANCHER_CAPITAINE, EvenementDeGroupe.INFO_TRANCHER_CAPITAINE);
                 }
                 return false;

@@ -28,7 +28,7 @@ export class Hypnotiseur extends Villageois{
             }
             this.joueurChoisi = cible;
         } else if(evenement == EvenementIndividuel.VOTER){
-            if(cible !== this.joueurChoisi && this.joueurChoisi && !this.partie.joueursDejaMorts.includes(this.joueurChoisi)){
+            if(cible !== this.joueurChoisi && this.joueurChoisi && !this.partie.getJoueursDejaMorts().includes(this.joueurChoisi)){
                 this.partie.voteCourant.retirerElecteur(this.joueurChoisi!);
                 this.joueurChoisi!.voter(cible);
                 if(this.joueurChoisi.equipeApparente == Equipe.LOUPS && cible.equipeApparente == Equipe.LOUPS){

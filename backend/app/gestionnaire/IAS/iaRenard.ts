@@ -37,8 +37,8 @@ export class IARenard extends IAChercheurLoups{
                 this.villageois.choisirJoueur(cible, EvenementIndividuel.JOUER_RENARD, false);
     
                 let aFlaireLoup : boolean = (this.villageois as Renard).regarderGroupeDeTrois();
-                let voisinGauche: Villageois = this.partie.joueursVivants[this.partie.joueurVoisin(true, cible)]
-                let voisinDroite: Villageois = this.partie.joueursVivants[this.partie.joueurVoisin(false, cible)]
+                let voisinGauche: Villageois = this.partie.getJoueursVivants()[this.partie.joueurVoisin(true, cible)];
+                let voisinDroite: Villageois = this.partie.getJoueursVivants()[this.partie.joueurVoisin(false, cible)];
                 let listeAVerifier: Villageois[] = [cible, voisinGauche, voisinDroite];
                 listeAVerifier = listeAVerifier.filter((joueur: Villageois)=>{return joueur !== this.villageois});
     

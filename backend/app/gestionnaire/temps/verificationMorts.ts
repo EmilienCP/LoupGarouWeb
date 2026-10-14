@@ -31,7 +31,7 @@ export class VerificationMorts extends GestionnaireDeTemps{
         switch(this.listeEtapes[etapeCourante]){
             case "Mort Amoureux":
                 if(!this.partie.modeVillageoisVillageois || this.partie.numeroJour>1 || this.dejaMisVillageoisVillageois){
-                    let mortsEnAmour: Villageois[] = this.partie.joueursMorts.filter((mort: Villageois)=>{
+                    let mortsEnAmour: Villageois[] = this.partie.getJoueursMorts().filter((mort: Villageois)=>{
                         return mort.amoureux != undefined;
                     });
                     if(mortsEnAmour.length == 0){
@@ -53,7 +53,7 @@ export class VerificationMorts extends GestionnaireDeTemps{
                 return true;
             case "Ajouter Amoureux":
                 if(this.amoureux){
-                    this.partie.joueursMorts.push(this.amoureux);
+                    this.amoureux.estMort = true;
                 }
                 return true;
             case "VerifierVictoireAssumantMorts":
@@ -62,14 +62,14 @@ export class VerificationMorts extends GestionnaireDeTemps{
                 }
                 return true;
             case "Servante Devouee Question":{
-                if(this.partie.joueursMorts.length > 0){
+                if(this.partie.getJoueursMorts().length > 0){
                     this.servanteDevoueeVivante = this.partie.getPersonnages(Role.SERVANTE_DEVOUEE).filter((servante: Villageois)=>{
-                        return !this.partie.joueursMorts.includes(servante)
+                        return !this.partie.getJoueursMorts().includes(servante)
                     })[0]
                     if(this.servanteDevoueeVivante){
                         let joueursRestants: Villageois[] = this.partie.getJoueursReelsEncoreVivants();
                         if(this.dejaMisVillageoisVillageois){
-                            joueursRestants=joueursRestants.filter(j=>!this.partie.joueursMorts.includes(j));
+                            joueursRestants=joueursRestants.filter(j=>!j.estMort);
                         }
                         if(joueursRestants.length < 2 && !joueursRestants.some((joueur: Villageois)=>{return joueur == this.servanteDevoueeVivante})){
                             this.partie.ias.filter(ia=>ia.villageois == this.servanteDevoueeVivante)[0].evenementsEnAttente.push(EvenementDeGroupe.SERVANTE_DEVOUEE_QUESTION)
@@ -141,7 +141,7 @@ export class VerificationMorts extends GestionnaireDeTemps{
                 return true;
             }
             case "Verifier Infecter Mort":{
-                const joueurCible: Villageois|undefined = this.partie.joueursMorts.find((joueur: Villageois)=>{
+                const joueurCible: Villageois|undefined = this.partie.getJoueursMorts().find((joueur: Villageois)=>{
                     return joueur.estInfecte && joueur.evenementsIndividuels.includes(EvenementIndividuel.INFO_INFECTE);
                 });
                 if(joueurCible){
@@ -164,17 +164,16 @@ export class VerificationMorts extends GestionnaireDeTemps{
             case "Montrer Roles Morts":
                 //enlever le mort de la servante pour pas devoiler son role
                 if((this.servanteDevoueeVivante as ServanteDevouee)?.cible){
-                    this.partie.joueursMorts.splice(this.partie.joueursMorts.indexOf((this.servanteDevoueeVivante as ServanteDevouee)?.cible!), 1);
+                    (this.servanteDevoueeVivante as ServanteDevouee).cible!.estMort = false;
                 }
 
-                //verifier la liste des chasseurs ici pour ne pas quil disparaissent au villageois villageois
-                if(this.partie.joueursMorts.length == 0){
+                if(this.partie.getJoueursMorts().length == 0){
                     return true;
                 }
                 // aller chercher les infos des morts du jeu
                 let texteListe: string[] = [];
                 let texte: string = "";
-                this.partie.joueursMorts.forEach((mort: Villageois)=>{
+                this.partie.getJoueursMorts().forEach((mort: Villageois)=>{
                     texte = ""
                     texte += mort.nom + " était ";
                     texte += this.convertirRoleTexte(mort.role!);
@@ -190,12 +189,12 @@ export class VerificationMorts extends GestionnaireDeTemps{
             case "VerifierVillageoisVillageois":{
                 // remmettre le joueur mort de la servante devouee
                 if((this.servanteDevoueeVivante as ServanteDevouee)?.cible){
-                    this.partie.joueursMorts.push((this.servanteDevoueeVivante as ServanteDevouee)?.cible!);
+                    (this.servanteDevoueeVivante as ServanteDevouee).cible!.estMort = true;
                 }
 
-                let mortsPasLoups: Villageois[] = this.partie.joueursMorts.filter((mort: Villageois)=>{return mort.equipeApparente!=Equipe.LOUPS});
+                let mortsPasLoups: Villageois[] = this.partie.getJoueursMorts().filter((mort: Villageois)=>{return mort.equipeApparente!=Equipe.LOUPS});
                 if(this.partie.modeVillageoisVillageois && this.partie.numeroJour == 1 && mortsPasLoups.length > 0 && !this.dejaMisVillageoisVillageois){
-                    this.partie.historiqueEvenements.push(["Puisque c'est la première nuit, " + this.getNomsEnListe(this.partie.joueursMorts.map((mort: Villageois) =>mort.nom)) + " " + (this.partie.joueursMorts.length>1? "vont": "va") + " revivre en tant que Villageois Villageois"])
+                    this.partie.historiqueEvenements.push(["Puisque c'est la première nuit, " + this.getNomsEnListe(this.partie.getJoueursMorts().map((mort: Villageois) =>mort.nom)) + " " + (this.partie.getJoueursMorts().length>1? "vont": "va") + " revivre en tant que Villageois Villageois"])
                     this.partie.preparerEvenementDeGroupe(EvenementDeGroupe.INFO_VILLAGEOIS_VILLAGEOIS, EvenementDeGroupe.INFO_VILLAGEOIS_VILLAGEOIS)
                     return false;
                 }
@@ -204,7 +203,7 @@ export class VerificationMorts extends GestionnaireDeTemps{
             case "EnleverPouvoirGrandMechantLoup":{
                 let grandLoups: Villageois[] = this.partie.getPersonnages(Role.GRAND_MECHANT_LOUP);
                 if(grandLoups.some((loup: Villageois)=>{return !(loup as GrandMechantLoup).perdrePouvoir})){
-                    if(this.partie.joueursMorts.some((joueur: Villageois)=>{return joueur.equipeApparente == Equipe.LOUPS && !grandLoups.includes(joueur)})){
+                    if(this.partie.getJoueursMorts().some((joueur: Villageois)=>{return joueur.equipeApparente == Equipe.LOUPS && !grandLoups.includes(joueur)})){
                         grandLoups.forEach((loup: Villageois)=>{ (loup as GrandMechantLoup).enleverPouvoir() });
                         this.partie.historiqueEvenements.push(["Puisqu'un loup garou est éliminé, le grand méchant loup perd son pouvoir."])
                         this.partie.preparerEvenementDeGroupe(EvenementDeGroupe.GRAND_MECHANT_LOUP_PERDRE_POUVOIR, EvenementDeGroupe.GRAND_MECHANT_LOUP_PERDRE_POUVOIR);
@@ -214,12 +213,12 @@ export class VerificationMorts extends GestionnaireDeTemps{
                 return true;
             }
             case "Capitaine Mort":
-                const listeCapitaineMort: Villageois[] =this.partie.joueursMorts.filter((Villageois: Villageois)=>{
+                const listeCapitaineMort: Villageois[] =this.partie.getJoueursMorts().filter((Villageois: Villageois)=>{
                     return Villageois.estCapitaine;
                 }); 
 
                 //verifier qu'il y a au moins 1 personne en vie pcq le dernier mort pourrait etre tué par le chasseur (ou la sorciere qui tue la nuit en meme temps que le loup la tue);
-                const joueursVivants: Villageois[] = this.partie.joueursVivants.filter((joueur: Villageois)=>{return !this.partie.joueursMorts.includes(joueur)});
+                const joueursVivants: Villageois[] = this.partie.getJoueursVivants().filter((joueur: Villageois)=>{return !this.partie.getJoueursMorts().includes(joueur)});
                 if(listeCapitaineMort.length == 1 && joueursVivants.length>0 &&(!this.partie.modeVillageoisVillageois || this.partie.numeroJour != 1 || this.dejaMisVillageoisVillageois || listeCapitaineMort[0].equipeApparente==Equipe.LOUPS)){
                     this.capitaineMort = listeCapitaineMort[0];
                     this.partie.historiqueEvenements.push([listeCapitaineMort[0].nom + " était le capitaine. " + listeCapitaineMort[0].nom + " va donc choisir son successeur."])
@@ -237,7 +236,7 @@ export class VerificationMorts extends GestionnaireDeTemps{
                 return true;
             case "Info Successeur":
                 if(this.capitaineMort){
-                    let capitaine: Villageois | undefined = this.partie.joueursVivants.find((villageois: Villageois)=> {return villageois.estCapitaine})
+                    let capitaine: Villageois | undefined = this.partie.getJoueursVivants().find((villageois: Villageois)=> {return villageois.estCapitaine})
                     this.partie.historiqueEvenements.push(["Le capitaine a choisi "+ capitaine!.nom + " comme successeur."])
                     this.partie.preparerEvenementDeGroupe(EvenementDeGroupe.INFO_SUCCESSEUR, EvenementDeGroupe.INFO_SUCCESSEUR);
                     return false;
@@ -246,8 +245,8 @@ export class VerificationMorts extends GestionnaireDeTemps{
             
             case "Info Chevalier A Lepee Rouillee":
 
-                const chevaliers: Villageois[] = this.partie.joueursMorts.filter((joueur: Villageois)=>{return joueur.role == Role.CHEVALIER_A_LEPEE_ROUILLEE});
-                if(chevaliers.length>0 && this.partie.joueursVivants.filter((joueur: Villageois)=>{return joueur.equipeApparente == Equipe.LOUPS && !chevaliers.includes(joueur)}).length>0){
+                const chevaliers: Villageois[] = this.partie.getJoueursMorts().filter((joueur: Villageois)=>{return joueur.role == Role.CHEVALIER_A_LEPEE_ROUILLEE});
+                if(chevaliers.length>0 && this.partie.getJoueursVivants().filter((joueur: Villageois)=>{return joueur.equipeApparente == Equipe.LOUPS && !chevaliers.includes(joueur)}).length>0){
                     chevaliers.forEach((chevalier: Villageois)=>{
                         (chevalier as ChevalierALepeeRouillee).trouverLoupTetanos();
                     })
@@ -256,7 +255,7 @@ export class VerificationMorts extends GestionnaireDeTemps{
                 }
                 return true;
             case "Info Mort Chasseur":{
-                this.chasseursMorts = this.partie.joueursMorts.filter((mort: Villageois)=>{
+                this.chasseursMorts = this.partie.getJoueursMorts().filter((mort: Villageois)=>{
                     return mort.role == Role.CHASSEUR;
                 })
                 if(this.chasseursMorts.length > 0){
@@ -289,19 +288,20 @@ export class VerificationMorts extends GestionnaireDeTemps{
                 return true;
             }
             case "Annuler Role":{
-                this.partie.joueursMorts.forEach((mort: Villageois)=>{
+                this.partie.getJoueursMorts().forEach((mort: Villageois)=>{
                     mort.annulerRole((this.servanteDevoueeVivante as ServanteDevouee)?.cible == mort);
                 })
                 return true;
             }
             case "RendreVillageoisVillageois":{
-                if(this.partie.modeVillageoisVillageois && this.partie.numeroJour == 1 && this.partie.joueursMorts.length > 0 && ! this.dejaMisVillageoisVillageois){
+                if(this.partie.modeVillageoisVillageois && this.partie.numeroJour == 1 && this.partie.getJoueursMorts().length > 0 && ! this.dejaMisVillageoisVillageois){
                     this.dejaMisVillageoisVillageois = true;
-                    this.partie.joueursMorts = this.partie.joueursMorts.filter((mort: Villageois)=>{
+                    this.partie.getJoueursMorts().forEach((mort: Villageois)=>{
                         if(mort.equipeApparente != Equipe.LOUPS) {
                             let villageois: Villageois = this.partie.creerVillageois(Role.VILLAGEOIS);
                             villageois.role = Role.VILLAGEOIS_VILLAGEOIS;
                             villageois = mort.copier(villageois);
+                            villageois.ancienRole = mort.role;
                             //le joueur de flute ne doit pas rester independant lorsqu'il devient villageois villageois
                             if(mort.role == Role.JOUEUR_DE_FLUTE && mort.amoureux== undefined){
                                 villageois.equipeReelle = villageois.equipeApparente;
@@ -310,18 +310,16 @@ export class VerificationMorts extends GestionnaireDeTemps{
                                 console.log("Rendre villageois villageois "+villageois.nom);
                             }
                             this.partie.changerPointeur(mort, villageois);
-                            this.partie.joueursDejaMortsPointeurs.push(mort);
-                            return false;
+                            mort.estMort = false;
                         }
-                        return true;
                     })
                 }
                 return true;
             }
             case "Eliminer Morts":
                 this.partie.tuerDefinitivementMorts();
-                this.partie.joueursMorts = this.chasseursMorts.map((chasseur: Villageois) => {return (chasseur as Chasseur).choix!})
-                if(this.partie.joueursMorts.length > 0){
+                this.chasseursMorts.map((chasseur: Villageois) => {return (chasseur as Chasseur).choix!}).forEach((joueur: Villageois)=>{joueur.estMort = true}); 
+                if(this.partie.getJoueursMorts().length > 0){
                     this.retourAEtape(0)
                     this.chasseursMorts = [];
                     this.capitaineMort = undefined;
@@ -335,7 +333,7 @@ export class VerificationMorts extends GestionnaireDeTemps{
                 })
                 return true;
             case "Verifier Victoire":
-                if(this.partie.verifierVictoire(this.partie.joueursVivants, true)){
+                if(this.partie.verifierVictoire(this.partie.getJoueursVivants(), true)){
                     if(this.partie.seed){
                         console.log("numero de victoire", this.partie.victoire);
                     }

@@ -18,8 +18,8 @@ export class IAMontreurOurs extends IAChercheurLoups{
         if(+evenement == EvenementDeGroupe.OURS_GROGNE){
             if(this.villageois.equipeReelle == Equipe.VILLAGEOIS){
                 let oursGrogne : boolean = (this.villageois as MontreurOurs).oursGrogne();
-                let voisinGauche: Villageois = this.partie.joueursVivants[this.partie.joueurVoisin(true, this.villageois)]
-                let voisinDroite: Villageois = this.partie.joueursVivants[this.partie.joueurVoisin(false, this.villageois)]
+                let voisinGauche: Villageois = this.partie.getJoueursVivants()[this.partie.joueurVoisin(true, this.villageois)];
+                let voisinDroite: Villageois = this.partie.getJoueursVivants()[this.partie.joueurVoisin(false, this.villageois)];
                 this.ajusterResultatGroupeDe3(oursGrogne, [voisinGauche, voisinDroite]);
             }
         }

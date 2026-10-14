@@ -50,7 +50,7 @@ export class InfectPereDesLoups extends Villageois {
     }
 
     actionExServante(): void {
-        if(this.partie.joueursVivants.concat(this.partie.joueursDejaMorts).some((joueur: Villageois)=>{return joueur.estInfecte})){
+        if(this.partie.getJoueursVivants().concat(this.partie.getJoueursMorts()).some((joueur: Villageois)=>{return joueur.estInfecte})){
             this.aJouePouvoir = true;
         }
     }

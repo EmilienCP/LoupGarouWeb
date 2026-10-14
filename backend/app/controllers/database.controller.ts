@@ -63,7 +63,7 @@ export class DatabaseController {
           const infoEvenement: InfoEvenement = {
             evenement: evenement,
             passer: (appareil.passer) && (partie.victoire == Victoire.AUCUN),
-            peutPasser: (appareil.getJoueursRestants(partie.joueursVivants).length == 0) && (partie.victoire == Victoire.AUCUN),
+            peutPasser: (appareil.getJoueursRestants(partie.getJoueursVivants()).length == 0) && (partie.victoire == Victoire.AUCUN),
             timer: partie.getTimer(evenement)
           }
           if(evenement !== EvenementIndividuel.ATTENTE){
@@ -95,7 +95,7 @@ export class DatabaseController {
             estAssocier: false,
             estSoeur: false,
             estFrere: false,
-            estMort: this.partiesService.getPartie(req.params.idSocket).joueursDejaMorts.includes(villageois)
+            estMort: this.partiesService.getPartie(req.params.idSocket).getJoueursDejaMorts().includes(villageois)
           }
           res.json(joueur);
         }
@@ -123,7 +123,7 @@ export class DatabaseController {
         try {
           let partie: Partie = this.partiesService.getPartie(req.params.idSocket);
           let infoVillage: JoueurExtensionLoups[] = [];
-          partie.joueursVivants.concat(partie.joueursDejaMorts).forEach((villageois: Villageois)=>{
+          partie.getJoueursVivants().concat(partie.getJoueursDejaMorts()).forEach((villageois: Villageois)=>{
             infoVillage.push({
               nombreVotes: partie.voteCourant.getTailleElecteurs()[partie.voteCourant.getAccuses().indexOf(villageois)],
               joueursQuiLePointent: (partie.voteCourant.getJoueursPointes()[partie.voteCourant.getAccuses().indexOf(villageois)])?(partie.voteCourant.getJoueursPointes()[partie.voteCourant.getAccuses().indexOf(villageois)].map((joueur: Villageois)=>{return joueur.nom})):[]
@@ -201,7 +201,7 @@ export class DatabaseController {
             joueurPresent = this.partiesService.getAppareil(req.params.idSocket).getJoueurPresent();
           }
           let infoVillageMort: Joueur[] = [];
-          this.partiesService.getPartie(req.params.idSocket).joueursDejaMorts.concat(this.partiesService.getPartie(req.params.idSocket).joueursDejaMortsPointeurs).forEach((villageois: Villageois)=>{
+          this.partiesService.getPartie(req.params.idSocket).getJoueursDejaMorts().forEach((villageois: Villageois)=>{
             infoVillageMort.push({
               nom: villageois.nom,
               estCapitaine: villageois.estCapitaine,
@@ -231,7 +231,7 @@ export class DatabaseController {
       async (req: Request, res: Response) => {
         try {
           let infoVillage: Joueur[] = [];
-          this.partiesService.getPartie(req.params.idSocket).joueursVivants.forEach((villageois: Villageois)=>{
+          this.partiesService.getPartie(req.params.idSocket).getJoueursVivants().forEach((villageois: Villageois)=>{
             infoVillage.push({nom: villageois.nom,
               estCapitaine: villageois.estCapitaine,
               role: villageois.role,
@@ -261,16 +261,16 @@ export class DatabaseController {
         try {
           if(+req.body.evenement == EvenementDeGroupe.ACCUSER){
             this.partiesService.getAppareil(req.body.idSocket).setJoueurPresentPourAccusation(
-              this.partiesService.getPartie(req.body.idSocket).joueursVivants[+req.body.index],
+              this.partiesService.getPartie(req.body.idSocket).joueursVillage[+req.body.index],
               this.partiesService.getPartie(req.body.idSocket)
             )
           } else {
             const partie: Partie = this.partiesService.getPartie(req.body.idSocket);
             const joueurPresent: Villageois = this.partiesService.getAppareil(req.body.idSocket).getJoueurPresent();
-            const cible: Villageois = partie.joueursVivants[+req.body.index];
+            const cible: Villageois = partie.joueursVillage[+req.body.index];
             joueurPresent.choisirJoueur(cible, req.body.evenement, false);
             partie.ajouterActionHistorique([Action.VOTER_VILLAGEOIS, +req.body.evenement,
-              partie.joueursVivants.indexOf(joueurPresent), +req.body.index])
+              partie.joueursVillage.indexOf(joueurPresent), +req.body.index])
           }
           res.json(true)
         }
@@ -357,7 +357,7 @@ export class DatabaseController {
         try {
           const joueurPresent: Villageois = this.partiesService.getAppareil(req.params.idSocket).getJoueurPresent();
           const partie: Partie = this.partiesService.getPartie(req.params.idSocket);
-          partie.ajouterActionHistorique([Action.POP_RAISON_PAS_VOTER, partie.joueursVivants.indexOf(joueurPresent)])
+          partie.ajouterActionHistorique([Action.POP_RAISON_PAS_VOTER, partie.getJoueursVivants().indexOf(joueurPresent)])
           res.json(joueurPresent.popRaisonsPasVoter());
         }
         catch (err) {
@@ -381,7 +381,7 @@ export class DatabaseController {
     async (req: Request, res: Response) => {
       try {
         res.json(this.partiesService.getAppareil(req.params.idSocket).getRaisonsPasVoterAccusationQuiEtesVous(
-          this.partiesService.getPartie(req.params.idSocket).joueursVivants,
+          this.partiesService.getPartie(req.params.idSocket).getJoueursVivants(),
           this.partiesService.getPartie(req.params.idSocket)
         ));
       }

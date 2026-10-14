@@ -25,14 +25,14 @@ export class Victoire extends GestionnaireDeTemps{
                 return false;
             case "Montrer Personnages":
                 let texte: string[] = [];
-                this.partie.joueursVivants.forEach((joueur: Villageois)=>{
+                this.partie.getJoueursVivants().forEach((joueur: Villageois)=>{
                     let sousTexte: string = joueur.nom + " est " + this.convertirRoleTexte(joueur.role!) + (joueur.estInfecte ? " infecté." : "");
                     if(this.partie.seed){
                         console.log(sousTexte);
                     }
                     texte.push(sousTexte);
                 })
-                let amoureux = this.partie.joueursVivants.find((joueur: Villageois)=>joueur.amoureux);
+                let amoureux = this.partie.getJoueursVivants().find((joueur: Villageois)=>joueur.amoureux);
                 if(amoureux){
                     texte.push(amoureux.nom + " était en amour avec "+amoureux.amoureux!.nom+".");
                 }

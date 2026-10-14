@@ -24,7 +24,7 @@ export class Sorciere extends Villageois{
         this.ajouterEvenementIndividuelSansRaisons(EvenementIndividuel.JOUER_SORCIERE_PROTEGER);
         const raisons: RaisonPasVoter[] = this.getRaisonsPasVoter([]);
         if(this.joueurProtege){
-            raisons[this.partie.joueursVivants.indexOf(this.joueurProtege)] = RaisonPasVoter.DEJA_CHOISI;
+            raisons[this.partie.getJoueursVivants().indexOf(this.joueurProtege)] = RaisonPasVoter.DEJA_CHOISI;
         }
         this.raisonsPasVoter.push(raisons);
         if(this.sortMortelDisponible){
@@ -57,11 +57,11 @@ export class Sorciere extends Villageois{
     }
 
     actionFinNuit2eTour(): void {
-        if(this.partie.joueursMorts.includes(this.joueurATuer!)) {
+        if(this.partie.getJoueursMorts().includes(this.joueurATuer!)) {
             this.recupereSortMortel();
         }
         else if(this.joueurATuer) {
-            this.partie.joueursMorts.push(this.joueurATuer!);
+            this.joueurATuer.estMort = true;
         }
     }
 }

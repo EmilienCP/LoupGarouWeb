@@ -21,7 +21,7 @@ export class Cupidon extends Villageois{
 
     private ajouterRaisonsPasVoterCupidon(): RaisonPasVoter[]{
         const raisonsPasVoter: RaisonPasVoter[] = this.getRaisonsPasVoter([]);
-        raisonsPasVoter[this.partie.joueursVivants.indexOf(this.amoureux1!)] = RaisonPasVoter.DEJA_CHOISI;
+        raisonsPasVoter[this.partie.getJoueursVivants().indexOf(this.amoureux1!)] = RaisonPasVoter.DEJA_CHOISI;
         return raisonsPasVoter;
     }
 
