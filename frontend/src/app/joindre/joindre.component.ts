@@ -1,5 +1,5 @@
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Socket } from 'socket.io-client';
 import { JoindrePartieInfo} from '../../../../common/joindrePartieInfo';
 import { CommunicationService } from '../services/communication.service';
@@ -17,19 +17,28 @@ export class JoindreComponent implements OnInit {
   listeParties: JoindrePartieInfo[] = []
   socket: Socket;
 
-  constructor(private router: Router, private communicationService: CommunicationService) {
+  constructor(private router: Router, private communicationService: CommunicationService, private route: ActivatedRoute) {
     this.socket = this.communicationService.getSocket();
   }
 
   ngOnInit(): void {
-    this.majInfos();
-    this.socket.on("reloadPartie", ()=>{
-      this.majInfos();
+    this.route.queryParams.subscribe(params =>{
+      
+      if(params['idJeu']){
+        this.joindre(params['idJeu']);
+      } else {
+        this.majInfos();
+        this.socket.on("reloadPartie", ()=>{
+          this.majInfos();
+        })
+      }
     })
   }
 
   eteindreSockets(): void{
-    this.socket.off("reloadPartie")
+    if(this.socket.hasListeners("reloadPartie")){
+      this.socket.off("reloadPartie")
+    }
   }
 
   majInfos(): void{
@@ -43,14 +52,14 @@ export class JoindreComponent implements OnInit {
     this.router.navigate([""]);
   }
 
-  joindre(idJeu: number, indexUI: number){
+  joindre(idJeu: number){
     this.socket.on("retourPartieJointeCreation", ()=>{
       this.eteindreSockets();
       this.router.navigate(["creationComponent"]);
     })
     this.socket.on("retourPartieJointeJoueur", ()=>{
       this.eteindreSockets();
-      this.router.navigate(["joindreJoueurComponent"])
+      this.router.navigate(["joindreJoueurComponent"]);
     })
     this.socket.emit("joindrePartie", idJeu)
   }

@@ -27,10 +27,10 @@ export class JoindreJoueurComponent implements OnInit {
 
   public choisir(i: number): void{
     this.socket.on("retourPartieJointeCreation", ()=>{
-      this.router.navigate(["creationComponent"])
+      this.router.navigate(["creationComponent"]);
     })
     this.socket.on("retourPartieJointeCommencee", ()=>{
-      this.router.navigate(["jeuComponent"])
+      this.router.navigate(["jeuComponent"]);
     })
     //doit trouver l'index de appareil correspondant à l'index i dans la liste de tous les appareils
     this.socket.emit("lierAppareil", this.communicationService.infoPartie.appareils.indexOf(this.appareilsNonConnectes[i]))
