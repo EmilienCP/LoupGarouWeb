@@ -103,12 +103,6 @@ export class CreationComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    qrcode.toDataURL(environment.server_host+':4200', (err, url)=>{
-      if(err){console.log(err)}
-      else{
-        this.qrcodeurl = url;
-      }
-    })
     for(let i: number = 0; i< Object.keys(Role).length/2-3;i++){
       this.nomsPersonnages.push(utils.convertirRoleTexte(this.preferenceEnRole(i)));
     }
@@ -186,6 +180,12 @@ export class CreationComponent implements OnInit {
         for(let i = 0; i < nbRoles; i++){
           this.preferencesPersonnages.push(info.preferencesPersonnages.includes(this.preferenceEnRole(i)))
         }
+        qrcode.toDataURL(environment.server_host+':4200'+'?idJeu='+this.idJeu, (err, url)=>{
+          if(err){console.log(err)}
+          else{
+            this.qrcodeurl = url;
+          }
+        })
       } else {
         this.retour();
       }

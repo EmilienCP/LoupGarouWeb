@@ -1,5 +1,5 @@
 import { Component, HostListener, Injectable, OnDestroy, OnInit, ChangeDetectionStrategy } from '@angular/core';
-import { NavigationEnd, Router } from '@angular/router';
+import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { filter } from 'rxjs/operators'
 import { Socket } from 'socket.io-client';
 import { CommunicationService } from '../services/communication.service';
@@ -19,7 +19,7 @@ export class HomeComponent implements OnInit {
   public innerWidth: any;
   public innerHeight: any;
 
-  constructor(private router: Router, private communicationService: CommunicationService) {
+  constructor(private router: Router, private communicationService: CommunicationService, private route: ActivatedRoute) {
     this.socket = this.communicationService.getSocket();
   }
 
@@ -43,7 +43,12 @@ export class HomeComponent implements OnInit {
           this.partie_commencee = true;
           this.router.navigate(["2048"])
         } else{
-          this.router.navigate([""])
+          const params=  this.route.snapshot.queryParams;
+          if(params['idJeu'] && event.url === "/?idJeu="+params['idJeu']){
+            this.jouer();
+          } else {
+            this.router.navigate([""]);
+          }
         }
       }
     })

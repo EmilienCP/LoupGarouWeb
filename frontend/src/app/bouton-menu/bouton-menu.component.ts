@@ -16,16 +16,22 @@ export class BoutonMenuComponent implements OnInit {
   private socket: Socket;
   messageErreur: string = "";
 
-  constructor(private router: Router, private communicationService: CommunicationService, private audioService: AudioService) {
+  constructor(private router: Router, private communicationService: CommunicationService, private audioService: AudioService, private route: ActivatedRoute) {
     this.socket = communicationService.getSocket();
   }
   urlImage = "../../assets/fondEcran.png"
 
   ngOnInit(): void {
-    this.socket.on("Plus de parties disponibles", ()=>{
-      this.messageErreur = "Le nombre de parties créées a atteint son maximum. Attendez qu'une partie se libère.";
+    this.route.queryParams.subscribe(params =>{
+      if(params['idJeu']){
+        this.joindrePartie(params['idJeu']);
+      } else {
+        this.socket.on("Plus de parties disponibles", ()=>{
+          this.messageErreur = "Le nombre de parties créées a atteint son maximum. Attendez qu'une partie se libère.";
+        })
+        this.audioService.jouerTheme();
+      }
     })
-    this.audioService.jouerTheme();
   }
 
   eteindreSockets(): void{
@@ -42,10 +48,14 @@ export class BoutonMenuComponent implements OnInit {
     this.socket.emit("creerPartie");
   }
 
-  joindrePartie(): void{
+  joindrePartie(idJeu?: string): void{
     this.audioService.arreter();
     this.eteindreSockets();
-    this.router.navigate(["joindreComponent"]);
+    if(idJeu){
+      this.router.navigate(["joindreComponent"], {queryParams:{idJeu: idJeu}});
+    } else {
+      this.router.navigate(["joindreComponent"]);
+    }
   }
 
   credits(): void{
