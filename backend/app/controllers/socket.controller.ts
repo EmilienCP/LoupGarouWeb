@@ -179,6 +179,16 @@ export class SocketController{
                 }
             })
 
+            socket.on("changerNomsAppareil", (noms: string[])=>{
+                try{
+                    this.partiesService.getAppareil(socket.id).changerNomsJoueurs(noms);
+                    sio.to(this.partiesService.getNomRoom(socket.id)).emit("reloadPartie");
+                }
+                catch (err) {
+                   console.log(err)
+                }
+            })
+
             socket.on("ajouterJoueur", (nomJoueur: string)=>{
                 try{
                     if(this.partiesService.getPartie(socket.id).appareils.map((value)=>{return value.nomsJoueurs.length}).reduce((a,b)=>{return a+ b}) >= this.partiesService.getPartie(socket.id).getNbJoueurs()){

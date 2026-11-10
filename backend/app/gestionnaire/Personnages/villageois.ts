@@ -161,7 +161,7 @@ export class Villageois{
 
     protected getRaisonsPasVoter(listeRaisons: RaisonPasVoter[]): RaisonPasVoter[]{
         let raisons: RaisonPasVoter[] = [];
-        this.partie.getJoueursVivants().forEach((villageois: Villageois)=>{
+        this.partie.joueursVillage.forEach((villageois: Villageois)=>{
             if(listeRaisons.includes(RaisonPasVoter.SOI_MEME) && villageois == this){
                 raisons.push(RaisonPasVoter.SOI_MEME);
             } else if(listeRaisons.includes(RaisonPasVoter.AMI_LOUP) && this.equipeApparente == Equipe.LOUPS && villageois.equipeApparente == Equipe.LOUPS){

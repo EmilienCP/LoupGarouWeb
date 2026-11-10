@@ -19,6 +19,7 @@ export class CreationAppareilsComponent implements OnInit {
   @Input() idMeneurDeJeuReel: number = -1;
   @Output() majInfosJeu = new EventEmitter<boolean>();
   @Output() retourAppareil = new EventEmitter<boolean>();
+  focusAppareil: boolean = false;
 
   constructor(public communicationService: CommunicationService, private router: Router) {
     this.socket = communicationService.getSocket();
@@ -49,23 +50,16 @@ export class CreationAppareilsComponent implements OnInit {
   }
 
   focus(){
+    this.focusAppareil = true;
     this.socket.off("reloadPartie");
   }
 
-  renommer(event: any, idJoueur: number){
+  changerAppareil(){
+    this.focusAppareil = false;
     this.socket.on("reloadPartie" , ()=>{
       this.majInfosJeu.emit();
     })
-    let nomJoueur: string = event.target.value;
-    console.log(this.communicationService.infoPartie.noms.flat(), nomJoueur);
-    if(this.communicationService.infoPartie.noms.flat().includes(nomJoueur)){
-      nomJoueur = nomJoueur + " (1)";
-    }
-    if(nomJoueur.length>40 || this.communicationService.infoPartie.noms.flat().includes(nomJoueur)){
-      nomJoueur = nomJoueur.substring(0,40);
-    }
-    this.communicationService.infoPartie.appareils[this.idAppareilReel].noms[idJoueur] = nomJoueur;
-    this.socket.emit("renommerJoueur", idJoueur, nomJoueur)
+    this.socket.emit("changerNomsAppareil", this.appareilCourant.noms);
   }
 
   changerTexte(event: any){
@@ -128,6 +122,10 @@ export class CreationAppareilsComponent implements OnInit {
       return -1;
     }
     return this.appareilsConnectes.indexOf(this.communicationService.infoPartie.appareils[this.idMeneurDeJeuReel]);
+  }
+
+  get appareilCourant(): InfoAppareil{
+    return this.communicationService.infoPartie.appareils[this.idAppareilReel];
   }
 
 }

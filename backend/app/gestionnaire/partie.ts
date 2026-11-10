@@ -48,7 +48,10 @@ import { IATroisFreres } from "./IAS/iaTroisFreres";
 import { GrandMechantLoup } from "./Personnages/grantMechantLoup";
 import { IAGrandMechantLoup } from "./IAS/iaGrandMechantLoup";
 import { Intro } from "./temps/intro";
+import { ProbabiliteLoupsService } from "../services/probabiliteLoups.service";
+import { injectable } from "inversify";
 
+@injectable()
 export class Partie {
     etat: EtatPartie;
     joueursVillage: Villageois[] = [];
@@ -79,7 +82,7 @@ export class Partie {
     choixPersonnages: Role[];
     simulation: boolean = false;
     
-    constructor(idSocket: string, seed?: number, simulation: boolean = false) {
+    constructor(idSocket: string, seed?: number, simulation: boolean = false, private probabiliteLoupsService: ProbabiliteLoupsService = new ProbabiliteLoupsService()) {
         this.simulation = simulation;
         this.rand = require('random-seed').create();
         if(this.seed){
@@ -132,7 +135,6 @@ export class Partie {
         this.historiqueEvenements = [];
         this.texteCourant = "";
         this.bufferIntro = Buffer.from("");
-        //this.ajustementPartie(false, false, false);
     }
 
     recommencer() {
@@ -190,7 +192,7 @@ export class Partie {
         this.modePatateChaude = historique.modePatateChaude;
         this.modeExtensionVillage = historique.modeExtensionVillage;
         this.modeVillageoisVillageois = historique.modeVillageoisVillageois;
-        this.modeVideo = false;
+        this.modeVideo = historique.modeVideo;
         if(historique.meneurDeJeu){
             this.appareils[0].switchMeneurDeJeu();
             historique.noms.splice(0,1);
@@ -676,6 +678,7 @@ export class Partie {
 
     switchVillageoisVillageois(): void{
         this.modeVillageoisVillageois = !this.modeVillageoisVillageois;
+        this.ajustementPartie(false, false, false);
     }
 
     getMeneursDeJeu(): Appareil[]{
@@ -781,20 +784,20 @@ export class Partie {
         }
         this.nbJoueurs = nbJoueurs;
         if(ajustements){
-            //this.ajustementPartie(true, false, false);
+            this.ajustementPartie(true, false, false);
         }
     }
 
     setNbLoups(nbLoups: number, ajustements: boolean = true): void{
         this.nbLoups = nbLoups;
         if(ajustements){
-            //this.ajustementPartie(false, true, false);
+            this.ajustementPartie(false, true, false);
         }
     }
 
     setNbVillageois(nbVillageois: number): void{
         this.nbJoueurs = nbVillageois + this.getNbJoueursPourChoixPersonnages();
-        //this.ajustementPartie(false, false, true)
+        this.ajustementPartie(false, false, true)
     }
 
     setPointage(idAppareil: number, idJoueur: number, pointage: number){
@@ -807,64 +810,48 @@ export class Partie {
         } else {
             this.choixPersonnages.splice(this.choixPersonnages.indexOf(role), 1)
         }
-        //this.ajustementPartie(false, false, false);
+        this.ajustementPartie(false, false, false);
     }
 
-    // private listeRoleEnParam(roles: Role[]): number{
-    //     let param: number = 0;
-    //     roles.forEach((role: Role)=>{
-    //         param+=2**(role-3);
-    //     })
-    //     return param;
-    // }
+    private ajustementPartie(joueursStatic: boolean, loupStatic: boolean, villageoisStatic: boolean): void{
 
-    // private ajustementPartie(joueursStatic: boolean, loupStatic: boolean, villageoisStatic: boolean): void{
-    //     var fs = require('fs');
-    //     let data = fs.readFileSync('matrix.json', 'utf8');
-    //     const infos: number[][] = JSON.parse(data) as number[][];
-    //     let paramPersonnages: number = this.listeRoleEnParam(this.choixPersonnages);
-
-    //     if(joueursStatic){
-    //         let nbJoueurs: number = this.nbJoueurs;
-    //         let nbLoups: number = infos[paramPersonnages][nbJoueurs-3];
-    //         while(nbJoueurs < nbLoups + this.getNbJoueursPourChoixPersonnages()){
-    //             nbJoueurs = nbLoups + this.getNbJoueursPourChoixPersonnages();
-    //             if(!infos[paramPersonnages][nbJoueurs-3]) break;
-    //             nbLoups = infos[paramPersonnages][nbJoueurs-3];
-    //         }
-    //         this.nbLoups = nbLoups;
-    //         this.nbJoueurs = nbJoueurs;
-    //     } else if(loupStatic){
-    //         let nbJoueurs = this.getNbJoueursPourChoixPersonnages()+this.nbLoups;
-    //         let nbLoups: number = infos[paramPersonnages][nbJoueurs-3];
-    //         while(nbLoups < this.nbLoups){
-    //             nbJoueurs++;
-    //             if(!infos[paramPersonnages][nbJoueurs-3]) break;
-    //             nbLoups = infos[paramPersonnages][nbJoueurs-3];
-    //         }
-    //         this.nbJoueurs = nbJoueurs;
-    //     } else if(villageoisStatic){
-    //         let nbJoueurs: number = +this.nbJoueurs;
-    //         let nbLoups: number = infos[paramPersonnages][nbJoueurs-3];
-    //         while(nbJoueurs < nbLoups+this.nbJoueurs){
-    //             nbJoueurs++;
-    //             if(!infos[paramPersonnages][nbJoueurs-3]) break;
-    //             nbLoups = infos[paramPersonnages][nbJoueurs-3];
-    //         }
-    //         this.nbJoueurs = nbJoueurs;
-    //         this.nbLoups = nbLoups;
-    //     } else {
-    //         let nbJoueurs: number = this.nbJoueurs;
-    //         let nbLoups: number = infos[paramPersonnages][nbJoueurs-3];
-    //         while(nbLoups+this.getNbJoueursPourChoixPersonnages() > nbJoueurs){
-    //             nbJoueurs++;
-    //             if(!infos[paramPersonnages][nbJoueurs-3]) break;
-    //             nbLoups = infos[paramPersonnages][nbJoueurs-3];
-    //         }
-    //         this.nbLoups = nbLoups;
-    //         this.nbJoueurs = nbJoueurs;
-    //     }
-    // }
+        if(joueursStatic){
+            let nbJoueurs: number = this.nbJoueurs;
+            let nbLoups: number = this.probabiliteLoupsService.getNbLoups(nbJoueurs, this.choixPersonnages, this.modeVillageoisVillageois);
+            while(nbJoueurs < nbLoups + this.getNbJoueursPourChoixPersonnages()){
+                nbJoueurs = nbLoups + this.getNbJoueursPourChoixPersonnages();
+                nbLoups = this.probabiliteLoupsService.getNbLoups(nbJoueurs, this.choixPersonnages, this.modeVillageoisVillageois);
+            }
+            this.nbLoups = nbLoups;
+            this.nbJoueurs = nbJoueurs;
+        } else if(loupStatic){
+            let nbJoueurs = this.getNbJoueursPourChoixPersonnages()+this.nbLoups;
+            let nbLoups = this.probabiliteLoupsService.getNbLoups(nbJoueurs, this.choixPersonnages, this.modeVillageoisVillageois);
+            while(nbLoups < this.nbLoups){
+                nbJoueurs++;
+                nbLoups = this.probabiliteLoupsService.getNbLoups(nbJoueurs, this.choixPersonnages, this.modeVillageoisVillageois);
+            }
+            this.nbJoueurs = nbJoueurs;
+        } else if(villageoisStatic){
+            let nbJoueurs: number = +this.nbJoueurs;
+            let nbLoups: number = this.probabiliteLoupsService.getNbLoups(nbJoueurs, this.choixPersonnages, this.modeVillageoisVillageois);
+            while(nbJoueurs < nbLoups+this.nbJoueurs){
+                nbJoueurs++;
+                nbLoups = this.probabiliteLoupsService.getNbLoups(nbJoueurs, this.choixPersonnages, this.modeVillageoisVillageois);
+            }
+            this.nbJoueurs = nbJoueurs;
+            this.nbLoups = nbLoups;
+        } else {
+            let nbJoueurs: number = this.nbJoueurs;
+            let nbLoups: number = this.probabiliteLoupsService.getNbLoups(nbJoueurs, this.choixPersonnages, this.modeVillageoisVillageois);
+            while(nbLoups+this.getNbJoueursPourChoixPersonnages() > nbJoueurs){
+                nbJoueurs++;
+                nbLoups = this.probabiliteLoupsService.getNbLoups(nbJoueurs, this.choixPersonnages, this.modeVillageoisVillageois);
+            }
+            this.nbLoups = nbLoups;
+            this.nbJoueurs = nbJoueurs;
+        }
+    }
 
     public getNbJoueursPourChoixPersonnages(): number{
         return this.choixPersonnages.length + (this.choixPersonnages.includes(Role.DEUX_SOEURS)?1:0) + (this.choixPersonnages.includes(Role.TROIS_FRERES)?2:0);

@@ -3,20 +3,9 @@ input:focus{
     outline: none !important;
 }
 
-::ng-deep .mat-mdc-slide-toggle .mdc-switch__handle {
-    background-color: darkred !important;
-}
-
-::ng-deep .mat-mdc-slide-toggle .mdc-switch__track {
-    background-color: black !important;
-}
-
-::ng-deep .mat-mdc-slide-toggle .mdc-switch--selected .mdc-switch__handle {
-    background-color: red !important;
-}
-
-::ng-deep .mat-mdc-slide-toggle .mdc-switch--selected .mdc-switch__track {
-    background-color: red !important;
+button{
+    font-family: texteCool;
+    font-size: 90%;
 }
 
 input{
@@ -27,4 +16,49 @@ input{
 
 .boutonRole:hover{
     opacity: 0.8;
+}
+
+/* NORMAL */
+::ng-deep .mat-mdc-slide-toggle .mdc-switch__shadow {
+    background-color: red !important;
+    opacity: 1 !important;
+}
+
+::ng-deep .mat-mdc-slide-toggle .mdc-switch__track {
+    background-color: darkred !important;
+    opacity: 1 !important;
+}
+
+::ng-deep .mat-mdc-slide-toggle .mdc-switch--selected .mdc-switch__handle {
+    background-color: red !important;
+    opacity: 1 !important;
+}
+
+::ng-deep .mat-mdc-slide-toggle .mdc-switch--selected .mdc-switch__track {
+    background-color: white !important;
+    opacity: 1 !important;
+}
+
+/* DISABLED - OFF */
+::ng-deep button.mdc-switch--disabled .mdc-switch__track {
+    background-color: darkred !important;
+    opacity: 1 !important;
+    filter: none !important;
+}
+
+::ng-deep button.mdc-switch--disabled .mdc-switch__track::before,
+::ng-deep button.mdc-switch--disabled .mdc-switch__track::after {
+    opacity: 1 !important;
+    background-color: darkred !important;
+}
+
+::ng-deep button.mdc-switch--disabled .mdc-switch__icons .mdc-switch__icon--on {
+    opacity: 1 !important;
+    fill: white !important;
+}
+
+::ng-deep button.mdc-switch--disabled .mdc-switch__icons .mdc-switch__icon--on path {
+    fill: white !important;
+    stroke: white !important;
+    opacity: 1 !important;
 }

@@ -14,7 +14,7 @@ export class Intro extends GestionnaireDeTemps{
     protected async executerProchaineEtape(etapeCourante: number): Promise<boolean> {
         switch(this.listeEtapes[etapeCourante]){
             case "PreparerHistoire":
-                if(!this.partie.modeVideo){
+                if(!this.partie.modeVideo && !this.partie.simulation){
                     return true;
                 }
                 const noms: string[]=[];
