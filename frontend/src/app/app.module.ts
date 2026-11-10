@@ -55,6 +55,7 @@ import { VillageOngletComponent } from './village-onglet/village-onglet.componen
 import { HistoriqueEvenementComponent } from './historique-evenement/historique-evenement.component';
 import { JeuAIComponent } from './jeu-ai/jeu-ai.component';
 import { JoindreJoueurComponent } from './joindre-joueur/joindre-joueur.component';
+import { AppareilComponent } from './appareil/appareil.component';
 
 @NgModule({ declarations: [
         AppComponent,
@@ -85,6 +86,7 @@ import { JoindreJoueurComponent } from './joindre-joueur/joindre-joueur.componen
         HistoriqueEvenementComponent,
         JeuAIComponent,
         JoindreJoueurComponent,
+        AppareilComponent
     ],
     bootstrap: [AppComponent], imports: [BrowserModule,
         AppRoutingModule,

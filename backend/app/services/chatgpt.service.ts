@@ -141,15 +141,18 @@ export class ChatgptService {
         return reponse;
     }
 
-    private async generer(texte: string): Promise<string>{
-        if(!this.seed){
-            this.discussionPrecendente.push({role: "user", content: texte});
+    private async generer(texte: string): Promise<string> {
+        if (!this.seed) {
+            this.discussionPrecendente.push({ role: "user", content: texte });
+
             const chatCompletion = await this.openai.chat.completions.create({
                 messages: this.discussionPrecendente,
-                model: 'gpt-3.5-turbo-0125',
-              });
+                model: 'gpt-5.6-terra',
+            });
+
             this.discussionPrecendente.push(chatCompletion.choices[0].message);
-            return chatCompletion.choices[0].message.content as string
+
+            return chatCompletion.choices[0].message.content as string;
         } else {
             return "";
         }

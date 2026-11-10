@@ -7,22 +7,6 @@ input:focus{
     vertical-align: middle !important;
 }
 
-::ng-deep .mat-mdc-slide-toggle .mdc-switch__shadow {
-    background-color: red !important;
-}
-
-::ng-deep .mat-mdc-slide-toggle .mdc-switch__track {
-    background-color: darkred !important;
-}
-
-::ng-deep .mat-mdc-slide-toggle .mdc-switch--selected .mdc-switch__handle {
-    background-color: red !important;
-}
-
-::ng-deep .mat-mdc-slide-toggle .mdc-switch--selected .mdc-switch__track {
-    background-color: white !important;
-}
-
 input{
     background-color: black;
     color: white;

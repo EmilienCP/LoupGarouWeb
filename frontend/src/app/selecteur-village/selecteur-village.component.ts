@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output, ChangeDetectionStrategy } from '@angular/core';
-import { Equipe, Joueur, JoueurExtensionLoups, Role, RolePublic } from '../../../../common/Joueur';
+import { Equipe, Joueur, JoueurExtensionLoups, Role } from '../../../../common/Joueur';
 import { EvenementDeGroupe, EvenementIndividuel, RaisonPasVoter } from '../../../../common/evenements';
 import * as utils from '../services/fontionsUtiles';
 import { Socket } from 'socket.io-client';
@@ -160,6 +160,8 @@ export class SelecteurVillageComponent implements OnInit {
   private getIndexJoueurPresent(): number{
     return this.communicationService.infoPartie.village.indexOf(this.communicationService.infoPartie.village.filter((joueur: Joueur)=>{return joueur.soiMeme})[0])
   }
+
+  
 
   getNomsPointent(index: number): string{
     let texte: string = "";

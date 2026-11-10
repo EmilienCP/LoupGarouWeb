@@ -1,0 +1,17 @@
+<div class = "lgTexte" style = "margin-bottom: 5px; margin-left: 5px; width: 150px;min-height: 50px;background-color:#AA4444; display:flex; align-items: center; flex-wrap: wrap; justify-content: center">
+    @for (info of appareil.noms; track info; let j = $index) {
+        <div style = "width:100%">
+        @if (appareil.noms.length < 2) {
+            <div style ="display: grid;grid-template-columns: 100%;grid-template-rows: auto auto;">
+            <div></div>
+            <input [value] = "info" style = "text-align: center;background-color: transparent; border: 0; font-size: 130%; font-family: texteCool;" (input) = "changerTexte($event)" (blur) = "renommer($event, j)">
+            </div>
+        }
+        @if (appareil.noms.length>1) {
+            <button class = "lgBouton" style = "width: 30%;" (click) = "retirer(j)" style = "font-size: 50%;">Retirer</button>
+        }
+        </div>
+    }
+    <button class = "lgBouton lgBoutonVert" (click) = "ajouter()" style = "font-size: 55%;min-height: 30px; width: 60%;margin-top: 5px; margin-bottom: 5px;">Ajouter un autre joueur</button>
+    <button class = "lgBouton lgBoutonRouge" (click) = "ok()" style = "font-size: 55%;min-height: 30px; width: 60%;margin-top: 5px; margin-bottom: 5px;">Ok</button>
+</div>

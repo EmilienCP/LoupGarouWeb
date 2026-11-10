@@ -192,7 +192,7 @@ export class Partie {
         this.modePatateChaude = historique.modePatateChaude;
         this.modeExtensionVillage = historique.modeExtensionVillage;
         this.modeVillageoisVillageois = historique.modeVillageoisVillageois;
-        this.modeVideo = false;
+        this.modeVideo = historique.modeVideo;
         if(historique.meneurDeJeu){
             this.appareils[0].switchMeneurDeJeu();
             historique.noms.splice(0,1);

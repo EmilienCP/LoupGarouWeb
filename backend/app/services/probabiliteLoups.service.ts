@@ -15,15 +15,17 @@ export class ProbabiliteLoupsService {
 
     memoireCache: (Etat|number)[][]=[]; //[etat, prob, nombre d'utilisations]
     debug?: boolean = false;
+    toutlog?: boolean = false;
 
-    constructor(debug?: boolean){
+    constructor(debug?: boolean, toutlog?: boolean){
         this.debug = debug;
+        this.toutlog = toutlog;
     }
 
     getNbLoups(nbJoueurs: number, listeRoles: Role[], modeVillageoisVillageois: boolean): number {
-        if(this.debug){console.log("debut get Nb Loups")}
+        if(this.debug && this.toutlog){console.log("debut get Nb Loups")}
         let nbLoups: number = Math.floor(nbJoueurs/4);
-        if(this.debug){console.log("va dans getProbabiliteTotale",nbJoueurs, nbLoups, listeRoles, modeVillageoisVillageois)}
+        if(this.debug && this.toutlog){console.log("va dans getProbabiliteTotale",nbJoueurs, nbLoups, listeRoles, modeVillageoisVillageois)}
         let ancienneprobabilite: number= this.getProbabiliteTotale(nbJoueurs, nbLoups, listeRoles, modeVillageoisVillageois);
         let montee: boolean = ancienneprobabilite < 0.5;
         let nouvProbabilite: number = ancienneprobabilite;
@@ -34,7 +36,7 @@ export class ProbabiliteLoupsService {
                 break;
             }
             ancienneprobabilite = nouvProbabilite;
-            if(this.debug){console.log("va dans getProbabiliteTotale",nbJoueurs, nbLoups, listeRoles, modeVillageoisVillageois)}
+            if(this.debug && this.toutlog){console.log("va dans getProbabiliteTotale",nbJoueurs, nbLoups, listeRoles, modeVillageoisVillageois)}
             nouvProbabilite = this.getProbabiliteTotale(nbJoueurs, nbLoups, listeRoles, modeVillageoisVillageois);
         }
         if(Math.abs(ancienneprobabilite-0.5) > Math.abs(nouvProbabilite-0.5) || ancienneprobabilite == 0.5){
@@ -66,7 +68,7 @@ export class ProbabiliteLoupsService {
             nuit: true,
             modeVillageoisVillageois: modeVillageoisVillageois
         }
-        if(this.debug){console.log("va dans getProbabilite")}
+        if(this.debug && this.toutlog){console.log("va dans getProbabilite")}
         const prob: number = this.getProbabilite(etatInitial);
         if(this.debug){console.log("calcul probabilite totale", nbJoueurs, nbLoups, prob * this.getFacteurPersonnages(listeRoles))}
         return prob * this.getFacteurPersonnages(listeRoles); // je comprends pas pk les loups ont autant de chances de gagner
@@ -77,32 +79,33 @@ export class ProbabiliteLoupsService {
                return this.memeEtat(value[0] as Etat, etat);
             });
         if(etatDejaTrouve){
-            if(this.debug){console.log("va dans etatDejaTrouve")}
+            if(this.debug && this.toutlog){console.log("va dans etatDejaTrouve")}
             (etatDejaTrouve[2] as number)++;
+            if(this.debug && this.toutlog){console.log("return",[etat, etatDejaTrouve[1]])}
             return etatDejaTrouve[1] as number;
         }
         if(etat.nbLoups == 0){
-            if(this.debug){console.log("return",[etat, 0])}
+            if(this.debug && this.toutlog){console.log("return",[etat, 0])}
             return 0;
         } else if(etat.nbLoups == etat.nbJoueurs){
-            if(this.debug){console.log("return",[etat, 1])}
+            if(this.debug && this.toutlog){console.log("return",[etat, 1])}
             return 1;
         }
         let prob: number;
         if(etat.capitaineElu){
             if(etat.nuit){
-                if(this.debug){console.log("va dans nuit")}
+                if(this.debug && this.toutlog){console.log("va dans nuit")}
                 prob = this.nuit(etat);
             } else {
-                if(this.debug){console.log("va dans jour")}
+                if(this.debug && this.toutlog){console.log("va dans jour")}
                 prob = this.jour(etat);
             }
 
         } else {
-            if(this.debug){console.log("va dans choisir capitaine")}
+            if(this.debug && this.toutlog){console.log("va dans choisir capitaine")}
             prob = this.choisirCapitaine(etat);
         }
-        if(this.debug){console.log("return",[etat, prob])}
+        if(this.debug && this.toutlog){console.log("return",[etat, prob])}
         this.ajouterMemoireCache([etat, prob, 0]);
         return prob;
     }
@@ -137,14 +140,14 @@ export class ProbabiliteLoupsService {
     
     private nuit(etat: Etat): number{
         if(etat.modeVillageoisVillageois){
-            if(this.debug){console.log("va dans jour,eleve mode villageois villageois")}
+            if(this.debug && this.toutlog){console.log("va dans jour,eleve mode villageois villageois")}
             return this.jour({... etat, modeVillageoisVillageois: false, nuit: false});
         }
         if(etat.capitaineLoup){
-            if(this.debug){console.log("va dans nuit capitaine loup")}
+            if(this.debug && this.toutlog){console.log("va dans nuit capitaine loup")}
             return this.nuitCapitaineLoup(etat);
         }
-        if(this.debug){console.log("va dans nuit capitaine villageois")}
+        if(this.debug && this.toutlog){console.log("va dans nuit capitaine villageois")}
         return this.nuitCapitaineVillageois(etat);
     }
     
@@ -180,14 +183,14 @@ export class ProbabiliteLoupsService {
     
     private jour(etat: Etat):number{
         if(etat.nbLoups == 1 && etat.nbJoueurs == 2){
-            if(this.debug){console.log("return", etat.capitaineLoup?1:0)}
+            if(this.debug && this.toutlog){console.log("return", etat.capitaineLoup?1:0)}
             return etat.capitaineLoup?1:0;
         }
         if(etat.capitaineLoup){
-            if(this.debug){console.log("va dans jour capitaine loup", etat.nbJoueurs+" joueurs", etat.nbLoups+" loups")}
+            if(this.debug && this.toutlog){console.log("va dans jour capitaine loup", etat.nbJoueurs+" joueurs", etat.nbLoups+" loups")}
             return this.jourCapitaineLoup(etat);
         }
-        if(this.debug){console.log("va dans jour capitaine villageois", etat.nbJoueurs+" joueurs", etat.nbLoups+" loups")}
+        if(this.debug && this.toutlog){console.log("va dans jour capitaine villageois", etat.nbJoueurs+" joueurs", etat.nbLoups+" loups")}
         return this.jourCapitaineVillageois(etat);
     }
     
@@ -195,7 +198,7 @@ export class ProbabiliteLoupsService {
         const probCapitaineMort: number = this.getProbCapitaineMort(etat);
         const probLoupPasCapitaineMort: number = ((1-probCapitaineMort)/(etat.nbJoueurs-1))*(etat.nbLoups-1);
         const probMortVillageois: number = 1-probCapitaineMort-probLoupPasCapitaineMort;
-        if(this.debug){console.log("probs",probCapitaineMort,probLoupPasCapitaineMort,probMortVillageois)};
+        if(this.debug && this.toutlog){console.log("probs",probCapitaineMort,probLoupPasCapitaineMort,probMortVillageois)};
         return probCapitaineMort * this.getProbabilite({
                 capitaineElu: false,
                 capitaineLoup: false,
@@ -224,7 +227,7 @@ export class ProbabiliteLoupsService {
         const probCapitaineMort = this.getProbCapitaineMort(etat);
         const probLoupMort: number = ((1-probCapitaineMort)/(etat.nbJoueurs-1))*etat.nbLoups;
         const probVillageoisMort: number= 1-probCapitaineMort-probLoupMort;
-        if(this.debug){console.log("probs",probCapitaineMort,probLoupMort,probVillageoisMort)};
+        if(this.debug && this.toutlog){console.log("probs",probCapitaineMort,probLoupMort,probVillageoisMort)};
         return probLoupMort * this.getProbabilite({
                 capitaineElu: true,
                 capitaineLoup: true,
@@ -268,22 +271,19 @@ export class ProbabiliteLoupsService {
                     modeVillageoisVillageois: etat.modeVillageoisVillageois
                 });
     }
-    
-    private factorielle(nombre: number): number{
-        let valeur: number = 1;
-        for(let i: number= nombre; i>0; i--){
-            valeur*=i;
+
+    getProbCapitaineMort(etat: Etat): number {
+        const tableau: number[] = [0.25, 0.18518518518518517, 0.1328125, 0.09696,
+                    0.07675325788751715, 0.06543434890467165, 0.05860787630081177, 0.053893399014320074,
+                    0.050153338299999996, 0.04689084724557426, 0.043907610878764256, 0.04113266793694512,
+                    0.03854399520054189, 0.036135251334296556, 0.03390295976827827, 0.03184234008712631,
+                    0.029946511033772216, 0.02820683663858421, 0.026613538003797715, 0.025156262186664145,
+                    0.023824525175367598, 0.022608027409627404, 0.021496864400206945, 0.02048165800248121,
+                    0.01955363025749308, 0.018704636816420213, 0.017927172578401856];
+        if(etat.nbJoueurs-3 >= tableau.length || etat.nbJoueurs <= 2){
+            return 0;
         }
-        return valeur;
-    }
-    
-    private getProbCapitaineMort(etat: Etat): number{
-        let nbCasMortCapitaine: number = etat.nbJoueurs-1;
-        for(let i = 1; i<=etat.nbJoueurs-3; i++){
-            let nbCasTotaux: number = (this.factorielle(etat.nbJoueurs-1)/this.factorielle(etat.nbJoueurs-1-i)); 
-            nbCasMortCapitaine+= ((nbCasTotaux)-(nbCasTotaux*(i/(etat.nbJoueurs-1))-(((i-1)**i))))*(etat.nbJoueurs-i-1)
-        }
-        return nbCasMortCapitaine/((etat.nbJoueurs-1)**(etat.nbJoueurs)-this.factorielle(etat.nbJoueurs-1));
+        return tableau[etat.nbJoueurs-3];
     }
     
     private getFacteurPersonnage(role: Role): number{

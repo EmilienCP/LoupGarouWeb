@@ -181,6 +181,13 @@ export class Appareil {
         this.evenementsEnAttente.push(evenement);
     }
 
+    changerNomsJoueurs(noms: string[]){
+        this.nomsJoueurs = noms;
+        this.pointsJoueurs = noms.map((nom: string, index: number)=>{return this.pointsJoueurs[index] || 0});
+        this.pointsAAjouter = noms.map((nom: string, index: number)=>{return this.pointsAAjouter[index] || 0});
+        this.pointsPrecision = noms.map((nom: string, index: number)=>{return this.pointsPrecision[index] || 0});
+    }
+
     ajouterJoueur(nomJoueur: string){
         this.nomsJoueurs.push(nomJoueur);
         this.pointsJoueurs.push(0);
