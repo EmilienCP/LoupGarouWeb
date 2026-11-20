@@ -1,5 +1,5 @@
 import { EvenementDeGroupe, EvenementIndividuel } from "../../../../common/evenements";
-import { Equipe, Role } from "../../../../common/Joueur";
+import { Equipe, Role, RolePublic } from "../../../../common/Joueur";
 import { IA } from "../IAS/ia";
 import { Partie } from "../partie";
 import { Chasseur } from "../Personnages/chasseur";
@@ -221,6 +221,18 @@ export class VerificationMorts extends GestionnaireDeTemps{
                 const joueursVivants: Villageois[] = this.partie.getJoueursVivants().filter((joueur: Villageois)=>{return !this.partie.getJoueursMorts().includes(joueur)});
                 if(listeCapitaineMort.length == 1 && joueursVivants.length>0 &&(!this.partie.modeVillageoisVillageois || this.partie.numeroJour != 1 || this.dejaMisVillageoisVillageois || listeCapitaineMort[0].equipeApparente==Equipe.LOUPS)){
                     this.capitaineMort = listeCapitaineMort[0];
+                    //sil est fermier et quil y a qu'un seul autre fermier, transferer automatiquement
+                    if(this.capitaineMort.rolePublic == RolePublic.FERMIER){
+                        const autresFermiers: Villageois[] = joueursVivants.filter((joueur: Villageois)=>{return joueur.rolePublic == RolePublic.FERMIER});
+                        if(autresFermiers.length == 1){
+                            autresFermiers[0].estCapitaine = true;
+                            this.capitaineMort.estCapitaine = false;
+                            this.capitaineMort = undefined;
+                            this.partie.historiqueEvenements.push([listeCapitaineMort[0].nom + " était le capitaine. " + autresFermiers[0].nom + " est le seul autre fermier, il devient donc automatiquement le nouveau capitaine."]);
+                            return false;
+                        }
+                    }
+                    
                     this.partie.historiqueEvenements.push([listeCapitaineMort[0].nom + " était le capitaine. " + listeCapitaineMort[0].nom + " va donc choisir son successeur."])
                     this.partie.preparerEvenementDeGroupe(EvenementDeGroupe.INFO_MORT_CAPITAINE, EvenementDeGroupe.INFO_MORT_CAPITAINE);
                     return false;
@@ -373,6 +385,7 @@ export class VerificationMorts extends GestionnaireDeTemps{
             case Role.DEUX_SOEURS: return "l'une des Deux Soeurs";
             case Role.TROIS_FRERES: return "l'un des Trois Frères";
             case Role.GRAND_MECHANT_LOUP: return "le Grand Méchant Loup";
+            default: return "un rôle inconnu";
           }
     }
 

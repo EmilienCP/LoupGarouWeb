@@ -19,7 +19,8 @@ export enum Role{
     CHEVALIER_A_LEPEE_ROUILLEE,
     DEUX_SOEURS,
     TROIS_FRERES,
-    GRAND_MECHANT_LOUP
+    GRAND_MECHANT_LOUP,
+    FERMIER
 }
 
 export enum EtatsSpeciaux{

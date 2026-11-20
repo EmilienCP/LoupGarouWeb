@@ -38,7 +38,7 @@ export abstract class Transitions{
                 }
                 pitches = pitches.sort();
                 let max: number = 0;
-                let bestPitch: number | undefined;
+                let bestPitch: number | undefined = pitches[0];
                 pitches.forEach((pitch: number, index: number)=>{
                     let nextPitch: number = 0;
                     if(pitches[index+1] == undefined){
@@ -52,7 +52,6 @@ export abstract class Transitions{
                     }
                 })
                 let bestPitch1: number = -((-(bestPitch!-this.touneCourante.pitch!)+12)%12);
-                console.log("best pitch " + (-11)%12+ " "+ ((-(bestPitch!-this.touneCourante.pitch!))%12))
                 let bestPitch2: number = -((-(bestPitch!-this.touneSuivante!.pitch!)+12)%12);
                 this.audio.setPitch(bestPitch1);
                 this.audio2.setPitch(bestPitch2);

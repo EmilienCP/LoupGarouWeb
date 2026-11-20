@@ -51,103 +51,104 @@ export class DjaiComponent implements OnInit {
   }
 
   ngOnInit(): void {
-  //   this.filtreCache = [
-  //     {nom: "Intensite", valeur: 0.5, importance: 0, min: 0, max: 1, pas: 0.01, calcul:Calcul.NORMAL},
-  //     {nom: "Latino", valeur: 0.5, importance: 0, min: 0, max: 1, pas: 0.01, calcul:Calcul.NORMAL},
-  //     {nom: "Karaoke", valeur: 0.5, importance: 0, min: 0, max: 1, pas: 0.01, calcul:Calcul.NORMAL},
-  //     {nom: "Annee", valeur: 2022, importance: 1, min: 1950, max: 2022, pas: 1, calcul:Calcul.ANNEE},
-  //     {nom: "Danse en ligne", valeur: 0.5, importance: 1, min: 0, max: 1, pas: 0.01, calcul:Calcul.NORMAL},
-  //     {nom: "Electronic", valeur: 0.5, importance: 1, min: 0, max: 1, pas: 0.01, calcul:Calcul.NORMAL}
-  //   ]
-  //   this.setFiltrePersonnalise({target: {value:0}});
-  //   this.audioService.filtres = this.filtreCache;
-  //   this.audioService.onInit();
-  // }
+    console.log("init djai");
+    this.filtreCache = [
+      {nom: "Intensite", valeur: 0.5, importance: 0, min: 0, max: 1, pas: 0.01, calcul:Calcul.NORMAL},
+      {nom: "Latino", valeur: 0.5, importance: 0, min: 0, max: 1, pas: 0.01, calcul:Calcul.NORMAL},
+      {nom: "Karaoke", valeur: 0.5, importance: 0, min: 0, max: 1, pas: 0.01, calcul:Calcul.NORMAL},
+      {nom: "Annee", valeur: 2022, importance: 1, min: 1950, max: 2022, pas: 1, calcul:Calcul.ANNEE},
+      {nom: "Danse en ligne", valeur: 0.5, importance: 1, min: 0, max: 1, pas: 0.01, calcul:Calcul.NORMAL},
+      {nom: "Electronic", valeur: 0.5, importance: 1, min: 0, max: 1, pas: 0.01, calcul:Calcul.NORMAL}
+    ]
+    this.setFiltrePersonnalise({target: {value:0}});
+    this.audioService.filtres = this.filtreCache;
+    this.audioService.onInit();
+  }
 
-  // init(): void{
-  //   this.audioService.init();
-  //   this.attendrePret();
-  // }
+  init(): void{
+    this.audioService.init();
+    this.attendrePret();
+  }
 
-  // async attendrePret(){
-  //   this.tentativePret(50);
-  // }
+  async attendrePret(){
+    this.tentativePret(50);
+  }
 
-  // tentativePret(tentative: number){
-  //   setTimeout(()=>{
-  //     this.pret = this.audioService.getPret();
-  //     if(!this.pret){
-  //       tentative--;
-  //       if(tentative == 0){
-  //         this.audioService.logs.push("fini dattendre");
-  //       } else {
-  //         this.tentativePret(tentative);
-  //       }
-  //     }
-  //   }, 500);
-  // }
+  tentativePret(tentative: number){
+    setTimeout(()=>{
+      this.pret = this.audioService.getPret();
+      if(!this.pret){
+        tentative--;
+        if(tentative == 0){
+          this.audioService.logs.push("fini dattendre");
+        } else {
+          this.tentativePret(tentative);
+        }
+      }
+    }, 500);
+  }
 
-  // jouer(): void{
+  jouer(): void{
 
-  //   if(this.pret){
-  //     if(!this.entrainDeJouer){
-  //       this.audioService.jouerTheme();
-  //       this.entrainDeJouer = true;
-  //     } else {
-  //       this.audioService.pause();
-  //       this.entrainDeJouer = false;
-  //     }
-  //   } else {
-  //     this.entrainDeLoad = true;
-  //     this.init();
-  //     this.attendrePret();
-  //   }
-  // }
+    if(this.pret){
+      if(!this.entrainDeJouer){
+        this.audioService.jouerTheme();
+        this.entrainDeJouer = true;
+      } else {
+        this.audioService.pause();
+        this.entrainDeJouer = false;
+      }
+    } else {
+      this.entrainDeLoad = true;
+      this.init();
+      this.attendrePret();
+    }
+  }
 
-  // appliquerFiltres(){
-  //   this.audioService.filtres = this.filtreCache;
-  //   this.audioService.rechangerNouveauFiltres();
-  // }
+  appliquerFiltres(){
+    this.audioService.filtres = this.filtreCache;
+    this.audioService.rechangerNouveauFiltres();
+  }
 
 
-  // ajouterToune(){
-  //   this.ajoutToune = true;
-  // }
+  ajouterToune(){
+    this.ajoutToune = true;
+  }
 
-  // modifierToune(){
-  //   this.ajoutToune = true;
-  //   this.isModifierToune = true;
-  // }
+  modifierToune(){
+    this.ajoutToune = true;
+    this.isModifierToune = true;
+  }
 
-  // loadToune(lien: string){
-  //   const videoId: string = lien.split("v=")[1].split("&")[0];
-  //   this.communicationService.convertMp3(videoId, false).subscribe((res: any)=>{
-  //     const resultat = JSON.parse(res);
-  //     if(resultat.dejaExistant){
-  //       this.snack.showMessage('Cette vidéo est déjà dans la bd.');
-  //     } else {
-  //       this.nouvelleToune = {
-  //         auComplet: true,
-  //         caracteristiques: this.filtreCache.map((filtre: Filtre)=>{return [filtre.nom, 0]}),
-  //         tempo: 100,
-  //         temps:[0,5,10,15],
-  //         temps0:0,
-  //         tempsCles:[],
-  //         titre: resultat.title,
-  //         videoId: videoId,
-  //         duration:resultat.duration,
-  //         link: resultat.link,
-  //         debut: false,
-  //         pitch: resultat.pitch,
-  //         loopChordsDebut: [],
-  //         loopChordsFin: [],
-  //         tempsLoopDebut: [0,0],
-  //         tempsLoopFin: [0,0],
-  //         tempsi: []
-  //       }
-  //       this.audioNouvelleToune.src = this.nouvelleToune.link!;
-  //     }
-  //   })
+  loadToune(lien: string){
+    const videoId: string = lien.split("v=")[1].split("&")[0];
+    this.communicationService.convertMp3(videoId, false).subscribe((res: any)=>{
+      const resultat = JSON.parse(res);
+      if(resultat.dejaExistant){
+        this.snack.showMessage('Cette vidéo est déjà dans la bd.');
+      } else {
+        this.nouvelleToune = {
+          auComplet: true,
+          caracteristiques: this.filtreCache.map((filtre: Filtre)=>{return [filtre.nom, 0]}),
+          tempo: 100,
+          temps:[0,5,10,15],
+          temps0:0,
+          tempsCles:[],
+          titre: resultat.title,
+          videoId: videoId,
+          duration:resultat.duration,
+          link: resultat.link,
+          debut: false,
+          pitch: resultat.pitch,
+          loopChordsDebut: [],
+          loopChordsFin: [],
+          tempsLoopDebut: [0,0],
+          tempsLoopFin: [0,0],
+          tempsi: []
+        }
+        this.audioNouvelleToune.src = this.nouvelleToune.link!;
+      }
+    })
   }
 
   zoom(){
@@ -249,33 +250,33 @@ export class DjaiComponent implements OnInit {
   }
 
   enregistrer(){
-    // this.filtreCache.forEach((filtre: Filtre)=>{
-    //   this.nouvelleToune!.caracteristiques[this.nouvelleToune!.caracteristiques.map((caract)=>{return caract[0]}).indexOf(filtre.nom)][1] = filtre.valeur;
-    // })
-    // if(this.nouvelleToune!.tempsLoopDebut![0] == 0 && this.nouvelleToune!.tempsLoopDebut![1] == 0){
-    //   this.nouvelleToune!.tempsLoopDebut = undefined;
-    // }
-    // if(this.nouvelleToune!.tempsLoopFin![0] == 0 && this.nouvelleToune!.tempsLoopFin![1] == 0){
-    //   this.nouvelleToune!.tempsLoopFin = undefined;
-    // }
-    // if(this.isModifierToune){
-    //   const indexToune: number = this.audioService.toutesLesTounes.map((toune: Toune)=>{return toune.titre}).indexOf(this.nouvelleToune!.titre);
-    //   console.log(this.audioService.toutesLesTounes);
-    //   this.communicationService.modifierToune(this.nouvelleToune!, indexToune).subscribe(()=>{
-    //     this.nouvelleToune = undefined;
-    //     this.ajoutToune = false;
-    //     this.zoomStep = 1;
-    //     this.zoomPlage = [20, 200];
-    //   });
-    // } else {
-    //   this.communicationService.creerToune(this.nouvelleToune!).subscribe(()=>{
-    //     this.nouvelleToune = undefined;
-    //     this.ajoutToune = false;
-    //     this.zoomStep = 1;
-    //     this.zoomPlage = [20, 200];
-    //   });
+    this.filtreCache.forEach((filtre: Filtre)=>{
+      this.nouvelleToune!.caracteristiques[this.nouvelleToune!.caracteristiques.map((caract)=>{return caract[0]}).indexOf(filtre.nom)][1] = filtre.valeur;
+    })
+    if(this.nouvelleToune!.tempsLoopDebut![0] == 0 && this.nouvelleToune!.tempsLoopDebut![1] == 0){
+      this.nouvelleToune!.tempsLoopDebut = undefined;
+    }
+    if(this.nouvelleToune!.tempsLoopFin![0] == 0 && this.nouvelleToune!.tempsLoopFin![1] == 0){
+      this.nouvelleToune!.tempsLoopFin = undefined;
+    }
+    if(this.isModifierToune){
+      const indexToune: number = this.audioService.toutesLesTounes.map((toune: Toune)=>{return toune.titre}).indexOf(this.nouvelleToune!.titre);
+      console.log(this.audioService.toutesLesTounes);
+      this.communicationService.modifierToune(this.nouvelleToune!, indexToune).subscribe(()=>{
+        this.nouvelleToune = undefined;
+        this.ajoutToune = false;
+        this.zoomStep = 1;
+        this.zoomPlage = [20, 200];
+      });
+    } else {
+      this.communicationService.creerToune(this.nouvelleToune!).subscribe(()=>{
+        this.nouvelleToune = undefined;
+        this.ajoutToune = false;
+        this.zoomStep = 1;
+        this.zoomPlage = [20, 200];
+      });
 
-    // }
+    }
   }
 
   mettreAJourTemps(event: any, index: number){
@@ -303,38 +304,38 @@ export class DjaiComponent implements OnInit {
   }
 
   choisirToune(toune: Toune){
-    // this.audioNouvelleToune.onerror = ()=>{
-    //   this.audioService.logs.push("va chercher un nouveau link dune musique. titre="+toune.titre)
-    //   this.communicationService.convertMp3(toune.videoId, true).subscribe((res: any)=>{
-    //     const response = JSON.parse(res);
-    //     if(response.link){
-    //       this.nouvelleToune!.link = response.link
-    //       this.audioNouvelleToune.src = this.nouvelleToune!.link!;
-    //       this.audioNouvelleToune.load();
-    //     }
-    //   }, (err)=>{
-    //     this.audioService.logs.push(err);
-    //   })
-    // }
-    // console.log(toune);
-    // this.nouvelleToune = toune;
-    // if(!this.nouvelleToune.tempsLoopDebut){
-    //   this.nouvelleToune.tempsLoopDebut = [0,0];
-    // }
-    // if(!this.nouvelleToune.tempsLoopFin){
-    //   this.nouvelleToune.tempsLoopFin = [0,0];
-    // }
-    // if(!this.nouvelleToune.loopChordsDebut){
-    //   this.nouvelleToune.loopChordsDebut = [];
-    // }
-    // if(!this.nouvelleToune.loopChordsFin){
-    //   this.nouvelleToune.loopChordsFin = [];
-    // }
-    // this.audioNouvelleToune.src = this.nouvelleToune.link!;
-    // this.filtreCache.forEach((filtre: Filtre)=>{
-    //   const index = toune.caracteristiques.map((value:(string|number)[])=>{return value[0]}).indexOf(filtre.nom);
-    //   filtre.valeur = +toune.caracteristiques[index][1];
-    // })
+    this.audioNouvelleToune.onerror = ()=>{
+      this.audioService.logs.push("va chercher un nouveau link dune musique. titre="+toune.titre)
+      this.communicationService.convertMp3(toune.videoId, true).subscribe((res: any)=>{
+        const response = JSON.parse(res);
+        if(response.link){
+          this.nouvelleToune!.link = response.link
+          this.audioNouvelleToune.src = this.nouvelleToune!.link!;
+          this.audioNouvelleToune.load();
+        }
+      }, (err)=>{
+        this.audioService.logs.push(err);
+      })
+    }
+    console.log(toune);
+    this.nouvelleToune = toune;
+    if(!this.nouvelleToune.tempsLoopDebut){
+      this.nouvelleToune.tempsLoopDebut = [0,0];
+    }
+    if(!this.nouvelleToune.tempsLoopFin){
+      this.nouvelleToune.tempsLoopFin = [0,0];
+    }
+    if(!this.nouvelleToune.loopChordsDebut){
+      this.nouvelleToune.loopChordsDebut = [];
+    }
+    if(!this.nouvelleToune.loopChordsFin){
+      this.nouvelleToune.loopChordsFin = [];
+    }
+    this.audioNouvelleToune.src = this.nouvelleToune.link!;
+    this.filtreCache.forEach((filtre: Filtre)=>{
+      const index = toune.caracteristiques.map((value:(string|number)[])=>{return value[0]}).indexOf(filtre.nom);
+      filtre.valeur = +toune.caracteristiques[index][1];
+    })
   }
 
   remplirTemps(): void {

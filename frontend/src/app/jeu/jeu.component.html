@@ -1,6 +1,6 @@
 <div [style] = "proprieteFondEcran +'background-size: cover;background-repeat: unset;width:100%;height:100%'">
   <div [@.disabled]="communicationService.infoPartie.isMeneurDeJeu && !permetOnglets"  @parent #parent class = "lgAbsolu" [style] = "'width:100%;'+getHeight()+' top:0%; overflow-x: hidden;'" (mousedown)="mouseDown($event)" (touchstart)="mouseDown($event)" (mousemove) = "mouseMove($event)" (touchmove) = "mouseMove($event)" (mouseup) = "mouseUp()" (touchend) = "mouseUp()">
-    <div  [@evenements] = "{value: entrainDeDrag?'deplacement':indexOnglet, params: { marginFinal: marginFinal-indexOnglet*parent.offsetWidth}}" class = "lgAbsolu" style = "width:100%; height: 100%;overflow-y: auto; overflow-x: hidden;">
+    <div  [@evenements] = "{value: entrainDeDrag?'deplacement':indexOnglet, params: { marginFinal: marginFinal-indexOnglet*parent.offsetWidth}}" class = "lgAbsolu" style = "width:100%; height: 100%;overflow-y: hidden; overflow-x: hidden;">
       <router-outlet (activate)="onActivate($event)"></router-outlet>
     </div>
 

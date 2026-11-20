@@ -161,4 +161,4 @@ import { ProbabiliteLoupsService } from "./services/probabiliteLoups.service";
 
 const service = new ProbabiliteLoupsService(true, false);
 
-console.log(service.getNbLoups(6, [], false));
+console.log(service.getNbLoups(5, [], false));

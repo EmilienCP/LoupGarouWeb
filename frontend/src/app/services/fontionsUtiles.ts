@@ -25,6 +25,7 @@ export function convertirRoleTexte(role: Role | EtatsSpeciaux, roleIndividuel: b
         case Role.GRAND_MECHANT_LOUP: return "le Grand Méchant Loup";
         case EtatsSpeciaux.AMOUREUX: return "les Amoureux";
         case EtatsSpeciaux.INFECTE: return "possiblement un infecté";
+        default: return "un rôle inconnu";
     }
 }
 
@@ -51,6 +52,7 @@ export function descriptionRole(role: Role): string{
       case Role.DEUX_SOEURS: return "Son objectif est de gagner avec les villageois. Les deux soeurs se connaissent entre elles et savent que l'autre est une simple villageoise."
       case Role.TROIS_FRERES: return "Son objectif est de gagner avec les villageois. Les trois frères se connaissent entre eux et savent que l'autre est un simple villageois."
       case Role.GRAND_MECHANT_LOUP: return "Son objectif est de gagner avec les loup-garous. Le Grand Méchant Loup peut dévorer un deuxième villageois au choix pendant la nuit, s'il n'y a pas eu encore de loup-garous morts pendant la partie."
+      default: return "Un rôle inconnu";
     }
 }
 
@@ -79,6 +81,7 @@ export function imageRole(role: Role | EtatsSpeciaux): string{
     case Role.GRAND_MECHANT_LOUP: return "grandMechantLoup.jpg";
     case EtatsSpeciaux.AMOUREUX: return "cupidon.png";
     case EtatsSpeciaux.INFECTE: return "loupGarou.png";
+    default: return "roleInconnu.png";
   }
 }
 

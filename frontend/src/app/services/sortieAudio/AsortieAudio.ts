@@ -10,6 +10,9 @@ export abstract class ASortieAudio{
 
     abstract play(): void
     abstract pause(): void
+
+    abstract testLoad(): Promise<void>
+    
     preparerToune(path: string, timeUpdate: any, finished: any, logOutPut: any, logs:string[], titre: string): void{
         this.titre = titre;
     }
