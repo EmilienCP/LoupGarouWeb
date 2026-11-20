@@ -49,17 +49,25 @@ export class PartiesService {
     }
 
     quitterPartie(idSocket: string): void {
-        this.parties.forEach((partie: Partie)=>{
-            const appareil: Appareil| undefined = partie.appareils.find((appareil: Appareil)=>{
-                return appareil.idSocket == idSocket;
-            });
-            if(appareil){
-                appareil.disconnect = true;
-                if(!partie.appareils.some((appareil: Appareil)=>{return !appareil.disconnect}) && this.parties.length>1){
-                    this.parties.splice(this.parties.indexOf(partie), 1);
-                }
-            }
-        })
+        const partie = this.parties.find(partie =>
+            partie.appareils.some(appareil => appareil.idSocket === idSocket)
+        );
+        if (!partie) {
+            return;
+        }
+        const appareil = partie.appareils.find(
+            appareil => appareil.idSocket === idSocket
+        );
+        if (!appareil) {
+            return;
+        }
+        appareil.disconnect = true;
+        const tousDeconnectes = partie.appareils.every(
+            appareil => appareil.disconnect
+        );
+        if (tousDeconnectes && this.parties.length > 1) {
+            this.parties.splice(this.parties.indexOf(partie), 1);
+        }
     }
 
     reconnecter(ancienId: string, nouvelId: string): boolean{
@@ -266,21 +274,24 @@ export class PartiesService {
         return joueursEnAttente;
     }
 
-    private verifierSiDejaDansUnePartie(idSocket: string): void{
-        const partiesDejaDedans: Partie[] = this.parties.filter((partie: Partie)=>{
-            return partie.appareils.filter((appareil: Appareil)=>{
-                return appareil.idSocket == idSocket
-            }).length>0
-        });
-        //verifier si le socket nest pas deja dans une partie
-        if(partiesDejaDedans.length>0){
-            console.log("un appareil tente de joindre une partie, mais se trouve deja dans une partie. Delete de sa partie courante en premier. idSocket: "+idSocket);
-            partiesDejaDedans.forEach((partie: Partie)=>{
-                partie.appareils = partie.appareils.filter((appareil: Appareil)=>{return appareil.idSocket!= idSocket});
-                if(partie.appareils.length == 0){
-                    this.parties.splice(this.parties.indexOf(partie));
-                }
+    private verifierSiDejaDansUnePartie(idSocket: string): void {
+
+        const partiesDejaDedans = this.parties.filter(partie =>
+            partie.appareils.some(appareil => appareil.idSocket === idSocket)
+        );
+
+        if (partiesDejaDedans.length > 0) {
+            console.log("Un appareil tente de joindre une partie alors qu'il est déjà présent.",idSocket);
+
+            partiesDejaDedans.forEach(partie => {
+                partie.appareils = partie.appareils.filter(
+                    appareil => appareil.idSocket !== idSocket
+                );
             });
+
+            this.parties = this.parties.filter(partie =>
+                partie.appareils.length > 0
+            );
         }
     }
 }

@@ -1,3 +1,4 @@
+import "reflect-metadata";
 import { Partie } from "./gestionnaire/partie";
     
 let partie: Partie = new Partie("0",undefined, true);

@@ -70,10 +70,12 @@ export class SortieAudio2 extends ASortieAudio{
         this.entrainDeJouer = false;
     }
 
+    override async testLoad(): Promise<void>{
+        
+    }
+
     override preparerToune(path: string, timeUpdate: any, finished: any, logOutPut: any, logs: string[], titre: string): void {
         super.preparerToune(path, timeUpdate, finished, logOutPut, logs, titre);
-        //fetch("https://dl.dropboxusercontent.com/s/1cdwpm3gca9mlo0/kick.mp3")
-        //const fetchapi = fetch(`https://malpha.123tokyo.xyz/get.php/5/1e/H7rhMqTQ4WI.mp3?cid=MmEwMTo0Zjg6YzAxMDo5ZmE2OjoxfE5BfERF&h=mIbDaTJBYHYbMpB-T8qJSw&s=1704951341&n=Khaled%20-%20C%27est%20la%20vie%20%28Clip%20officiel%29`,{
         const fetchapi = fetch(`https://youtube-mp36.p.rapidapi.com/dl?id=H7rhMqTQ4WI`,{
            "method" : "GET",
            "headers": {

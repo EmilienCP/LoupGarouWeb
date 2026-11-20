@@ -1,5 +1,6 @@
 import { EvenementDeGroupe } from "../../../../common/evenements";
 import { Role } from "../../../../common/Joueur";
+import { MomentFort, MomentFortType } from "../../../../common/momentFort";
 import { Appareil } from "../appareil";
 import { Partie } from "../partie";
 import { Villageois } from "../Personnages/villageois";
@@ -65,6 +66,7 @@ export class Victoire extends GestionnaireDeTemps{
                     this.partie.momentsForts.forEach((momentFort: any)=>{
                         momentFort.numeroSurTotal = (this.partie.momentsForts.indexOf(momentFort)+1).toString() + "/" + this.partie.momentsForts.length.toString();
                     })
+                    this.partie.historiqueEvenements.push(["Moments forts de la partie :"]);
                     this.partie.preparerEvenementDeGroupe(EvenementDeGroupe.MOMENTS_FORTS_INFO, EvenementDeGroupe.MOMENTS_FORTS_INFO);
                     return false;
                 }
@@ -72,8 +74,8 @@ export class Victoire extends GestionnaireDeTemps{
             }
             case "Moments Forts" :{
                 if(this.partie.momentsForts.length>0){
-                    this.partie.momentFortPresent = this.partie.momentsForts.shift();
                     this.partie.preparerEvenementDeGroupe(EvenementDeGroupe.MOMENTS_FORTS, EvenementDeGroupe.MOMENTS_FORTS);
+                    this.partie.historiqueEvenements.push([this.convertirMomentFortTexte(this.partie.momentsForts.shift()!)]);
                     this.retourAEtape(etapeCourante);
                     return false;
                 }
@@ -113,7 +115,33 @@ export class Victoire extends GestionnaireDeTemps{
             case Role.DEUX_SOEURS: return "l'une des Deux Soeurs";
             case Role.TROIS_FRERES: return "l'un des Trois Frères";
             case Role.GRAND_MECHANT_LOUP: return "le Grand Méchant Loup";
+            default: return "un rôle inconnu";
           }
+    }
+
+    convertirMomentFortTexte(moment: MomentFort){
+        switch(moment.type){
+            case MomentFortType.VOYANTE:
+              return moment.params[0]+", la Voyante"+(moment.params[3]?" infectée":"")+", a vu que "+ moment.params[1]+" était "+this.convertirRoleTexte(moment.params[2])+".";
+            case MomentFortType.LOUP_BLANC_ACCUSE:
+              return moment.params[0]+", un loup, a accusé le Loup-Garou Blanc, soit "+ moment.params[1]+".";
+            case MomentFortType.FEMME_DE_MENAGE:
+              return moment.params[0]+", la Femme de ménage, s'est échappée des loups-garous en se cachant chez "+ moment.params[1]+ ".";
+            case MomentFortType.SORCIERE_PROTEGER:
+              if(moment.params[2]){
+                return moment.params[0]+", la Sorcière, s'est sauvée des loups-garous en se protégeant elle même."
+              } else{
+                return moment.params[0]+", la Sorcière, a permis à "+ moment.params[1]+ " de se protéger des loups-garous.";
+              }
+            case MomentFortType.SORCIERE_SORT_MORT:
+              return moment.params[0]+", la Sorcière, a utilisé son sort de mort pour éliminer "+moment.params[1]+"."
+            case MomentFortType.HYPNOTISEUR_LOUP:
+              return moment.params[0]+", l'Hypnotiseur, a forcé un loup-garou, soit "+moment.params[1]+", à voter contre un autre loup: "+moment.params[2]+"."
+            case MomentFortType.HYPNOTISEUR_AMOUREUX:
+              return moment.params[0]+", l'Hypnotiseur, a forcé "+moment.params[1]+" à voter contre son amoureux: "+moment.params[2]+"."
+            case MomentFortType.HYPNOTISEUR_INFECTE_VILLAGEOIS:
+              return moment.params[0]+", l'Hypnotiseur infecté, a forcé un villageois, soit "+moment.params[1]+" à voter contre un autre villageois: "+moment.params[2]+"."
+        }
     }
     
 }

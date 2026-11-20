@@ -24,7 +24,7 @@ export class Sorciere extends Villageois{
         this.ajouterEvenementIndividuelSansRaisons(EvenementIndividuel.JOUER_SORCIERE_PROTEGER);
         const raisons: RaisonPasVoter[] = this.getRaisonsPasVoter([]);
         if(this.joueurProtege){
-            raisons[this.partie.getJoueursVivants().indexOf(this.joueurProtege)] = RaisonPasVoter.DEJA_CHOISI;
+            raisons[this.partie.joueursVillage.indexOf(this.joueurProtege)] = RaisonPasVoter.DEJA_CHOISI;
         }
         this.raisonsPasVoter.push(raisons);
         if(this.sortMortelDisponible){

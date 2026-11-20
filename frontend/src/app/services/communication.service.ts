@@ -8,7 +8,6 @@ import { JoindrePartieInfo } from '../../../../common/joindrePartieInfo';
 import { EvenementIndividuel, EvenementDeGroupe, Victoire, RaisonPasVoter } from '../../../../common/evenements'
 import { Joueur, JoueurExtensionLoups, Role } from '../../../../common/Joueur'
 import {InfoPartie } from '../../../../common/infoPartie'
-import {MomentFort } from '../../../../common/momentFort'
 import { InfoVideo } from '../../../../common/infoVideo'
 import { InfoEvenement } from '../../../../common/infoEvenement'
 import { InfoPointsDeVictoire } from '../../../../common/infoPointsDeVictoire'
@@ -216,12 +215,6 @@ export class CommunicationService {
     return this.http.get<{texte: string, buffer: string}>(this.ROOT_URL + 'introHistoire/'+this.idSocket)
     .pipe(catchError(err => this.handleError(err)));
   }
-
-  getUnMomentFort(): Observable<MomentFort>{
-    return this.http.get<MomentFort>(this.ROOT_URL + 'getUnMomentFort/'+this.idSocket)
-    .pipe(catchError(err => this.handleError(err)));
-  }
-
   
   convertMp3(videoId: string, ajouterDansFichier: boolean): Observable<string>{
     return this.http.post<string>(this.ROOT_URL + 'convert-mp3/', {videoId: videoId, ajouterDansFichier: ajouterDansFichier})

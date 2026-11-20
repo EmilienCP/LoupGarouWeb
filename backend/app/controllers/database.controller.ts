@@ -497,17 +497,6 @@ export class DatabaseController {
       }
     })
 
-    router.get('/getUnMomentFort/:idSocket',
-      async (req: Request, res: Response) => {
-        try {
-          res.json(this.partiesService.getPartie(req.params.idSocket).getUnMomentFort());
-        }
-        catch (err) {
-          console.log(err)
-          res.status(500).end()
-        }
-      })
-
     router.get('/joueursEnAttente/:idSocket',
     async (req: Request, res: Response) => {
       try {

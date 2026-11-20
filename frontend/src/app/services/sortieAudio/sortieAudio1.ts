@@ -30,7 +30,11 @@ export class SortieAudio1 extends ASortieAudio{
         this.audio.pause();
     }
 
-    override preparerToune(path: string, timeUpdate: any, finished: any, logOutPut: any, logs:string[], titre: string): void {
+    override async testLoad(): Promise<void>{
+        
+    }
+
+    override preparerToune(path: string, timeUpdate: any, finished: any, logOutPut: any, logs:string[], titre: string): void  {
         super.preparerToune(path, timeUpdate, finished, logOutPut, logs, titre);
         this.audio.src = path;
         this.audio.oncanplay = ()=>{

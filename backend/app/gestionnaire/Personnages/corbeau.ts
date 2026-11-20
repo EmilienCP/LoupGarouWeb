@@ -30,7 +30,7 @@ export class Corbeau extends Villageois{
     actionNuit(): void {
         if(this.patateChaude){
             const raisons: RaisonPasVoter[] = this.getRaisonsPasVoter([RaisonPasVoter.SOI_MEME]);
-            const joueursPeutChoisir: Villageois[] = this.partie.getJoueursVivants().filter((joueur: Villageois, index: number)=> raisons[index]==RaisonPasVoter.AUCUN);
+            const joueursPeutChoisir: Villageois[] = this.partie.joueursVillage.filter((joueur: Villageois, index: number)=> raisons[index]==RaisonPasVoter.AUCUN && joueur.estVivant);
             this.joueurVu = joueursPeutChoisir[Math.floor(this.partie.random(joueursPeutChoisir.length))];
         }
         super.actionNuit();

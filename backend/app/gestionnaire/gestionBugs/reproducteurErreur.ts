@@ -7,7 +7,7 @@ import { ServanteDevouee } from "../Personnages/servanteDevouee";
 import { Action, HistoriquePartie } from "./historiquePartie";
 
 
-let valeur: string =  '{"actions":[[5,0],[5,1],[5,2],[0],[5,2],[5,0],[5,1],[5,1],[5,2],[5,1],[5,2],[0],[5,0],[5,2],[5,1],[0],[5,0],[5,2],[5,1],[0],[5,2],[5,0],[5,1],[0],[5,2],[5,0],[5,1],[4,1],[4,0],[1,21,0,15],[0],[5,0],[5,2],[5,1],[0],[5,2],[5,0],[5,1],[0],[5,0],[5,1],[5,2],[0],[5,2],[5,0],[5,1],[0]],"choixPersonnages":[3,4,5,6,7,8,9,10,11,12,13,14,15,16,18],"nbAppareils":2,"nbJoueurs":17,"nbLoups":1,"seed":562,"modePatateChaude":true,"modeExtensionVillage":true,"modeVillageoisVillageois":true,"modeVideo":true,"meneurDeJeu":true,"noms":[[],["Emiliou"],["Lilou"]],"points":[[],[0],[0]]}'
+let valeur: string =  '{"actions":[[5,0],[5,0],[4,0],[1,5,0,14],[0],[5,0],[0],[5,0],[0],[5,0],[0],[5,0],[0],[5,0],[4,0],[1,6,0,8],[1,6,0,2],[1,6,0,2],[0],[5,0],[0],[5,0],[0],[5,0],[0],[5,0],[0],[0],[5,0],[0],[5,0],[0],[5,0],[5,0],[0],[5,0],[4,0],[1,4,0,11],[0],[5,0],[0],[5,0],[0],[5,0],[0],[0],[0],[5,0],[0],[5,0],[0],[5,0],[4,0],[1,6,0,8],[1,6,0,8],[0],[5,0],[0],[5,0],[0],[5,0],[0],[5,0],[0],[5,0],[0],[5,0],[0],[5,0],[0],[5,0],[0],[5,0],[0],[5,0],[5,0],[0]],"choixPersonnages":[3,4,5,6,7,8,9,10,11,12,13,14,15,16,18],"nbAppareils":1,"nbJoueurs":17,"nbLoups":1,"seed":491,"modePatateChaude":false,"modeExtensionVillage":false,"modeVillageoisVillageois":true,"modeVideo":false,"meneurDeJeu":false,"noms":[["Joueur 0"]],"points":[[0]]}'
 
 let historiquePartie: HistoriquePartie = JSON.parse(valeur)
     

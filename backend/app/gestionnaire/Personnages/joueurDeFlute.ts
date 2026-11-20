@@ -53,7 +53,7 @@ export class JoueurDeFlute extends Villageois{
     getRaisonsPasVoterJoueurDeFlute(): RaisonPasVoter[] {
         let raisons: RaisonPasVoter[] = this.getRaisonsPasVoter([RaisonPasVoter.SOI_MEME, RaisonPasVoter.DEJA_CHARMER, RaisonPasVoter.AMOUREUX]);
         if(this.choix1){
-            let indexChoix1: number = this.partie.getJoueursVivants().indexOf(this.choix1);
+            let indexChoix1: number = this.partie.joueursVillage.indexOf(this.choix1);
             raisons[indexChoix1] = RaisonPasVoter.DEJA_CHARMER;
         }
         return raisons;

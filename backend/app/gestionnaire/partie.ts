@@ -71,7 +71,6 @@ export class Partie {
     texteCourant: string;
     bufferIntro: Buffer;
     momentsForts: MomentFort[];
-    momentFortPresent: MomentFort | undefined;
     activerBackup: boolean = false;
     historiqueEvenements: string[][];
 
@@ -125,7 +124,6 @@ export class Partie {
         this.modeExtensionVillage = false;
         this.numeroJour = 0;
         this.momentsForts = [];
-        this.momentFortPresent = undefined;
         this.choixPersonnages = [Role.VOYANTE, Role.CUPIDON, Role.SORCIERE, 
                                 Role.CHASSEUR, Role.INFECT_PERE_LOUPS,
                                 Role.MONTREUR_OURS, Role.RENARD, Role.CORBEAU, Role.FEMME_DE_MENAGE,
@@ -142,7 +140,6 @@ export class Partie {
         this.voteCourant.clean();
         this.ias = [];
         this.momentsForts = [];
-        this.momentFortPresent = undefined;
         this.appareils.forEach((appareil: Appareil)=>{
             appareil.recommencer();
         })
@@ -458,6 +455,8 @@ export class Partie {
                     return new IA(villageois, this);
                 }
                 throw new Error("un villageois villageois tente detre creer")
+            default:
+                throw new Error("un personnage ne peut pas etre creer "+role);
         }
     }
 
@@ -519,6 +518,15 @@ export class Partie {
             this.victoire = Victoire.AMOUREUX;
             return true;
         }
+        //une autre facon precise que les amoureux gagnent, pcq deux amoureux villageois ont 1 chance sur 2 de perdre donc cest pas juste
+        if(joueursVivants.length == 3 && joueursVivants.some((joueur: Villageois)=>joueur.amoureux)){
+            let amoureux: Villageois = joueursVivants.find((joueur: Villageois)=>joueur.amoureux)!;
+            if(amoureux.equipeApparente == Equipe.VILLAGEOIS && amoureux.amoureux!.equipeApparente == Equipe.VILLAGEOIS){
+                if(this.seed){console.log("Les amoureux gagnent")}; 
+                this.victoire = Victoire.AMOUREUX;
+            }
+        }  
+
         let joueurDeFlute: Villageois = this.getPersonnages(Role.JOUEUR_DE_FLUTE)[0];
         if(joueurDeFlute){
             if(joueursVivants.filter((joueur: Villageois)=>{
@@ -691,32 +699,32 @@ export class Partie {
         this.getPersonnages(Role.ENFANT_SAUVAGE).forEach((enfantSauvage: Villageois)=>{
             (enfantSauvage as EnfantSauvage).nouveauMort(this.getJoueursMorts());
         })
+        const joueursMorts: Villageois[] = this.getJoueursMorts();
+        if(this.seed && joueursMorts.length>0){
+            console.log("tuer definitivement "+joueursMorts.map((joueur: Villageois)=>{return joueur.nom}))
+        } else if(this.seed){
+            console.log("tuer personne")
+        }
         this.getJoueursMorts().forEach((villageois: Villageois)=>{
             this.ias.forEach((ia: IA)=>{
                 ia.retirerJoueur(villageois);
             })
             villageois.estVivant = false;
+            villageois.estMort = false;
+            villageois.estDejaMort = true;
         })
         this.ias = this.ias.filter((ia: IA)=>{
-            return !this.getJoueursMorts().includes(ia.villageois);
+            return this.getJoueursVivants().includes(ia.villageois);
         })
-        if(this.seed && this.getJoueursMorts().length>0){
-            console.log("tuer definitivement "+this.getJoueursMorts().map((joueur: Villageois)=>{return joueur.nom}))
-        } else if(this.seed){
-            console.log("tuer personne")
-        }
-        this.getJoueursMorts().forEach((joueur: Villageois)=>{
-            joueur.estMort = false;
-            joueur.estDejaMort = true;
-        });
-        if(this.getJoueursVivants().length>0){
-            if(this.getJoueursVivants().filter((joueur) => {return joueur.estCapitaine;}).length == 0) {
+        const joueursVivants: Villageois[] = this.getJoueursVivants();
+        if(joueursVivants.length>0){
+            if(joueursVivants.filter((joueur) => {return joueur.estCapitaine;}).length == 0) {
                 throw new Error("Il n'y a pas de capitaine! No good.")
             }
-            if(this.getJoueursVivants().filter((joueur) => {return joueur == undefined;}).length > 0) {
+            if(joueursVivants.filter((joueur) => {return joueur == undefined;}).length > 0) {
                 throw new Error("Il y a un joueur undefined! No good.")
             }
-            if(this.getJoueursVivants().filter((joueur)=>{return joueur.amoureux && this.getJoueursDejaMorts().includes(joueur.amoureux)}).length>0){
+            if(joueursVivants.filter((joueur)=>{return joueur.amoureux && this.getJoueursDejaMorts().includes(joueur.amoureux)}).length>0){
                 throw new Error("Il y a un joueur vivant que son amoureux est mort! No good.")
             }
         }
@@ -931,10 +939,6 @@ export class Partie {
         return this.getJoueursVivants().filter((joueur: Villageois)=>{
             return this.appareils.some((appareil: Appareil)=>{return appareil.joueurs.includes(joueur)});
         })
-    }
-
-    getUnMomentFort(): MomentFort{
-        return this.momentFortPresent!;
     }
 
     getTimer(evenement: EvenementDeGroupe|EvenementIndividuel): number{

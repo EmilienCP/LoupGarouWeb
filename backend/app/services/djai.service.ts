@@ -20,12 +20,11 @@ export class DJAIService {
         if(ajouterDansFichier == false && this.tounes.map((toune)=>{return toune.videoId}).includes(videoId)){
             return {dejaExistant: true};
         }
-        const fetch = require('node-fetch');
         const fetchapi = await fetch(`https://youtube-mp36.p.rapidapi.com/dl?id=${videoId}`,{
            "method" : "GET",
            "headers": {
-           //"X-RapidAPI-Key" :"69c7797440msh13130e2ff8168efp1a4202jsnc726b844e1c5",
-           "X-RapidAPI-Key" :process.env.OPEN_API_KEY!,
+           "X-RapidAPI-Key" :"69c7797440msh13130e2ff8168efp1a4202jsnc726b844e1c5",
+           //"X-RapidAPI-Key" :process.env.RAPIDAPI_KEY!,
            "X-RapidAPI-Host": "youtube-mp36.p.rapidapi.com"
            }
         })
@@ -41,7 +40,7 @@ export class DJAIService {
             }
             return fetchresponse;
         } else {
-            console.log(fetchresponse);
+            console.log("erreur: ", fetchresponse);
            return undefined;
         }
     }

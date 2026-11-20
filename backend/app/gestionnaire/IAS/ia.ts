@@ -372,7 +372,7 @@ export class IA {
         if(!raisons.includes(RaisonPasVoter.AUCUN) && !normalDavoirPersonne){
             throw new Error(this.villageois.nom + " tente de faire un choix du village mais n'a personne pour qui voter")
         }
-        return this.partie.getJoueursVivants().filter((villageois: Villageois, index: number)=>{
+        return this.partie.joueursVillage.filter((villageois: Villageois, index: number)=>{
             return raisons[index] == RaisonPasVoter.AUCUN && village.includes(villageois);
         })
     }
